@@ -1,0 +1,30 @@
+{
+  "name": "stalki.io-server",
+  "description": "Realtime Communication Service",
+  "version": "0.0.5",
+  "contributors": [
+    {
+      "name": "John Kim",
+      "email": "yohany@gmail.com"
+    }
+  ],
+
+  "main": "server.js",
+
+  "dependencies": {
+    "optimist": "0.6.x"
+  },
+  "devDependencies": {
+    "should": "~2.1.1",
+    "Faker": "~0.5.11"
+  },
+  "keywords": [
+    "chat",
+    "stalk.io"
+  ],
+  "repository": "git://github.com/xpush/stalk.io-server",
+
+  "engines": {
+    "node": ">= 0.8.0"
+  }
+}
