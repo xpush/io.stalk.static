@@ -26,12 +26,28 @@ module.exports = function(grunt) {
       },
     },
     uglify: {
-      options: {
+      /*options: {
         banner: '<%= banner %>'
       },
       dist: {
         src: '<%= concat.dist.dest %>',
         dest: 'public/<%= pkg.name %>.js'
+      },*/
+    },
+    cssmin: {
+      minify: {
+        src: 'src/stalk.css',
+        dest: 'public/<%= pkg.name %>.css',
+      }
+    },
+    copy: {
+      main: {
+        expand: true,
+        cwd: 'src/',
+        src: '*.png',
+        dest: 'public/',
+        flatten: true,
+        filter: 'isFile',
       },
     },
     qunit: {
@@ -47,8 +63,8 @@ module.exports = function(grunt) {
     },
     watch: {
       src: {
-        files: 'src/<%= pkg.name %>.js',
-        tasks: ['concat', 'uglify']
+        files: 'src/*',
+        tasks: ['concat', 'uglify', 'cssmin', 'copy']
       },
     },
   });
@@ -60,8 +76,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'qunit', 'clean', 'concat', 'uglify']);
+  grunt.registerTask('default', ['jshint', /*'qunit',*/ 'clean', 'concat', 'uglify', 'cssmin', 'copy']);
 
 };

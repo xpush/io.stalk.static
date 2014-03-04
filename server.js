@@ -34,14 +34,15 @@ server.on('oauth', function (data){
 });
 
 
+server.static(/\/public\/?.*/, {
+  directory: __dirname+'/public'
+});
+
 /* default xpush oauth providers */
 // FACEBOOK Auth Url : /auth/facebook
 // FACEBOOK Callback Url : /auth/facebook/callback
 
 
-//server.static(/\/public\/?.*/, {
-//  directory: __dirname+'/public'
-//});
 
 //server.get('/test', function (req, res, next) {
 //  res.send({status : 'pong'});

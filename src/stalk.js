@@ -1,7 +1,7 @@
 var STALK_CONFIGURATION = {
   APP: 'stalk-io',
   APP_URL: 'http://stalk.xpush.io:8000',
-  CSS_URL: 'http://stalk.xpush.io/stalk.css',
+  CSS_URL: 'http://stalk.xpush.io:8000/public/stalk.css',
   MESSAGE: {
     title: 'Leave us a Message',
     default_message: 'Questions? Come chat with us! We\'re here, send us a message!',
@@ -9,6 +9,107 @@ var STALK_CONFIGURATION = {
     
   }
 };
+
+
+var STALK_UTILS = {
+  getUniqueKey : function () {
+    var s = [], itoh = '0123456789ABCDEF';
+    for (var i = 0; i < 36; i++) s[i] = Math.floor(Math.random()*0x10);
+    s[14] = 4;
+    s[19] = (s[19] & 0x3) | 0x8;
+   
+    for (var i = 0; i < 36; i++) s[i] = itoh[s[i]];
+    s[8] = s[13] = s[18] = s[23] = '-';
+   
+    return s.join('');
+  },
+  getEscapeHtml : function(html) {
+  return String(html)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  },
+  getHashCode : function (s) {
+    var hash = 0;
+    if (s.length === 0) return hash;
+    for (var i = 0; i < s.length; i++) {
+      var char1 = s.charCodeAt(i);
+      hash = ((hash<<5)-hash)+char1;
+      hash = hash & hash;
+    }
+    return hash;
+  },
+  loadScript :  function(url, callback){
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    if (script.readyState){  //IE
+      script.onreadystatechange = function(){
+        if (script.readyState == "loaded" ||
+            script.readyState == "complete"){
+          //script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else {  //Others
+      script.onload = function(){
+        callback();
+      };
+    }
+    script.src = url;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  },
+
+  loadCss : function (url) {
+    var link = document.createElement('link');
+    link.type = 'text/css';
+    link.rel = 'stylesheet';
+    link.href = url;
+    document.getElementsByTagName('head')[0].appendChild(link);
+    return link;
+  },
+  
+  loadJson : function(url, callbackStr){
+    var script = document.createElement("script");
+    // Add script object attributes
+    script.type     = "text/javascript";
+    script.charset  = "utf-8";
+    script.id       = this.getHashCode(url);
+
+    if (script.readyState){  //IE
+      script.onreadystatechange = function(){
+        if (script.readyState == "loaded" ||
+            script.readyState == "complete"){
+          //script.onreadystatechange = null;
+          // DO Something?
+        }
+      };
+    } else {  //Others
+      script.onload = function(){
+        // DO Something?
+      };
+    }
+    script.src = url + '&callback='+callbackStr+'&_noCacheIE=' + (new Date()).getTime();
+    document.getElementsByTagName("head")[0].appendChild(script);
+  },
+  
+  hasClass : function(el, val) {
+    var pattern = new RegExp("(^|\\s)" + val + "(\\s|$)");
+    return pattern.test(el.className);
+  },
+  addClass : function(ele, cls) {
+    if (!this.hasClass(ele, cls)) ele.className += " " + cls;
+  },
+  removeClass : function(ele, cls) {
+    if (this.hasClass(ele, cls)) {
+      var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+      ele.className = ele.className.replace(reg, ' ');
+    }
+  }
+  
+};
+
 
 var STALK_WINDOW = {
   initWin : function(){
@@ -88,15 +189,13 @@ var STALK_WINDOW = {
         }
 
         var message = el_textarea.value;
-        message = message.replace(/^\s+|\s+$/g,"");
+        message = STALK_UTILS.getEscapeHtml(message.replace(/^\s+|\s+$/g, ''));
 
         if(message.length > 0){
 
           STALK.sendMessage(encodeURIComponent(message));
-
           el_textarea.value = '';
-          //el_textarea.style.height = '30px';
-          //return false;
+
         }
       }
     };
@@ -163,85 +262,6 @@ var STALK_WINDOW = {
   
 };
 
-var STALK_UTILS = {
-  getHashCode : function (s) {
-    var hash = 0;
-    if (s.length === 0) return hash;
-    for (var i = 0; i < s.length; i++) {
-      var char1 = s.charCodeAt(i);
-      hash = ((hash<<5)-hash)+char1;
-      hash = hash & hash;
-    }
-    return hash;
-  },
-  loadScript :  function(url, callback){
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    if (script.readyState){  //IE
-      script.onreadystatechange = function(){
-        if (script.readyState == "loaded" ||
-            script.readyState == "complete"){
-          //script.onreadystatechange = null;
-          callback();
-        }
-      };
-    } else {  //Others
-      script.onload = function(){
-        callback();
-      };
-    }
-    script.src = url;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  },
-
-	loadCss : function (url) {
-		var link = document.createElement('link');
-		link.type = 'text/css';
-		link.rel = 'stylesheet';
-		link.href = url;
-		document.getElementsByTagName('head')[0].appendChild(link);
-		return link;
-	},
-	
-  loadJson : function(url, callbackStr){
-    var script = document.createElement("script");
-    // Add script object attributes
-    script.type     = "text/javascript";
-    script.charset  = "utf-8";
-    script.id       = this.getHashCode(url);
-
-    if (script.readyState){  //IE
-      script.onreadystatechange = function(){
-        if (script.readyState == "loaded" ||
-            script.readyState == "complete"){
-          //script.onreadystatechange = null;
-          // DO Something?
-        }
-      };
-    } else {  //Others
-      script.onload = function(){
-        // DO Something?
-      };
-    }
-    script.src = url + '&callback='+callbackStr+'&_noCacheIE=' + (new Date()).getTime();
-    document.getElementsByTagName("head")[0].appendChild(script);
-  },
-  
-  hasClass : function(el, val) {
-    var pattern = new RegExp("(^|\\s)" + val + "(\\s|$)");
-    return pattern.test(el.className);
-  },
-  addClass : function(ele, cls) {
-    if (!this.hasClass(ele, cls)) ele.className += " " + cls;
-  },
-  removeClass : function(ele, cls) {
-    if (this.hasClass(ele, cls)) {
-      var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
-      ele.className = ele.className.replace(reg, ' ');
-    }
-  }
-  
-};
 
 var STALK = (function(CONF, UTILS, WIN) {
 
@@ -250,10 +270,12 @@ var STALK = (function(CONF, UTILS, WIN) {
     init: function(data) {
 
       if(CONF._isReady) return false; 
+
       CONF._isReady = true;
       CONF._userId  = data.userId;
-      CONF._channel = data.key+'-'+data.id;
-      if(!CONF._channel) return;
+      CONF._channel = data.key+'^'+data.id+'^'+UTILS.getUniqueKey();
+
+      if( !CONF._channel ) return;
 
       UTILS.loadCss( CONF.CSS_URL);
       UTILS.loadJson(CONF.APP_URL+'/node/'+CONF.APP+'/'+CONF._channel+'?1=1', 'STALK.callbackInit');
@@ -266,20 +288,22 @@ var STALK = (function(CONF, UTILS, WIN) {
 
       CONF._server = data.server;
 
+      if(!data.result.server) return false;
+
       var query = 
           'app='+CONF.APP+'&'+
           'channel='+CONF._channel+'&'+
-          'server='+data.result.server.server+'&'+
+          'server='+data.result.server.name+'&'+
           'userId='+CONF._userId+'&'+
           'deviceId=WEB&'+
           'mode=CHANNEL_ONLY';
 
-      CONF._socket = io.connect(data.result.server.serverUrl+'/channel?'+query, {
+      CONF._socket = io.connect(data.result.server.url+'/channel?'+query, {
         'force new connection': true
       });
 
       CONF._socket.on('connect', function () {
-        console.log('OK!!');
+        
       });
       
       CONF._socket.on('message', function (data) {

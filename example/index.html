@@ -7,7 +7,6 @@
         <title>GETTING STARTED WITH BRACKETS</title>
         <meta name="description" content="An interactive getting started guide for Brackets.">
         <link rel="stylesheet" href="main.css">
-      	<script src="socket.io.js" type="text/javascript"></script>
     </head>
     <body>
 
@@ -61,8 +60,8 @@
             button to add a new rule for <!-- <p> -->.
         </samp>
         
-        <a href="screenshots/quick-edit.png">
-            <img alt="A screenshot showing CSS Quick Edit" src="screenshots/quick-edit.png" />
+        <a href="quick-edit.png">
+            <img alt="A screenshot showing CSS Quick Edit" src="quick-edit.png" />
         </a>
         
         <p>
@@ -167,14 +166,11 @@
           
 
 
-        <script src="http://stalk.xpush.io/stalk.js"></script>
+        <script src="http://stalk.xpush.io:8000/public/stalk.js"></script>
         <script>
         var conf = {
-            <channel >
             key: 'asdfeeee',
-            //id: uniqueKey, // stalk.js 에서 만들어 넣는다.
-            name : '페이지타이틀',
-<userId>
+            id: '페이지타이틀',
             userId: 'JohnKim'
         };
         STALK.init(conf);
