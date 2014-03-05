@@ -18,7 +18,7 @@ var STALK_UTILS = {
     s[14] = 4;
     s[19] = (s[19] & 0x3) | 0x8;
    
-    for (var i = 0; i < 36; i++) s[i] = itoh[s[i]];
+    for (var x = 0; x < 36; x++) s[x] = itoh[s[x]];
     s[8] = s[13] = s[18] = s[23] = '-';
    
     return s.join('');
@@ -273,12 +273,13 @@ var STALK = (function(CONF, UTILS, WIN) {
 
       CONF._isReady = true;
       CONF._userId  = data.userId;
-      CONF._channel = data.key+'^'+data.id+'^'+UTILS.getUniqueKey();
+      CONF._app     = CONF.APP+':'+data.key;
+      CONF._channel = data.id+'^'+UTILS.getUniqueKey();
 
       if( !CONF._channel ) return;
 
       UTILS.loadCss( CONF.CSS_URL);
-      UTILS.loadJson(CONF.APP_URL+'/node/'+CONF.APP+'/'+CONF._channel+'?1=1', 'STALK.callbackInit');
+      UTILS.loadJson(CONF.APP_URL+'/node/'+encodeURIComponent(CONF._app)+'/'+CONF._channel+'?1=1', 'STALK.callbackInit');
 
     },
 
@@ -291,7 +292,7 @@ var STALK = (function(CONF, UTILS, WIN) {
       if(!data.result.server) return false;
 
       var query = 
-          'app='+CONF.APP+'&'+
+          'app='+CONF._app+'&'+
           'channel='+CONF._channel+'&'+
           'server='+data.result.server.name+'&'+
           'userId='+CONF._userId+'&'+
@@ -316,7 +317,7 @@ var STALK = (function(CONF, UTILS, WIN) {
     
     sendMessage : function(msg){
       var param = {
-        app:      CONF.APP,
+        app:      CONF._app,
         channel:  CONF._channel,
         name:     'message',
         data:     msg };
