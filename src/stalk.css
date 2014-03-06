@@ -283,6 +283,12 @@
   padding-right:5px;
   display:inline
 }
+
+#stalk_window .stalk_message_note {
+  color:#979797;
+  padding-right:2px;
+  display:inline
+}
 #stalk_window .stalk_message_from {
   color:#5ba0d0;
   padding-right:5px

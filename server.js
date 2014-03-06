@@ -38,7 +38,7 @@ server.on('oauth', function (data){
 
 
 server.static(/\/public\/?.*/, {
-  directory: __dirname
+  directory: __dirname+'/public'
 });
 
 
