@@ -308,7 +308,12 @@ var STALK = (function(CONF, UTILS, WIN) {
       });
       
       CONF._socket.on('message', function (data) {
-        WIN.addMessage(data);
+      	if(data.from){
+      	  WIN.addMessage(data.message, data.from);	
+      	}else{
+      	  WIN.addMessage(data);	
+      	}
+        
       });
 
       WIN.initWin();
