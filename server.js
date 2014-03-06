@@ -1,7 +1,7 @@
-
 var fs       = require('fs'),
     argv     = require('optimist').argv,
     xpush    = require('../node-xpush/index');
+
 
 if (!argv.config) {
   return console.error(" --config is not existed !! ");
@@ -27,6 +27,9 @@ server.once('connected', function (url, port){
   console.log('listen - '+url+':'+port);
 });
 
+
+
+
 server.on('oauth', function (data){
   // data.request.user.displayName
   
@@ -35,17 +38,28 @@ server.on('oauth', function (data){
 
 
 server.static(/\/public\/?.*/, {
-  directory: __dirname+'/public'
+  directory: __dirname
 });
+
+
+
 
 /* default xpush oauth providers */
 // FACEBOOK Auth Url : /auth/facebook
 // FACEBOOK Callback Url : /auth/facebook/callback
 
 
+server.get('/hello', function (req, res, next) {
+  console.log("hello world");
+  res.send({status : 'hello world'});
 
-//server.get('/test', function (req, res, next) {
-//  res.send({status : 'pong'});
-//  next();
-//});
+  next();
+
+});
+
+
+server.get('/test', function (req, res, next) {
+  res.send({status : 'pong'});
+  next();
+});
 

@@ -1,4 +1,4 @@
-/*! stalk javascript library - v0.1.2 - 2014-03-05
+/*! stalk javascript library - v0.1.2 - 2014-03-06
 * https://stalk.io
 * Copyright (c) 2014 John Kim; Licensed MIT */
 var STALK_CONFIGURATION = {
@@ -116,7 +116,7 @@ var STALK_UTILS = {
 
 var STALK_WINDOW = {
   initWin : function(){
-
+    alert(1);
     var div_root = document.createElement('div');
     div_root.id = 'stalk';
     div_root.className = 'stalk_status_compressed';
@@ -155,7 +155,7 @@ var STALK_WINDOW = {
 '    </div> ' +
 '    <div style="display: none;"></div> ' +
 '  </div> ';
-
+    
     document.getElementsByTagName('body')[0].appendChild(div_root);
 
     var self = this;
@@ -279,9 +279,11 @@ var STALK = (function(CONF, UTILS, WIN) {
       CONF._app     = CONF.APP+':'+data.key;
       CONF._channel = data.id+'^'+UTILS.getUniqueKey();
 
+      
       if( !CONF._channel ) return;
 
       UTILS.loadCss( CONF.CSS_URL);
+      
       UTILS.loadJson(CONF.APP_URL+'/node/'+encodeURIComponent(CONF._app)+'/'+CONF._channel+'?1=1', 'STALK.callbackInit');
 
     },
@@ -291,6 +293,7 @@ var STALK = (function(CONF, UTILS, WIN) {
       if(data.status != 'ok') return;
 
       CONF._server = data.server;
+      console.log(data);
 
       if(!data.result.server) return false;
 
@@ -302,6 +305,7 @@ var STALK = (function(CONF, UTILS, WIN) {
           'deviceId=WEB&'+
           'mode=CHANNEL_ONLY';
 
+      console.log(data.result.server.url+'/channel?'+query);
       CONF._socket = io.connect(data.result.server.url+'/channel?'+query, {
         'force new connection': true
       });
@@ -311,7 +315,12 @@ var STALK = (function(CONF, UTILS, WIN) {
       });
       
       CONF._socket.on('message', function (data) {
-        WIN.addMessage(data);
+      	if(data.from){
+      	  WIN.addMessage(data.message, data.from);	
+      	}else{
+      	  WIN.addMessage(data);	
+      	}
+        
       });
 
       WIN.initWin();
@@ -333,6 +342,7 @@ var STALK = (function(CONF, UTILS, WIN) {
   
   
 })(STALK_CONFIGURATION, STALK_UTILS, STALK_WINDOW);
+
 /*! Socket.IO.js build:0.9.16, development. Copyright(c) 2011 LearnBoost <dev@learnboost.com> MIT Licensed */
 
 var io = ('undefined' === typeof module ? {} : module.exports);

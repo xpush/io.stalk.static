@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>stalk.io</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="" />
+<meta name="author" content="http://bootstraptaste.com" />
+<!-- css -->
+<link href="css/bootstrap.min.css" rel="stylesheet" />
+<link href="css/fancybox/jquery.fancybox.css" rel="stylesheet">
+
+<link href="css/flexslider.css" rel="stylesheet" />
+<link href="css/style.css" rel="stylesheet" />
+<link href="css/stalk.css" rel="stylesheet" />
+
+
+
+<!-- Theme skin -->
+<link href="skins/default.css" rel="stylesheet" />
+
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+<style>
+.chat
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+ 
+.chat li
+{
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dotted #B3A9A9;
+}
+ 
+.chat li.left .chat-body
+{
+    margin-left: 60px;
+}
+ 
+.chat li.right .chat-body
+{
+    margin-right: 60px;
+}
+ 
+.chat li .chat-body p
+{
+    margin: 0;
+    color: #777777;
+}
+ 
+.panel .slidedown .fa, .chat .fa
+{
+    margin-right: 5px;
+}
+ 
+.panel-body-chat
+{
+    overflow-y: scroll;
+    height: 350px;
+}
+ 
+.panel-body h4{
+  background-image: -webkit-linear-gradient(bottom,#fff,#eee);
+}
+
+::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+ 
+::-webkit-scrollbar
+{
+    width: 12px;
+    background-color: #F5F5F5;
+}
+ 
+::-webkit-scrollbar-thumb
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #555;
+}
+
+
+
+.nav-tabs > li .close {
+    margin: -2px 0 0 10px;
+    font-size: 18px;
+}
+.marginBottom {
+    margin-bottom :1px !important;
+}
+.operationDiv {
+    padding:5px 10px 5px 5px;
+}
+.operationDivWrapper {
+    margin-top:-1px;
+}
+
+
+.from-visitor {
+float: left;
+background: #eee;
+border: 1px solid #ccc;
+}
+
+.message {
+border-radius: 5px;
+padding: 8px;
+clear: both;
+max-width: 300px;
+text-overflow: ellipsis;
+overflow-x: hidden;
+margin-bottom: 8px;
+word-wrap: break-word;
+}
+
+.from-op {
+float: right;
+background: #e7f5f9;
+border: 1px solid #bde4f0;
+}
+
+div.timestamp {
+clear: both;
+text-align: center;
+color: #ccc;
+font-size: 12px;
+}
+</style>
+</head>
+<body>
+<div id="wrapper">
+  <!-- start header -->
+  <header>
+        <div class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html"><span>stalk.</span>io</a>
+                </div>
+                <div class="navbar-collapse collapse ">
+                    <ul class="nav navbar-nav">
+                        <li><a href="login.html">Log out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+  </header>
+  <!-- end header -->
+  
+  <section id="content">
+  <!-- <div class="map">
+    <iframe src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Kuningan,+Jakarta+Capital+Region,+Indonesia&amp;aq=3&amp;oq=kuningan+&amp;sll=37.0625,-95.677068&amp;sspn=37.410045,86.572266&amp;ie=UTF8&amp;hq=&amp;hnear=Kuningan&amp;t=m&amp;z=14&amp;ll=-6.238824,106.830177&amp;output=embed">
+    </iframe>
+  </div> -->
+  
+  <div class="container container-full">
+    
+
+      <div class="col-lg-3">
+        
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <span class="fa fa-user"></span> Operator
+            </div>
+            <div class="panel-body">
+              asdf
+            </div>
+          </div>
+        
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <span class="fa fa-user"></span> Recent Conversions
+            </div>
+            <div class="panel-body">
+              asdf
+            </div>
+          </div>
+        
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <span class="fa fa-user"></span> Visitors
+            </div>
+            <div class="panel-body">
+              asdf
+            </div>
+          </div>
+        
+      </div>
+
+      <div class="col-lg-9">
+        <button type="submit" class="btn" id="composeButton">Compose</button>
+        <div class="tabbable">
+          <ul class="nav nav-tabs" id="myTab">
+              
+             
+          </ul>
+          <div class="tab-content">
+            
+          </div>
+   
+        </div>
+
+        </div>
+
+
+        
+  </div>
+        
+      </div>
+    </div>
+
+  </div>
+  </section>
+  
+</div>
+<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
+<!-- javascript
+    ================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="js/jquery.js"></script>
+<script src="js/jquery.easing.1.3.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.fancybox.pack.js"></script>
+<script src="js/jquery.fancybox-media.js"></script>
+<script src="js/google-code-prettify/prettify.js"></script>
+<script src="js/portfolio/jquery.quicksand.js"></script>
+<script src="js/portfolio/setting.js"></script>
+<script src="js/jquery.flexslider.js"></script>
+<script src="js/animate.js"></script>
+<script src="js/custom.js"></script>
+<script src="js/validate.js"></script>
+<script type="text/javascript">
+  $('#saveBtn').click(function(){
+    document.location.href="loginSuccess.html"
+  })
+
+  var currentTab;
+  var composeCount = 0;
+//initilize tabs
+$(function () {
+
+    //when ever any tab is clicked this method will be call
+    $("#myTab").on("click", "a", function (e) {
+        e.preventDefault();
+
+        $(this).tab('show');
+        $currentTab = $(this);
+    });
+
+
+    registerComposeButtonEvent();
+    registerCloseEvent();
+});
+
+//this method will demonstrate how to add tab dynamically
+function registerComposeButtonEvent() {
+    /* just for this demo */
+    $('#composeButton').click(function (e) {
+        e.preventDefault();
+
+        var tabId = "tab" + composeCount; //this is id on tab content div where the 
+        composeCount = composeCount + 1; //increment compose count
+
+
+        var fromMessage = "Show me the money";
+        var timestamp = "Tuesday, March 4 2014 2:52 PM"
+        var clientId = "Unkonwn User"+tabId;
+
+        var location = "Seoul Korea";
+        var ipAddress = "154.234.123.23";
+
+        var tabContent = "";
+        tabContent+='<div class="tab-pane" id="' + tabId + '">                                                                                           ';
+        tabContent+='    <div class="col-lg-7">                                                                                                        ';
+        tabContent+='        <div class="panel panel-primary">                                                                                         ';
+        tabContent+='            <div class="panel-heading">                                                                                           ';
+        tabContent+='                <span class="fa fa-comment"></span> Chat                                                                          ';
+        tabContent+='                <div class="btn-group pull-right">                                                                                ';
+        tabContent+='                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">                  ';
+        tabContent+='                        <span class="fa fa-chevron-down"></span>                                                                  ';
+        tabContent+='                    </button>                                                                                                     ';
+        tabContent+='                    <ul class="dropdown-menu slidedown">                                                                          ';
+        tabContent+='                        <li><a href="#"><span class="fa fa-refresh"></span>Refresh</a></li>                                       ';
+        tabContent+='                    </ul>                                                                                                         ';
+        tabContent+='                </div>                                                                                                            ';
+        tabContent+='            </div>                                                                                                                ';
+        tabContent+='            <div id="panel'+tabId+'" class="panel-body panel-body-chat">                                                                              ';
+        tabContent+='                <div class="timestamp">'+timestamp+'</div>                                                        ';
+        tabContent+='                <div class="message from-visitor">'+fromMessage+'</div>                                                                  ';
+        tabContent+='            </div>                                                                                                                ';
+        tabContent+='            <div class="panel-footer">                                                                                            ';
+        tabContent+='                <div class="input-group">                                                                                         ';
+        tabContent+='                    <input type="text" id="input'+tabId+'" class="form-control input-sm" placeholder="Type your message here..." />    ';
+        tabContent+='                    <span class="input-group-btn">                                                                                ';
+        tabContent+='                        <button class="btn btn-warning btn-sm" id="btn'+tabId+'">                                                     ';
+        tabContent+='                            Send</button>                                                                                         ';
+        tabContent+='                    </span>                                                                                                       ';
+        tabContent+='                </div>                                                                                                            ';
+        tabContent+='            </div>                                                                                                                ';
+        tabContent+='        </div>                                                                                                                    ';
+        tabContent+='    </div>                                                                                                                        ';
+        tabContent+='    <div class="col-lg-5">                                                                                                        ';
+        tabContent+='    <div class="well well-sm">                                                                                                    ';
+        tabContent+='        <div class="media">                                                                                                       ';
+        tabContent+='            <a class="thumbnail pull-left" href="#">                                                                              ';
+        tabContent+='                <img class="media-object" src="http://www.gravatar.com/avatar/a13ac7aed64918b6354f48da59490e3a?s=80">             ';
+        tabContent+='            </a>                                                                                                                  ';
+        tabContent+='            <div class="media-body">                                                                                              ';
+        tabContent+='                <h3 class="media-heading">'+clientId+'</h3>                                                                      ';
+        tabContent+='                <p>'+location+'</p>                                                                                           ';
+        tabContent+='                <p><b>This is a returning customer</b></p>                                                                        ';
+        tabContent+='                <p>This is your first conversation.</p>                                                                           ';
+        tabContent+='                <p><b>Viewed 1 page since a few seconds ago</b></p>                                                               ';
+        tabContent+='                <p>looking at localhost:9000/chefServer?code=&msg=                                                                ';
+        tabContent+='                    referred from localhost:9000/chefServer/node/sw?swType=SMS</p>                                                ';
+        tabContent+='                <p><b>Advanced Info</b></p>                                                                                       ';
+        tabContent+='                <p>IP Address: '+ipAddress+'</p>                                                                                   ';
+        tabContent+='            </div>                                                                                                                ';
+        tabContent+='        </div>                                                                                                                    ';
+        tabContent+='    </div>                                                                                                                        ';
+        tabContent+='  </div>                                                                                                                          ';
+        tabContent+='</div>                                                                                                                            ';
+
+
+
+
+        $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + clientId + '</a></li>');
+
+        $('.tab-content').append(tabContent);
+
+        //craeteNewTabAndLoadUrl("", "./SamplePage.html", "#" + tabId);
+
+        $('#btn'+tabId).click(function(){
+         
+          var chatText = '<div class="timestamp">'+timestamp+'</div>';
+              chatText +='<div class="message from-op">'+$('#input'+tabId).val()+'</div>';
+          $('#panel'+tabId).append(chatText);
+
+
+        });
+
+
+        $(this).tab('show');
+        showTab(tabId);
+        registerCloseEvent();
+    });
+
+}
+
+//this method will register event on close icon on the tab..
+function registerCloseEvent() {
+
+    $(".closeTab").click(function () {
+
+        //there are multiple elements which has .closeTab icon so close the tab whose close icon is clicked
+        var tabContentId = $(this).parent().attr("href");
+        $(this).parent().parent().remove(); //remove li of tab
+        $('#myTab a:last').tab('show'); // Select first tab
+        $(tabContentId).remove(); //remove respective tab content
+
+    });
+}
+
+//shows the tab with passed content div id..paramter tabid indicates the div where the content resides
+function showTab(tabId) {
+    $('#myTab a[href="#' + tabId + '"]').tab('show');
+}
+//return current active tab
+function getCurrentTab() {
+    return currentTab;
+}
+
+//This function will create a new tab here and it will load the url content in tab content div.
+function craeteNewTabAndLoadUrl(parms, url, loadDivSelector) {
+
+    $("" + loadDivSelector).load(url, function (response, status, xhr) {
+        if (status == "error") {
+            var msg = "Sorry but there was an error getting details ! ";
+            $("" + loadDivSelector).html(msg + xhr.status + " " + xhr.statusText);
+            $("" + loadDivSelector).html("Load Ajax Content Here...");
+        }
+    });
+
+}
+
+//this will return element from current tab
+//example : if there are two tabs having  textarea with same id or same class name then when $("#someId") whill return both the text area from both tabs
+//to take care this situation we need get the element from current tab.
+function getElement(selector) {
+    var tabContentId = $currentTab.attr("href");
+    return $("" + tabContentId).find("" + selector);
+
+}
+
+
+function removeCurrentTab() {
+    var tabContentId = $currentTab.attr("href");
+    $currentTab.parent().remove(); //remove li of tab
+    $('#myTab a:last').tab('show'); // Select first tab
+    $(tabContentId).remove(); //remove respective tab content
+}
+</script>
+</body>
+</html>
