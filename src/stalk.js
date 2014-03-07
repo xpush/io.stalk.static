@@ -131,9 +131,7 @@ var STALK_WINDOW = {
 '      <div id="stalk_contents" style="display: none;"> ' +
 '        <div id="stalk_body"> ' +
 ''+     
-'          <div id="stalk_conversation" class="stalk_conversation stalk_panel_height stalk_panel_bg" style="height: 200px; display: block;"> ' +
-'            <span>Questions? Come chat with us! We\'re here, send us a message!</span> ' +
-'          </div>   ' +
+'          <div id="stalk_conversation" class="stalk_conversation stalk_panel_height stalk_panel_bg" style="height: 200px; display: block;"></div>' +
           
 '          <form id="stalk_chatform" action="#" method="GET" autocomplete="off" style="display: block;"> ' +
 '            <div id="stalk_input" class="stalk_input "> ' +
@@ -193,7 +191,11 @@ var STALK_WINDOW = {
 
         if(message.length > 0){
 
-          STALK.sendMessage(encodeURIComponent(message));
+          STALK.sendMessage(
+          {
+            message : encodeURIComponent(message)
+          }
+          );
           el_textarea.value = '';
 
         }
@@ -238,6 +240,17 @@ var STALK_WINDOW = {
     if(document.getElementById('stalk_contents').style.display != 'block'){
       this.blinkHeader();
     }
+  },
+
+  addSysMessage : function(message) {
+    var chatDiv = document.createElement("span");
+    chatDiv.className = 'stalk_message_note';
+    chatDiv.innerHTML = message;
+
+    var div_message = document.getElementById('stalk_conversation');
+    div_message.appendChild(chatDiv);
+    div_message.scrollTop = div_message.scrollHeight;
+
   },
   
   blinkTimeout : '',
@@ -311,9 +324,19 @@ var STALK = (function(CONF, UTILS, WIN) {
       	if(data.from){
       	  WIN.addMessage(data.message, data.from);	
       	}else{
-      	  WIN.addMessage(data);	
+      	  WIN.addMessage(data.message);	
       	}
         
+      });
+
+      CONF._socket.on('_event', function (data) {
+        if (data.event == 'CONNECTION') {
+          WIN.addSysMessage(CONF.MESSAGE.default_message);
+        }else if (data.event == 'DISCONNECT') {
+          WIN.addSysMessage('disconnected.');
+        }
+
+
       });
 
       WIN.initWin();
