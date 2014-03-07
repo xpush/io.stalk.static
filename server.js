@@ -49,8 +49,25 @@ server.static(/\/public\/?.*/, {
 // FACEBOOK Callback Url : /auth/facebook/callback
 
 
+
+server.get('/signup', function (req, res, next) {
+  
+  console.log(req);
+      
+  res.send({status : req.params.email});
+
+  next();
+
+});
+
+
+
+
 server.get('/hello', function (req, res, next) {
   console.log("hello world");
+
+  console.log(req.params);
+
   res.send({status : 'hello world'});
 
   next();
