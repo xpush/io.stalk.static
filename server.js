@@ -49,17 +49,28 @@ server.static(/\/public\/?.*/, {
 // FACEBOOK Callback Url : /auth/facebook/callback
 
 
-server.get('/hello', function (req, res, next) {
+server.server.get('/hello', function (req, res, next) {
   console.log("hello world");
   res.send({status : 'hello world'});
-
+console.log(req.query);
+console.log('asdfasdafsd');
+console.log(req.params);
   next();
 
 });
 
 
-server.get('/test', function (req, res, next) {
-  res.send({status : 'pong'});
+server.get('/test/:aaa', function (req, res, next) {
+  res.send({status : req.params.aaa});
+  next();
+});
+
+server.post('/post', function (req, res, next) {
+
+  console.log(req.params);
+  console.log(req.params.aaa);
+
+  res.send({status : 'ok', str : req.params.aaa});
   next();
 });
 
