@@ -32,7 +32,6 @@ server.once('connected', function (url, port){
 
 server.on('oauth', function (data){
   // data.request.user.displayName
-  
   data.response.send('Welcome ' + data.request.user.displayName);
 });
 
@@ -50,13 +49,8 @@ server.static(/\/public\/?.*/, {
 
 
 server.server.get('/hello', function (req, res, next) {
-  console.log("hello world");
   res.send({status : 'hello world'});
-console.log(req.query);
-console.log('asdfasdafsd');
-console.log(req.params);
   next();
-
 });
 
 
@@ -66,10 +60,6 @@ server.get('/test/:aaa', function (req, res, next) {
 });
 
 server.post('/post', function (req, res, next) {
-
-  console.log(req.params);
-  console.log(req.params.aaa);
-
   res.send({status : 'ok', str : req.params.aaa});
   next();
 });
