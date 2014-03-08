@@ -1,7 +1,7 @@
 var STALK_CONFIGURATION = {
   APP: 'stalk-io',
-  APP_URL: 'http://stalk.xpush.io:8000',
-  CSS_URL: 'http://stalk.xpush.io:8000/public/stalk.css',
+  APP_URL: 'http://chat.stalk.io:8000',
+  CSS_URL: 'http://static.stalk.io/stalk.css',
   MESSAGE: {
     title: 'Leave us a Message',
     default_message: 'Questions? Come chat with us! We\'re here, send us a message!',
@@ -193,7 +193,8 @@ var STALK_WINDOW = {
 
           STALK.sendMessage(
           {
-            message : encodeURIComponent(message)
+            message : encodeURIComponent(message),
+            sender : STALK_CONFIGURATION._userId
           }
           );
           el_textarea.value = '';
@@ -321,11 +322,11 @@ var STALK = (function(CONF, UTILS, WIN) {
       });
       
       CONF._socket.on('message', function (data) {
-      	if(data.from){
-      	  WIN.addMessage(data.message, data.from);	
-      	}else{
-      	  WIN.addMessage(data.message);	
-      	}
+        if(data.sender){
+          WIN.addMessage(data.message, data.sender);  
+        }else{
+            WIN.addMessage(data.message); 
+        }
         
       });
 
