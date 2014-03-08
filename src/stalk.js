@@ -208,7 +208,7 @@ var STALK_WINDOW = {
   addMessage : function(message, from){
     
     var msg = '';
-    if(from){
+    if(from && from != STALK_CONFIGURATION._userId ){
       msg = msg + '<span class="stalk_message_from stalk_message_fg ">'+from+' :</span>';
     }else{
       msg = msg + '<span class="stalk_message_me stalk_message_fg ">→</span>';
