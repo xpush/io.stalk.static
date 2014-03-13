@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.github.com/xpush/stalk.io-static/master/doc/stalk-logo.jpg"/>
+</p>
+
 stalk.io-static
 ===============
 
