@@ -1,4 +1,4 @@
-#stalk_window, #stalk_window h1, #stalk_window h2, #stalk_window h3, #stalk_window h4, #stalk_window h5, #stalk_window h6, #stalk_window p, #stalk_window td, #stalk_window dl, #stalk_window tr, #stalk_window dt, #stalk_window ol, #stalk_window form, #stalk_window select, #stalk_window option, #stalk_window pre, #stalk_window div, #stalk_window table, #stalk_window th, #stalk_window tbody, #stalk_window tfoot, #stalk_window caption, #stalk_window thead, #stalk_window ul, #stalk_window li, #stalk_window address, #stalk_window blockquote, #stalk_window dd, #stalk_window fieldset, #stalk_window li, #stalk_window iframe, #stalk_window strong, #stalk_window legend, #stalk_window em, #stalk_window s, #stalk_window cite, #stalk_window span, #stalk_window input, #stalk_window sup, #stalk_window label, #stalk_window dfn, #stalk_window object, #stalk_window big, #stalk_window q, #stalk_window font, #stalk_window samp, #stalk_window acronym, #stalk_window small, #stalk_window img, #stalk_window strike, #stalk_window code, #stalk_window sub, #stalk_window ins, #stalk_window textarea, #stalk_window var, #stalk_window a, #stalk_window abbr, #stalk_window applet, #stalk_window del, #stalk_window kbd, #stalk_window tt, #stalk_window b, #stalk_window i, #stalk_window hr, #stalk_window article, #stalk_window aside, #stalk_window dialog, #stalk_window figure, #stalk_window footer, #stalk_window header, #stalk_window hgroup, #stalk_window menu, #stalk_window nav, #stalk_window section, #stalk_window time, #stalk_window mark, #stalk_window audio, #stalk_window video {
+#stalk_window, #stalk_window h1, #stalk_window h2, #stalk_window h3, #stalk_window h4, #stalk_window h5, #stalk_window h6, #stalk_window p, #stalk_window form, #stalk_window select, #stalk_window option, #stalk_window pre, #stalk_window div, #stalk_window fieldset, #stalk_window li, #stalk_window iframe, #stalk_window strong, #stalk_window legend, #stalk_window em, #stalk_window span, #stalk_window input, #stalk_window sup, #stalk_window label, #stalk_window dfn, #stalk_window object, #stalk_window big, #stalk_window q, #stalk_window font, #stalk_window samp, #stalk_window acronym, #stalk_window small, #stalk_window img, #stalk_window strike, #stalk_window code, #stalk_window sub, #stalk_window ins, #stalk_window textarea, #stalk_window var, #stalk_window a, #stalk_window abbr, #stalk_window applet, #stalk_window del, #stalk_window kbd, #stalk_window tt, #stalk_window b, #stalk_window i, #stalk_window hr, #stalk_window article, #stalk_window aside, #stalk_window dialog, #stalk_window figure, #stalk_window footer, #stalk_window header, #stalk_window hgroup, #stalk_window menu, #stalk_window nav, #stalk_window section {
   background-attachment:scroll;
   background-color:transparent;
   background-image:none;
@@ -507,8 +507,6 @@ div.stalk_panel_height {
   margin-right:10px;
   margin-bottom:10px
 }
-
-
 
 .stalk_panel_title_bg_blink {
   background-color:#5C5E5A!important

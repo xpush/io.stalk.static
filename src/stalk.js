@@ -332,16 +332,29 @@ var STALK = (function(CONF, UTILS, WIN) {
 
       CONF._socket.on('_event', function (data) {
         if (data.event == 'CONNECTION') {
-          WIN.addSysMessage(CONF.MESSAGE.default_message);
+          if( data.userId == 'CONF._userId' ) {
+
+            WIN.addSysMessage(CONF.MESSAGE.default_message);  
+
+            /** create Chat window (HTML) **/
+            WIN.initWin();
+
+          }else{
+            WIN.addSysMessage(data.userId + ' is connected.');
+          }
         }else if (data.event == 'DISCONNECT') {
-          WIN.addSysMessage('disconnected.');
+          if( data.userId == 'CONF._userId' ) {
+            WIN.addSysMessage('disconnected.');
+          }else{
+            WIN.addSysMessage(data.userId + ' was disconnected.');  
+          }
+          
         }
 
 
       });
 
-      WIN.initWin();
-
+      
     },
     
     sendMessage : function(msg){
