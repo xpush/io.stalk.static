@@ -15,7 +15,8 @@
   "dependencies": {
     "restify": "2.x.x",
     "optimist": "0.6.x",
-    "node-static": "~0.7.3"
+    "node-static": "~0.7.3",
+    "redis": "~0.10.1"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.0",
