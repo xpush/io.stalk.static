@@ -41,7 +41,7 @@ server.once('connected', function (url, port) {
 server.on('channel', function (data) {
 
   var _key = data.channel.split('^')[0];
-  var _value = data.channel.split('^')[2]+'^'+data.channel.split('^')[3];
+  var _value = data.channel;
 
   if(data.event == 'update'){
     if(data.count > 0){
