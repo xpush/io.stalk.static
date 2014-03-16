@@ -33,7 +33,7 @@ if(config.redis.address){
 
 
 server.once('connected', function (url, port) {
-  console.log('stalk channel server [listen - '+url+':'+port+']');
+  console.log('stalk channel server [listen - '+url+']');
 });
 
 

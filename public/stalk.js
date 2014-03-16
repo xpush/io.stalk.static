@@ -1,4 +1,4 @@
-/*! stalk javascript library - v0.1.2 - 2014-03-08
+/*! stalk javascript library - v0.1.2 - 2014-03-16
 * https://stalk.io
 * Copyright (c) 2014 John Kim; Licensed MIT */
 var STALK_CONFIGURATION = {
@@ -290,8 +290,8 @@ var STALK = (function(CONF, UTILS, WIN) {
 
       CONF._isReady = true;
       CONF._userId  = data.userId || 'unknown';
-      CONF._app     = CONF.APP+':'+data.key;
-      CONF._channel = UTILS.getUniqueKey()+'^'+data.id+'^'+CONF._userId;
+      CONF._app     = CONF.APP; // +':'+data.key;
+      CONF._channel = data.key+'^'+UTILS.getUniqueKey()+'^'+data.id+'^'+CONF._userId;
 
       if( !CONF._channel ) return;
 
@@ -335,16 +335,29 @@ var STALK = (function(CONF, UTILS, WIN) {
 
       CONF._socket.on('_event', function (data) {
         if (data.event == 'CONNECTION') {
-          WIN.addSysMessage(CONF.MESSAGE.default_message);
+          if( data.userId == 'CONF._userId' ) {
+
+            WIN.addSysMessage(CONF.MESSAGE.default_message);  
+
+            /** create Chat window (HTML) **/
+            WIN.initWin();
+
+          }else{
+            WIN.addSysMessage(data.userId + ' is connected.');
+          }
         }else if (data.event == 'DISCONNECT') {
-          WIN.addSysMessage('disconnected.');
+          if( data.userId == 'CONF._userId' ) {
+            WIN.addSysMessage('disconnected.');
+          }else{
+            WIN.addSysMessage(data.userId + ' was disconnected.');  
+          }
+          
         }
 
 
       });
 
-      WIN.initWin();
-
+      
     },
     
     sendMessage : function(msg){

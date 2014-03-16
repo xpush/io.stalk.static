@@ -287,8 +287,8 @@ var STALK = (function(CONF, UTILS, WIN) {
 
       CONF._isReady = true;
       CONF._userId  = data.userId || 'unknown';
-      CONF._app     = CONF.APP+':'+data.key;
-      CONF._channel = UTILS.getUniqueKey()+'^'+data.id+'^'+CONF._userId;
+      CONF._app     = CONF.APP; // +':'+data.key;
+      CONF._channel = data.key+'^'+UTILS.getUniqueKey()+'^'+data.id+'^'+CONF._userId;
 
       if( !CONF._channel ) return;
 
