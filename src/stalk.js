@@ -334,10 +334,8 @@ var STALK = (function(CONF, UTILS, WIN) {
         if (data.event == 'CONNECTION') {
           if( data.userId == 'CONF._userId' ) {
 
-            WIN.addSysMessage(CONF.MESSAGE.default_message);  
 
-            /** create Chat window (HTML) **/
-            WIN.initWin();
+            WIN.addSysMessage(CONF.MESSAGE.default_message);  
 
           }else{
             WIN.addSysMessage(data.userId + ' is connected.');
@@ -354,6 +352,9 @@ var STALK = (function(CONF, UTILS, WIN) {
 
       });
 
+
+            /** create Chat window (HTML) **/
+            WIN.initWin();
       
     },
     

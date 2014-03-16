@@ -39,14 +39,14 @@ server.once('connected', function (url, port) {
 
 server.on('channel', function (data) {
 
-  var _key = data.channel.split(':')[0];
-  var _value = data.channel.split(':')[2]+'^'+data.channel.split(':')[3];
+  var _key = data.channel.split('^')[0];
+  var _value = data.channel.split('^')[2]+'^'+data.channel.split('^')[3];
 
   if(data.event == 'update'){
     if(data.count > 0){
-      this.redisClient.hset(_key, _value, data.count); 
+      redisClient.hset(_key, _value, data.count); 
     }else{
-      this.redisClient.hdel(_key, _value);
+      redisClient.hdel(_key, _value);
     } 
 
   }else if(data.event == 'remove'){
@@ -56,9 +56,9 @@ server.on('channel', function (data) {
 });
 
 
-server.channel_on('listChannel', function (params, callback) {
+server.session_on('listChannel', function (params, callback) {
 
-  this.redisClient.hgetall(params.key, function (err, data) {
+  redisClient.hgetall(params.key, function (err, data) {
 
     console.log(data);
 
