@@ -20,6 +20,7 @@ try {
 
 //config.host = 'stalk.xpush.io';
 config.port = argv.port || 8000;
+config.host = argv.host;
 
 var server = xpush.createChannelServer(config);
 
