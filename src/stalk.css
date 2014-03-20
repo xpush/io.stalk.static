@@ -511,3 +511,26 @@ div.stalk_panel_height {
 .stalk_panel_title_bg_blink {
   background-color:#5C5E5A!important
 }
+
+
+#stalk_window #stalk_loginform {
+  padding:5px 5px 0 32px
+}
+
+#stalk_window .stalk_login_button {
+  float:left;
+  margin-top:-1px;
+  margin-left:4px;
+  padding:0;
+  border-radius:5px!important;
+  -moz-border-radius:5px!important;
+  -webkit-border-radius:5px!important;
+  background-position:0 top;
+  background-repeat:no-repeat!important;
+  cursor:pointer!important;
+  overflow:hidden;
+  background-image:url(login.png)
+}
+#stalk_window .stalk_login_button:hover {
+  background-color:#333
+}

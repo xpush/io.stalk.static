@@ -1,8 +1,9 @@
-/*! stalk javascript library - v0.1.2 - 2014-03-16
+/*! stalk javascript library - v0.1.2 - 2014-03-21
 * https://stalk.io
 * Copyright (c) 2014 John Kim; Licensed MIT */
 var STALK_CONFIGURATION = {
   APP: 'stalk-io',
+ // ## Issuse 08 ##  STALK_URL: '27.122.248.84',
   APP_URL: 'http://chat.stalk.io:8000',
   CSS_URL: 'http://static.stalk.io/stalk.css',
   MESSAGE: {
@@ -141,6 +142,12 @@ var STALK_WINDOW = {
 '              <textarea id="stalk_input_textarea" name="stalk_input_textarea" size="undefined" class="stalk_input_textarea_pre stalk_input_textarea_normal" placeholder="Type here and hit &lt;enter&gt; to chat" style="line-height: 21px; height: 21px; display: block;"></textarea> ' +
 '            </div> ' +
 '          </form> ' +
+
+'          <div id="stalk_loginform" style="display: block;">' +
+'            <a id="stalk_login_facebook"   class="stalk_login_button" style="background-position: -0px -74px; width: 64px; height: 64px">&nbsp;</a>' +
+'            <a id="stalk_login_twitter"    class="stalk_login_button" style="background-position: -0px -148px; width: 64px; height: 64px">&nbsp;</a>' +
+'            <a id="stalk_login_googleplus" class="stalk_login_button" style="background-position: -0px -0px; width: 64px; height: 64px">&nbsp;</a>' +
+'          </div> ' +
           
 '        </div> ' +
 '        <div style="text-transform: uppercase; font-size: 9px; letter-spacing: 2px; font-weight: bold; padding: 8px 0px !important; font-family: helvetica, sans-serif !important; text-align: center !important; color: rgb(131, 136, 135) !important; clear: both;"> ' +
@@ -296,6 +303,17 @@ var STALK = (function(CONF, UTILS, WIN) {
       if( !CONF._channel ) return;
 
       UTILS.loadCss( CONF.CSS_URL);
+/* ## Issuse 08 ## 
+      UTILS.loadJson(CONF.STALK_URL+'/operator?url='+data.key, 'STALK.callbackOperator');
+
+    },
+
+    callbackOperator : function(data){
+
+      if(data.length == 0) return;
+
+      CONF._operators = data;
+*/
       UTILS.loadJson(CONF.APP_URL+'/node/'+encodeURIComponent(CONF._app)+'/'+CONF._channel+'?1=1', 'STALK.callbackInit');
 
     },
@@ -335,8 +353,10 @@ var STALK = (function(CONF, UTILS, WIN) {
 
       CONF._socket.on('_event', function (data) {
         if (data.event == 'CONNECTION') {
-          if( data.userId == 'CONF._userId' ) {
+          if( data.userId == CONF._userId ) {
 
+            // ## Issuse 08 ##  CONF._socket.emit('join', CONF._operators, function (data) {
+            //});
 
             WIN.addSysMessage(CONF.MESSAGE.default_message);  
 
@@ -368,7 +388,7 @@ var STALK = (function(CONF, UTILS, WIN) {
         name:     'message',
         data:     msg };
 
-			CONF._socket.emit('send', param, function (data) {
+      CONF._socket.emit('send', param, function (data) {
       });
     }
 
