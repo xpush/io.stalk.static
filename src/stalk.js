@@ -1,6 +1,6 @@
 var STALK_CONFIGURATION = {
   APP: 'stalk-io',
- // ## Issuse 08 ##  STALK_URL: '27.122.248.84',
+  STALK_URL: 'http://admin.stalk.io:8080',
   APP_URL: 'http://chat.stalk.io:8000',
   CSS_URL: 'http://static.stalk.io/stalk.css',
   MESSAGE: {
@@ -299,18 +299,19 @@ var STALK = (function(CONF, UTILS, WIN) {
 
       if( !CONF._channel ) return;
 
-      UTILS.loadCss( CONF.CSS_URL);
-/* ## Issuse 08 ## 
-      UTILS.loadJson(CONF.STALK_URL+'/operator?url='+data.key, 'STALK.callbackOperator');
+      UTILS.loadJson(CONF.STALK_URL+'/operator/session/'+data.key, 'STALK.callbackOperator');
 
     },
 
     callbackOperator : function(data){
 
+      console.log(data);
+
       if(data.length == 0) return;
 
       CONF._operators = data;
-*/
+
+      UTILS.loadCss( CONF.CSS_URL);
       UTILS.loadJson(CONF.APP_URL+'/node/'+encodeURIComponent(CONF._app)+'/'+CONF._channel+'?1=1', 'STALK.callbackInit');
 
     },
@@ -336,7 +337,7 @@ var STALK = (function(CONF, UTILS, WIN) {
       });
 
       CONF._socket.on('connect', function () {
-        
+
       });
       
       CONF._socket.on('message', function (data) {
@@ -352,8 +353,10 @@ var STALK = (function(CONF, UTILS, WIN) {
         if (data.event == 'CONNECTION') {
           if( data.userId == CONF._userId ) {
 
-            // ## Issuse 08 ##  CONF._socket.emit('join', CONF._operators, function (data) {
-            //});
+            CONF._socket.emit('join', CONF._operators, function (data) {
+              console.log("<<<<<< >>>>>>");
+              console.log(data);
+            });
 
             WIN.addSysMessage(CONF.MESSAGE.default_message);  
 
