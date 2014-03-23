@@ -299,7 +299,7 @@ var STALK = (function(CONF, UTILS, WIN) {
 
       if( !CONF._channel ) return;
 
-      UTILS.loadJson(CONF.STALK_URL+'/operator/session/'+data.key, 'STALK.callbackOperator');
+      UTILS.loadJson(CONF.STALK_URL+'/operator/session/'+data.key+'?1=1', 'STALK.callbackOperator');
 
     },
 
