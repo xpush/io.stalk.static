@@ -1,4 +1,4 @@
-/*! stalk javascript library - v0.1.2 - 2014-03-23
+/*! stalk javascript library - v0.1.2 - 2014-03-25
 * https://stalk.io
 * Copyright (c) 2014 John Kim; Licensed MIT */
 var STALK_CONFIGURATION = {
@@ -142,12 +142,6 @@ var STALK_WINDOW = {
 '              <textarea id="stalk_input_textarea" name="stalk_input_textarea" size="undefined" class="stalk_input_textarea_pre stalk_input_textarea_normal" placeholder="Type here and hit &lt;enter&gt; to chat" style="line-height: 21px; height: 21px; display: block;"></textarea> ' +
 '            </div> ' +
 '          </form> ' +
-
-'          <div id="stalk_loginform" style="display: none;">' +
-'            <a id="stalk_login_facebook"   class="stalk_login_button" style="background-position: -0px -74px; width: 64px; height: 64px">&nbsp;</a>' +
-'            <a id="stalk_login_twitter"    class="stalk_login_button" style="background-position: -0px -148px; width: 64px; height: 64px">&nbsp;</a>' +
-'            <a id="stalk_login_googleplus" class="stalk_login_button" style="background-position: -0px -0px; width: 64px; height: 64px">&nbsp;</a>' +
-'          </div> ' +
           
 '        </div> ' +
 '        <div style="text-transform: uppercase; font-size: 9px; letter-spacing: 2px; font-weight: bold; padding: 8px 0px !important; font-family: helvetica, sans-serif !important; text-align: center !important; color: rgb(131, 136, 135) !important; clear: both;"> ' +
