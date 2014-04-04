@@ -1,6 +1,6 @@
 var STALK_CONFIGURATION = {
   APP: 'stalk-io',
-  APP_URL: 'http://chat.stalk.io:8000',
+  APP_URL: 'http://session.stalk.io:8000',
   CSS_URL: 'http://static.stalk.io/stalk.css',
   MESSAGE: {
     title: 'Leave us a Message',
@@ -133,16 +133,16 @@ var STALK_WINDOW = {
 ''+
 '          <div id="stalk_conversation" class="stalk_conversation stalk_panel_height stalk_panel_bg" style="height: 200px; display: block;"></div>' +
 
-'          <form id="stalk_chatform" action="#" method="GET" autocomplete="off" style="display: block;"> ' +
+'          <form id="stalk_chatform" action="#" method="GET" autocomplete="off" style="display: none;"> ' +
 '            <div id="stalk_input" class="stalk_input "> ' +
 '              <textarea id="stalk_input_textarea" name="stalk_input_textarea" size="undefined" class="stalk_input_textarea_pre stalk_input_textarea_normal" placeholder="Type here and hit &lt;enter&gt; to chat" style="line-height: 21px; height: 21px; display: block;"></textarea> ' +
 '            </div> ' +
 '          </form> ' +
 
-'          <div id="stalk_loginform" style="display: none;">' +
-'            <a href="#" onclick="return !window.open(STALK.getOauthUrl(\'facebook\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=350,height=350\')" target="_blank" id="stalk_login_facebook"   class="stalk_login_button" style="background-position: -0px -74px; width: 64px; height: 64px">&nbsp;</a>' +
-'            <a href="#" onclick="return !window.open(STALK.getOauthUrl(\'facebook\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=700,height=450\')" target="_blank" id="stalk_login_twitter"    class="stalk_login_button" style="background-position: -0px -148px; width: 64px; height: 64px">&nbsp;</a>' +
-'            <a href="#" onclick="return !window.open(STALK.getOauthUrl(\'facebook\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=800,height=450\')" target="_blank" id="stalk_login_googleplus" class="stalk_login_button" style="background-position: -0px -0px; width: 64px; height: 64px">&nbsp;</a>' +
+'          <div id="stalk_loginform" style="display: block;">' +
+'            <a href="#" onclick="return !window.open(STALK.getOAuthUrl(\'facebook\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=350,height=350\')" target="_blank" id="stalk_login_facebook"   class="stalk_login_button" style="background-position: -0px -74px; width: 64px; height: 64px">&nbsp;</a>' +
+'            <a href="#" onclick="return !window.open(STALK.getOAuthUrl(\'twitter\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=700,height=450\')" target="_blank" id="stalk_login_twitter"    class="stalk_login_button" style="background-position: -0px -148px; width: 64px; height: 64px">&nbsp;</a>' +
+'            <a href="#" onclick="return !window.open(STALK.getOAuthUrl(\'google\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=800,height=450\')" target="_blank" id="stalk_login_googleplus" class="stalk_login_button" style="background-position: -0px -0px; width: 64px; height: 64px">&nbsp;</a>' +
 '          </div> ' +
 
 '        </div> ' +
@@ -373,7 +373,7 @@ var STALK = (function(CONF, UTILS, WIN) {
     },
 
     getOAuthUrl : function(targetName){
-      return CONF.appUrl + '/auth/'+targetName+'/check?app='+CONF._app+'&channel='+CONF._channel+'&id='+CONF._socket.socket.sessionid;
+      return CONF.APP_URL + '/auth/'+targetName+'/check?app='+CONF._app+'&channel='+CONF._channel+'&socketId='+CONF._socket.socket.sessionid;
     }
 
   };
