@@ -3,10 +3,8 @@ var STALK_CONFIGURATION = {
   APP_URL: 'http://session.stalk.io:8000',
   CSS_URL: 'http://static.stalk.io/stalk.css',
   MESSAGE: {
-    title: 'Leave your messages',
+    title: '',
     default_message: 'Welcome ! :)',
-
-
   }
 };
 
@@ -106,7 +104,35 @@ var STALK_UTILS = {
       var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
       ele.className = ele.className.replace(reg, ' ');
     }
-  }
+  },
+
+
+  setUserInfo : function(userInfo) {
+		//var date = new Date();
+		//date.setDate(date.getDate() + 10);
+		document.cookie = 'STALK_USER=' + escape(JSON.stringify(userInfo)) + ';path=/'
+		//';expires=' + date.toGMTString()+';path=/';
+	},
+
+	delUserInfo : function() {
+		var date = new Date();
+		var validity = -1;
+		date.setDate(date.getDate() + validity);
+		document.cookie = "STALK_USER=;expires=" + date.toGMTString()+';path=/';
+	},
+
+	getUserInfo : function() {
+		var allcookies = document.cookie;
+		var cookies = allcookies.split("; ");
+		for ( var i = 0; i < cookies.length; i++) {
+			var keyValues = cookies[i].split("=");
+			if (keyValues[0] == "STALK_USER") {
+
+				return JSON.parse(unescape(keyValues[1]));
+			}
+		}
+		return {};
+	}
 
 };
 
@@ -124,7 +150,8 @@ var STALK_WINDOW = {
 '     <div id="stalk_title" style="display: block;"> ' +
 '        <div id="stalk_topbar" class="stalk_panel_title_fg stalk_panel_title_bg"> ' +
 '          <a id="stalk_sizebutton" class="stalk_button">^</a> ' +
-'          <a id="stalk_oplink" class="stalk_panel_title_fg">Leave us a Message</a> ' +
+'          <a id="stalk_logoutbutton" class="stalk_button" style="display: none">X</a> ' +
+'          <a id="stalk_oplink" class="stalk_panel_title_fg"> . . . . </a> ' +
 '        </div> ' +
 '      </div> ' +
 ''+
@@ -140,9 +167,9 @@ var STALK_WINDOW = {
 '          </form> ' +
 
 '          <div id="stalk_loginform" style="display: block;">' +
-'            <a href="#" onclick="return !window.open(STALK.getOAuthUrl(\'facebook\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=350,height=350\')" target="_blank" id="stalk_login_facebook"   class="stalk_login_button" style="background-position: -0px -74px; width: 64px; height: 64px">&nbsp;</a>' +
-'            <a href="#" onclick="return !window.open(STALK.getOAuthUrl(\'twitter\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=700,height=450\')" target="_blank" id="stalk_login_twitter"    class="stalk_login_button" style="background-position: -0px -148px; width: 64px; height: 64px">&nbsp;</a>' +
-'            <a href="#" onclick="return !window.open(STALK.getOAuthUrl(\'google\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=800,height=450\')" target="_blank" id="stalk_login_googleplus" class="stalk_login_button" style="background-position: -0px -0px; width: 64px; height: 64px">&nbsp;</a>' +
+'            <a href="#" onclick="return !window.open(STALK.getOAuthUrl(\'facebook\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=350,height=350\')" target="_blank" id="stalk_login_facebook"   class="stalk_login_button" style="background-position: -0px -88px; width: 64px; height: 34px">&nbsp;</a>' +
+//'            <a href="#" onclick="return !window.open(STALK.getOAuthUrl(\'twitter\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=700,height=450\')" target="_blank" id="stalk_login_twitter"    class="stalk_login_button" style="background-position: -0px -148px; width: 64px; height: 64px">&nbsp;</a>' +
+'            <a href="#" onclick="return !window.open(STALK.getOAuthUrl(\'google\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=800,height=450\')" target="_blank" id="stalk_login_googleplus" class="stalk_login_button" style="background-position: -0px -14px; width: 64px; height: 34px">&nbsp;</a>' +
 '          </div> ' +
 
 '        </div> ' +
@@ -162,26 +189,45 @@ var STALK_WINDOW = {
     var self = this;
     var div_titlebar = document.getElementById('stalk_title');
     var div_contents = document.getElementById('stalk_contents');
-    var div_chatform = document.getElementById('stalk_chatform');
     var el_textarea  = document.getElementById('stalk_input_textarea');
+    var div_logout   = document.getElementById('stalk_logoutbutton');
+
+
+    if(STALK_CONFIGURATION._user) {
+      self.setTitleBar('login');
+    }
+
+    div_logout.onclick = function(event){
+
+      STALK_UTILS.delUserInfo();
+      self.setTitleBar('logout');
+
+      event.preventDefault();
+      event.stopPropagation();
+
+    };
 
     div_titlebar.onclick = function(){
 
       if(div_contents.style.display != 'none'){
         div_contents.style.display = 'none';
-        div_chatform.style.display = 'none';
 				document.getElementById('stalk').className = 'stalk_status_compressed';
       }else{
+        self.blinkHeader(true);
         div_contents.style.display = 'block';
-        div_chatform.style.display = 'block';
 				document.getElementById('stalk').className = 'stalk_status_expanded';
 
         el_textarea.focus();
         el_textarea.value = el_textarea.value;
+
+        var div_message = document.getElementById('stalk_conversation');
+        div_message.scrollTop = div_message.scrollHeight;
+
       }
     };
 
     el_textarea.onkeydown = function(event) {
+
       self.blinkHeader(true);
 
       if(event.keyCode == 13 && !event.shiftKey) {
@@ -197,12 +243,7 @@ var STALK_WINDOW = {
 
         if(message.length > 0){
 
-          STALK.sendMessage(
-          {
-            message : encodeURIComponent(message),
-            sender : STALK_CONFIGURATION._userId
-          }
-          );
+          STALK.sendMessage(encodeURIComponent(message));
           el_textarea.value = '';
 
         }
@@ -214,11 +255,13 @@ var STALK_WINDOW = {
   addMessage : function(message, from){
 
     var msg = '';
-    if(from && from != STALK_CONFIGURATION._userId ){
-      msg = msg + '<span class="stalk_message_from stalk_message_fg ">'+from+' :</span>';
-    }else{
-      msg = msg + '<span class="stalk_message_me stalk_message_fg ">→</span>';
-    }
+    //if(from && from != STALK_CONFIGURATION._userId ){
+      msg = msg + '<span class="stalk_message_from stalk_message_fg ">'+
+      '<a href="'+from.url+'" target="_blank"><img src="'+from.image+'" style="width: 23px;" /></a> '+from.name+' :'+
+      '</span>';
+    //}else{
+    //  msg = msg + '<span class="stalk_message_me stalk_message_fg "><img src="https://graph.facebook.com/4/picture"/>→</span>';
+    //}
     msg = msg + '<span>'+decodeURIComponent(message)+'</span>';
 
     var chatDiv = document.createElement("p");
@@ -278,6 +321,26 @@ var STALK_WINDOW = {
           }
         },1000);
     }
+  },
+
+  setTitleBar : function(_event, data){
+
+    if(_event == 'login'){
+      document.getElementById('stalk_logoutbutton').style.display = 'block';
+      document.getElementById('stalk_chatform').style.display     = 'block';
+      document.getElementById('stalk_loginform').style.display    = 'none';
+
+    }else if(_event == 'logout'){
+      document.getElementById('stalk_logoutbutton').style.display = 'none';
+      document.getElementById('stalk_chatform').style.display     = 'none';
+      document.getElementById('stalk_loginform').style.display    = 'block';
+      self.addNotification('Logout');
+
+    }else if(_event == 'title'){
+      document.getElementById('stalk_oplink').innerHTML = 'Online : '+data+'';
+
+    }
+
   }
 
 };
@@ -292,9 +355,9 @@ var STALK = (function(CONF, UTILS, WIN) {
       if(CONF._isReady) return false;
 
       CONF._isReady = true;
-      CONF._userId  = data.userId || 'unknown';
-      CONF._app     = CONF.APP+':'+location.hostname;
-      CONF._channel = location.pathname.substr(1);
+      //CONF._userId  = data.userId || 'unknown';
+      CONF._app     = CONF.APP; //+':'+location.hostname;
+      CONF._channel = location.pathname; //.substr(0);
 
       if( !CONF._channel ) return;
 
@@ -315,9 +378,15 @@ var STALK = (function(CONF, UTILS, WIN) {
           'app='+CONF._app+'&'+
           'channel='+CONF._channel+'&'+
           'server='+data.result.server.name+'&'+
-          'userId='+CONF._userId+'&'+
+          //'userId='+CONF._userId+'&'+
           'deviceId=WEB&'+
           'mode=CHANNEL_ONLY';
+
+      var _user = UTILS.getUserInfo();
+      if(_user.name){
+        CONF._user = _user;
+      }
+
 
       CONF._socket = io.connect(data.result.server.url+'/channel?'+query, {
         'force new connection': true
@@ -326,41 +395,77 @@ var STALK = (function(CONF, UTILS, WIN) {
       CONF._socket.on('connect', function () {
 
         /** create Chat window (HTML) **/
-        if(!CONF_isCreate)WIN.initWin();
+        if(!CONF._isCreate) {
+          WIN.initWin();
+          WIN.addSysMessage(CONF.MESSAGE.default_message);
+        }
 
         CONF._isCreate = true;
 
       });
 
       CONF._socket.on('message', function (data) {
+
+        WIN.addMessage(data.message, data.user);
+
+/*
         if(data.sender){
           WIN.addMessage(data.message, data.sender);
         }else{
-            WIN.addMessage(data.message);
+          WIN.addMessage(data.message);
         }
+*/
 
       });
 
       CONF._socket.on('login-facebook', function (data) {
-        console.log(data);
+
+        CONF._user = {
+          name: data.displayName,
+          url: data.profileUrl,
+          image: 'https://graph.facebook.com/'+data.id+'/picture'
+        }
+
+        UTILS.setUserInfo(CONF._user);
+        WIN.setTitleBar('login');
+
+      });
+
+      CONF._socket.on('login-google', function (data) {
+
+        CONF._user = {
+          name: data.name,
+          url: data.link,
+          image: data.picture
+        }
+
+        UTILS.setUserInfo(CONF._user);
+        WIN.setTitleBar('login');
 
       });
 
       CONF._socket.on('_event', function (data) {
+
         if (data.event == 'CONNECTION') {
-          if( data.userId == CONF._userId ) {
+
+          WIN.setTitleBar('title', data.count);
+
+          /*if( data.userId == CONF._userId ) {
 
             WIN.addSysMessage(CONF.MESSAGE.default_message);
 
           }else{
             WIN.addSysMessage(data.userId + ' is connected.');
-          }
+          }*/
         }else if (data.event == 'DISCONNECT') {
+
+          WIN.setTitleBar('title', data.count);
+          /*
           if( data.userId == 'CONF._userId' ) {
             WIN.addSysMessage('disconnected.');
           }else{
             WIN.addSysMessage(data.userId + ' was disconnected.');
-          }
+          }*/
 
         }
 
@@ -373,7 +478,11 @@ var STALK = (function(CONF, UTILS, WIN) {
         app:      CONF._app,
         channel:  CONF._channel,
         name:     'message',
-        data:     msg };
+        data:     {
+          user:     CONF._user,
+          message:  msg
+        }
+      };
 
       CONF._socket.emit('send', param, function (data) {
       });

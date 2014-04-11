@@ -333,10 +333,30 @@
   line-height:1000px;
   background-image:url(stalk.png)
 }
+#stalk_window .stalk_button_logout {
+  float:right;
+  margin-top:-1px;
+  margin-left:4px;
+  padding:0;
+  width:16px;
+  height:16px;
+  border-radius:5px!important;
+  -moz-border-radius:5px!important;
+  -webkit-border-radius:5px!important;
+  background-position:16 top;
+  background-repeat:no-repeat!important;
+  cursor:pointer!important;
+  overflow:hidden;
+  line-height:1000px;
+  background-image:url(stalk.png)
+}
 #stalk_window .stalk_button:hover {
   background-color:#333
 }
 #stalk_window #stalk_sizebutton:hover {
+  background-color:#333
+}
+#stalk_window #stalk_logoutbutton:hover {
   background-color:#333
 }
 #stalk_window .stalk_message_notification_nickname {
@@ -438,6 +458,14 @@
 .stalk_status_expanded .stalk_window_fixed_top #stalk_sizebutton {
   background-position:-80px top!important
 }
+
+.stalk_status_compressed .stalk_window_fixed_bottom #stalk_logoutbutton {
+  background-position:-0px top!important
+}
+.stalk_status_expanded .stalk_window_fixed_bottom #stalk_logoutbutton {
+  background-position:-0px top!important
+}
+
 #stalk_window * {
   box-sizing:content-box;
   -moz-box-sizing:content-box;
@@ -463,11 +491,6 @@ div.stalk_window_width {
 }
 div.stalk_panel_height {
   height:200px!important
-}
-.stalk_window_fixed_top {
-  position:fixed;
-  bottom:auto;
-  top:0
 }
 .stalk_window_fixed_bottom {
   position:fixed;
@@ -514,7 +537,7 @@ div.stalk_panel_height {
 
 
 #stalk_window #stalk_loginform {
-  padding:5px 5px 0 32px
+  padding:5px 5px 0 65px
 }
 
 #stalk_window .stalk_login_button {
