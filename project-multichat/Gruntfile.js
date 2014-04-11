@@ -21,18 +21,18 @@ module.exports = function(grunt) {
         stripBanners: true
       },
       dist: {
-        src: ['src/<%= pkg.name %>.js', 'node_modules/socket.io-client/dist/socket.io.js'],
+        src: ['src/<%= pkg.name %>.js', 'node_modules/socket.io-client/dist/socket.io.js', 'src/json2.js'],
         dest: 'public/<%= pkg.name %>.js'
       },
     },
     uglify: {
-      /*options: {
+      options: {
         banner: '<%= banner %>'
       },
       dist: {
         src: '<%= concat.dist.dest %>',
         dest: 'public/<%= pkg.name %>.js'
-      },*/
+      },
     },
     cssmin: {
       minify: {

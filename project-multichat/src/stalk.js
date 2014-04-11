@@ -4,7 +4,7 @@ var STALK_CONFIGURATION = {
   CSS_URL: 'http://static.stalk.io/stalk.css',
   MESSAGE: {
     title: '',
-    default_message: 'Welcome ! :)',
+  default_message: 'Welcome !  ',
   }
 };
 
@@ -151,7 +151,7 @@ var STALK_WINDOW = {
 '        <div id="stalk_topbar" class="stalk_panel_title_fg stalk_panel_title_bg"> ' +
 '          <a id="stalk_sizebutton" class="stalk_button">^</a> ' +
 '          <a id="stalk_logoutbutton" class="stalk_button" style="display: none">X</a> ' +
-'          <a id="stalk_oplink" class="stalk_panel_title_fg"> . . . . </a> ' +
+'          <a id="stalk_oplink" class="stalk_panel_title_fg" > . . . . </a> ' +
 '        </div> ' +
 '      </div> ' +
 ''+
@@ -174,7 +174,6 @@ var STALK_WINDOW = {
 
 '        </div> ' +
 '        <div style="text-transform: uppercase; font-size: 9px; letter-spacing: 2px; font-weight: bold; padding: 8px 0px !important; font-family: helvetica, sans-serif !important; text-align: center !important; color: rgb(131, 136, 135) !important; clear: both;"> ' +
-'          Powered By ' +
 '          <a style="font-family: helvetica, sans-serif !important; text-transform: uppercase; font-size: 9px !important; letter-spacing: 2px; font-weight: bold; color: #c9362f !important; text-decoration: none; text-align:center !important;" ' +
 '          href="http://stalk.io" target="_blank">stalk.io</a> ' +
 '        </div> ' +
@@ -193,7 +192,7 @@ var STALK_WINDOW = {
     var div_logout   = document.getElementById('stalk_logoutbutton');
 
 
-    if(STALK_CONFIGURATION._user) {
+    if(STALK_CONFIGURATION._user.name) {
       self.setTitleBar('login');
     }
 
@@ -201,6 +200,8 @@ var STALK_WINDOW = {
 
       STALK_UTILS.delUserInfo();
       self.setTitleBar('logout');
+
+      STALK_CONFIGURATION._user = {};
 
       event.preventDefault();
       event.stopPropagation();
@@ -254,22 +255,37 @@ var STALK_WINDOW = {
 
   addMessage : function(message, from){
 
-    var msg = '';
-    //if(from && from != STALK_CONFIGURATION._userId ){
-      msg = msg + '<span class="stalk_message_from stalk_message_fg ">'+
-      '<a href="'+from.url+'" target="_blank"><img src="'+from.image+'" style="width: 23px;" /></a> '+from.name+' :'+
-      '</span>';
-    //}else{
-    //  msg = msg + '<span class="stalk_message_me stalk_message_fg "><img src="https://graph.facebook.com/4/picture"/>→</span>';
-    //}
-    msg = msg + '<span>'+decodeURIComponent(message)+'</span>';
-
-    var chatDiv = document.createElement("p");
-    chatDiv.className = 'stalk_message';
-    chatDiv.innerHTML = msg;
-
     var div_message = document.getElementById('stalk_conversation');
-    div_message.appendChild(chatDiv);
+
+    if(from.id == STALK_CONFIGURATION._last_id){
+      var messageId = from.id+'-'+STALK_CONFIGURATION._last_count;
+      var sp_msg = document.getElementById(messageId);
+      sp_msg.innerHTML = sp_msg.innerHTML+"<br>"+decodeURIComponent(message);
+
+    }else{
+
+      STALK_CONFIGURATION._last_id = from.id;
+      STALK_CONFIGURATION._last_count = STALK_CONFIGURATION._last_count + 1;
+      var messageId = STALK_CONFIGURATION._last_id+'-'+STALK_CONFIGURATION._last_count;
+
+      var msg = '';
+      msg = msg + '<span class="stalk_message_from stalk_message_fg ">'+
+        '<a href="'+from.url+'" target="_blank">'+
+        '<img src="'+from.image+'" style="width: 23px;" /></a> '+from.name+' :'+
+        '</span>' +
+        '<span id="'+messageId+'">'+decodeURIComponent(message)+'</span>';
+
+      var chatDiv = document.createElement("p");
+      chatDiv.className = 'stalk_message';
+      chatDiv.innerHTML = msg;
+
+      if(STALK_CONFIGURATION._user && STALK_CONFIGURATION._user.id == from.id ){
+        chatDiv.style.textAlign = "right";
+      }
+
+      div_message.appendChild(chatDiv);
+    }
+
     div_message.scrollTop = div_message.scrollHeight;
 
     if(document.getElementById('stalk_contents').style.display != 'block'){
@@ -279,6 +295,7 @@ var STALK_WINDOW = {
   },
 
   addNotification : function(message) {
+    STALK_CONFIGURATION._last_id = '';
     var chatDiv = document.createElement("p");
     chatDiv.className = 'stalk_message';
     chatDiv.innerHTML = '<span class="stalk_message_notification">'+message+'</span>';
@@ -287,12 +304,10 @@ var STALK_WINDOW = {
     div_message.appendChild(chatDiv);
     div_message.scrollTop = div_message.scrollHeight;
 
-    if(document.getElementById('stalk_contents').style.display != 'block'){
-      this.blinkHeader();
-    }
   },
 
   addSysMessage : function(message) {
+    STALK_CONFIGURATION._last_id = '';
     var chatDiv = document.createElement("span");
     chatDiv.className = 'stalk_message_note';
     chatDiv.innerHTML = message;
@@ -330,11 +345,15 @@ var STALK_WINDOW = {
       document.getElementById('stalk_chatform').style.display     = 'block';
       document.getElementById('stalk_loginform').style.display    = 'none';
 
+      var el_textarea  = document.getElementById('stalk_input_textarea');
+      el_textarea.focus();
+      el_textarea.value = el_textarea.value;
+
     }else if(_event == 'logout'){
       document.getElementById('stalk_logoutbutton').style.display = 'none';
       document.getElementById('stalk_chatform').style.display     = 'none';
       document.getElementById('stalk_loginform').style.display    = 'block';
-      self.addNotification('Logout');
+      this.addNotification('Logout completely. Try logging on again.');
 
     }else if(_event == 'title'){
       document.getElementById('stalk_oplink').innerHTML = 'Online : '+data+'';
@@ -358,6 +377,7 @@ var STALK = (function(CONF, UTILS, WIN) {
       //CONF._userId  = data.userId || 'unknown';
       CONF._app     = CONF.APP; //+':'+location.hostname;
       CONF._channel = location.pathname; //.substr(0);
+      CONF._last_count = 0;
 
       if( !CONF._channel ) return;
 
@@ -385,6 +405,8 @@ var STALK = (function(CONF, UTILS, WIN) {
       var _user = UTILS.getUserInfo();
       if(_user.name){
         CONF._user = _user;
+      }else{
+        CONF._user = {};
       }
 
 
@@ -396,8 +418,15 @@ var STALK = (function(CONF, UTILS, WIN) {
 
         /** create Chat window (HTML) **/
         if(!CONF._isCreate) {
+
           WIN.initWin();
-          WIN.addSysMessage(CONF.MESSAGE.default_message);
+
+          var initMessage = CONF.MESSAGE.default_message;
+          if(!CONF._user.name){
+            initMessage = initMessage + 'Try logging on for chatting.';
+          }
+          WIN.addSysMessage(initMessage);
+
         }
 
         CONF._isCreate = true;
@@ -421,6 +450,7 @@ var STALK = (function(CONF, UTILS, WIN) {
       CONF._socket.on('login-facebook', function (data) {
 
         CONF._user = {
+          id: 'F'+data.id,
           name: data.displayName,
           url: data.profileUrl,
           image: 'https://graph.facebook.com/'+data.id+'/picture'
@@ -434,6 +464,7 @@ var STALK = (function(CONF, UTILS, WIN) {
       CONF._socket.on('login-google', function (data) {
 
         CONF._user = {
+          id: 'G'+data.id,
           name: data.name,
           url: data.link,
           image: data.picture
