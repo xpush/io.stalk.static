@@ -3,8 +3,8 @@ var STALK_CONFIGURATION = {
   APP_URL: 'http://session.stalk.io:8000',
   CSS_URL: 'http://static.stalk.io/stalk.css',
   MESSAGE: {
-    title: 'Leave us a Message',
-    default_message: 'Questions? Come chat with us! We\'re here, send us a message!',
+    title: 'Leave your messages',
+    default_message: 'Welcome ! :)',
 
 
   }
@@ -326,7 +326,9 @@ var STALK = (function(CONF, UTILS, WIN) {
       CONF._socket.on('connect', function () {
 
         /** create Chat window (HTML) **/
-        WIN.initWin();
+        if(!CONF_isCreate)WIN.initWin();
+
+        CONF._isCreate = true;
 
       });
 
@@ -336,6 +338,11 @@ var STALK = (function(CONF, UTILS, WIN) {
         }else{
             WIN.addMessage(data.message);
         }
+
+      });
+
+      CONF._socket.on('login-facebook', function (data) {
+        console.log(data);
 
       });
 
