@@ -360,7 +360,7 @@ var STALK_WINDOW = {
       }else{
         el_textarea.focus();
       }
-      
+
       el_textarea.focus();
       el_textarea.value = el_textarea.value;
 
@@ -391,7 +391,7 @@ var STALK = (function(CONF, UTILS, WIN) {
       CONF._isReady = true;
       //CONF._userId  = data.userId || 'unknown';
       CONF._app     = CONF.APP; //+':'+location.hostname;
-      CONF._channel = location.pathname; //.substr(0);
+      CONF._channel = location.hostname + location.pathname; //.substr(0);
       CONF._last_count = 0;
 
       if( !CONF._channel ) return;
@@ -405,9 +405,9 @@ var STALK = (function(CONF, UTILS, WIN) {
 
       if(data.status != 'ok') return;
 
-      CONF._server = data.server;
-
       if(!data.result.server) return false;
+
+      CONF._server = data.result.server;
 
       var query =
           'app='+CONF._app+'&'+
