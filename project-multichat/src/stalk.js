@@ -1,7 +1,7 @@
 var STALK_CONFIGURATION = {
   APP: 'stalk-io',
   APP_URL: 'http://chat.stalk.io:8000',
-  CSS_URL: 'http://static.stalk.io/stalk.css',
+  CSS_URL: 'http://stalk.io/stalk.css',
   MESSAGE: {
     title: '',
   default_message: 'Welcome !  ',
