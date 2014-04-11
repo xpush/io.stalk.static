@@ -345,7 +345,11 @@ var STALK_WINDOW = {
 
 
     if(STALK_UTILS.isIE()){
-      setTimeout(function() { document.getElementById('stalk_input_textarea').focus(); }, 1000);
+      setTimeout(function() {
+        if(document.getElementById('stalk_chatform').style.display == 'block'){
+          document.getElementById('stalk_input_textarea').focus(); 
+        }
+      }, 1000);
     }else{
       var el_textarea  = document.getElementById('stalk_input_textarea');
       el_textarea.focus();
