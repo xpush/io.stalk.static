@@ -222,12 +222,7 @@ var STALK_WINDOW = {
         div_contents.style.display = 'block';
 				document.getElementById('stalk').className = 'stalk_status_expanded';
 
-        if(STALK_UTILS.isIE()){
-          setTimeout(function() { document.getElementById('stalk_input_textarea').focus(); }, 1000);
-        }else{
-          el_textarea.focus();
-        }
-        el_textarea.value = el_textarea.value;
+        this.focusTextarea();
 
         var div_message = document.getElementById('stalk_conversation');
         div_message.scrollTop = div_message.scrollHeight;
@@ -346,6 +341,19 @@ var STALK_WINDOW = {
     }
   },
 
+  focusTextarea : function(){
+
+
+    if(STALK_UTILS.isIE()){
+      setTimeout(function() { document.getElementById('stalk_input_textarea').focus(); }, 1000);
+    }else{
+      var el_textarea  = document.getElementById('stalk_input_textarea');
+      el_textarea.focus();
+      el_textarea.value = el_textarea.value;
+    }
+
+  },
+
   setTitleBar : function(_event, data){
 
     if(_event == 'login'){
@@ -353,16 +361,7 @@ var STALK_WINDOW = {
       document.getElementById('stalk_chatform').style.display     = 'block';
       document.getElementById('stalk_loginform').style.display    = 'none';
 
-      var el_textarea  = document.getElementById('stalk_input_textarea');
-
-      if(STALK_UTILS.isIE()){
-        setTimeout(function() { document.getElementById('stalk_input_textarea').focus(); }, 1000);
-      }else{
-        el_textarea.focus();
-      }
-
-      el_textarea.focus();
-      el_textarea.value = el_textarea.value;
+      this.focusTextarea();
 
     }else if(_event == 'logout'){
       document.getElementById('stalk_logoutbutton').style.display = 'none';
