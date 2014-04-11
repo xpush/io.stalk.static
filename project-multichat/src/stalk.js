@@ -132,7 +132,11 @@ var STALK_UTILS = {
 			}
 		}
 		return {};
-	}
+	},
+
+  isIE : function(){
+  	return (/MSIE (\d+\.\d+);/.test(navigator.userAgent));
+  }
 
 };
 
@@ -218,7 +222,11 @@ var STALK_WINDOW = {
         div_contents.style.display = 'block';
 				document.getElementById('stalk').className = 'stalk_status_expanded';
 
-        el_textarea.focus();
+        if(STALK_UTILS.isIE()){
+          setTimeout(function() { document.getElementById('stalk_input_textarea').focus(); }, 1000);
+        }else{
+          el_textarea.focus();
+        }
         el_textarea.value = el_textarea.value;
 
         var div_message = document.getElementById('stalk_conversation');
@@ -346,6 +354,13 @@ var STALK_WINDOW = {
       document.getElementById('stalk_loginform').style.display    = 'none';
 
       var el_textarea  = document.getElementById('stalk_input_textarea');
+
+      if(STALK_UTILS.isIE()){
+        setTimeout(function() { document.getElementById('stalk_input_textarea').focus(); }, 1000);
+      }else{
+        el_textarea.focus();
+      }
+      
       el_textarea.focus();
       el_textarea.value = el_textarea.value;
 
