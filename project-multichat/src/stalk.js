@@ -394,7 +394,7 @@ var STALK = (function(CONF, UTILS, WIN) {
       CONF._isReady = true;
       //CONF._userId  = data.userId || 'unknown';
       CONF._app     = CONF.APP; //+':'+location.hostname;
-      CONF._channel = location.hostname + location.pathname; //.substr(0);
+      CONF._channel = encodeURIComponent(location.hostname + location.pathname); //.substr(0);
       CONF._last_count = 0;
 
       if( !CONF._channel ) return;
