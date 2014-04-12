@@ -110,7 +110,7 @@ var STALK_UTILS = {
   setUserInfo : function(userInfo) {
 		//var date = new Date();
 		//date.setDate(date.getDate() + 10);
-		document.cookie = 'STALK_USER=' + escape(JSON.stringify(userInfo)) + ';path=/'
+		document.cookie = 'STALK_USER=' + escape(JSON.stringify(userInfo)) + ';path=/';
 		//';expires=' + date.toGMTString()+';path=/';
 	},
 
@@ -135,7 +135,7 @@ var STALK_UTILS = {
 	},
 
   isIE : function(){
-  	return (/MSIE (\d+\.\d+);/.test(navigator.userAgent));
+    return (/MSIE (\d+\.\d+);/.test(navigator.userAgent));
   }
 
 };
@@ -171,7 +171,7 @@ var STALK_WINDOW = {
 '          </form> ' +
 
 '          <div id="stalk_loginform" style="display: block;">' +
-'            <a href="#" onclick="return !window.open(STALK.getOAuthUrl(\'facebook\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=350,height=350\')" target="_blank" id="stalk_login_facebook"   class="stalk_login_button" style="background-position: -0px -88px; width: 64px; height: 34px">&nbsp;</a>' +
+'            <a href="#" onclick="return !window.open(STALK.getOAuthUrl(\'facebook\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=480,height=480\')" target="_blank" id="stalk_login_facebook"   class="stalk_login_button" style="background-position: -0px -88px; width: 64px; height: 34px">&nbsp;</a>' +
 //'            <a href="#" onclick="return !window.open(STALK.getOAuthUrl(\'twitter\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=700,height=450\')" target="_blank" id="stalk_login_twitter"    class="stalk_login_button" style="background-position: -0px -148px; width: 64px; height: 64px">&nbsp;</a>' +
 '            <a href="#" onclick="return !window.open(STALK.getOAuthUrl(\'google\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=800,height=450\')" target="_blank" id="stalk_login_googleplus" class="stalk_login_button" style="background-position: -0px -14px; width: 64px; height: 34px">&nbsp;</a>' +
 '          </div> ' +
@@ -475,7 +475,7 @@ var STALK = (function(CONF, UTILS, WIN) {
           name: data.displayName,
           url: data.profileUrl,
           image: 'https://graph.facebook.com/'+data.id+'/picture'
-        }
+        };
 
         UTILS.setUserInfo(CONF._user);
         WIN.setTitleBar('login');
@@ -489,7 +489,7 @@ var STALK = (function(CONF, UTILS, WIN) {
           name: data.name,
           url: data.link,
           image: data.picture
-        }
+        };
 
         UTILS.setUserInfo(CONF._user);
         WIN.setTitleBar('login');
