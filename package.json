@@ -1,7 +1,7 @@
 {
-  "name": "stalki.io-server",
+  "name": "stalki.io",
   "description": "Realtime Communication Service",
-  "version": "0.0.5",
+  "version": "0.1.1",
   "contributors": [
     {
       "name": "John Kim",
@@ -35,7 +35,7 @@
     "stalk.io",
     "xpush"
   ],
-  "repository": "git://github.com/xpush/stalk.io-server",
+  "repository": "git://github.com/xpush/stalk.io",
   "engines": {
     "node": ">= 0.8.0"
   }
