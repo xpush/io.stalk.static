@@ -1,3 +1,6 @@
+/*! stalk javascript library - v0.1.2 - 2014-04-12
+* https://stalk.io
+* Copyright (c) 2014 John Kim; Licensed MIT */
 var STALK_CONFIGURATION = {
   APP: 'stalk-io',
   STALK_URL: 'http://admin.stalk.io:8080',
@@ -6,11 +9,8 @@ var STALK_CONFIGURATION = {
   MESSAGE: {
     title: 'Leave us a Message',
     default_message: 'Questions? Come chat with us! We\'re here, send us a message!',
-    
-    
   }
 };
-
 
 var STALK_UTILS = {
   getUniqueKey : function () {
