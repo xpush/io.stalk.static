@@ -2,7 +2,7 @@ var STALK_CONFIGURATION = {
   APP: 'stalk-io',
   STALK_URL: 'http://admin.stalk.io:8080',
   APP_URL: 'http://chat.stalk.io:8000',
-  CSS_URL: 'http://static.stalk.io/stalk.css',
+  CSS_URL: 'http://stalk.io/stalk.css',
   MESSAGE: {
     title: 'Leave us a Message',
     default_message: 'Questions? Come chat with us! We\'re here, send us a message!',
@@ -107,8 +107,38 @@ var STALK_UTILS = {
       var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
       ele.className = ele.className.replace(reg, ' ');
     }
-  }
+  },
   
+  setUserInfo : function(userInfo) {
+    //var date = new Date();
+    //date.setDate(date.getDate() + 10);
+    document.cookie = 'STALK_USER=' + escape(JSON.stringify(userInfo)) + ';path=/';
+    //';expires=' + date.toGMTString()+';path=/';
+  },
+
+  delUserInfo : function() {
+    var date = new Date();
+    var validity = -1;
+    date.setDate(date.getDate() + validity);
+    document.cookie = "STALK_USER=;expires=" + date.toGMTString()+';path=/';
+  },
+
+  getUserInfo : function() {
+    var allcookies = document.cookie;
+    var cookies = allcookies.split("; ");
+    for ( var i = 0; i < cookies.length; i++) {
+      var keyValues = cookies[i].split("=");
+      if (keyValues[0] == "STALK_USER") {
+
+        return JSON.parse(unescape(keyValues[1]));
+      }
+    }
+    return {};
+  },
+
+  isIE : function(){
+    return (/MSIE (\d+\.\d+);/.test(navigator.userAgent));
+  }
 };
 
 
@@ -118,31 +148,37 @@ var STALK_WINDOW = {
     var div_root = document.createElement('div');
     div_root.id = 'stalk';
     div_root.className = 'stalk_status_compressed';
-    div_root.innerHTML = 
+    div_root.innerHTML =
 '  <div id="stalk_window" style="margin: 0px 20px; bottom: 0px; right: 0px; display: none; position: fixed;" class="stalk_window_base stalk_window_width stalk_window_fixed_bottom stalk_window_fixed_right "> ' +
 '    <div id="stalk_panel" class="stalk_panel_border stalk_panel_bg" style="display: block;"> ' +
-''+      
+''+
 '     <div id="stalk_title" style="display: block;"> ' +
 '        <div id="stalk_topbar" class="stalk_panel_title_fg stalk_panel_title_bg"> ' +
 '          <a id="stalk_sizebutton" class="stalk_button">^</a> ' +
-'          <a id="stalk_oplink" class="stalk_panel_title_fg">Leave us a Message</a> ' +
+'          <a id="stalk_logoutbutton" class="stalk_button" style="display: none">X</a> ' +
+'          <a id="stalk_oplink" class="stalk_panel_title_fg" > '+ STALK_CONFIGURATION.MESSAGE.title+' </a> ' +
 '        </div> ' +
 '      </div> ' +
-''+      
+''+
 '      <div id="stalk_contents" style="display: none;"> ' +
 '        <div id="stalk_body"> ' +
-''+     
+''+
 '          <div id="stalk_conversation" class="stalk_conversation stalk_panel_height stalk_panel_bg" style="height: 200px; display: block;"></div>' +
-          
-'          <form id="stalk_chatform" action="#" method="GET" autocomplete="off" style="display: block;"> ' +
+
+'          <form id="stalk_chatform" action="#" method="GET" autocomplete="off" style="display: none;"> ' +
 '            <div id="stalk_input" class="stalk_input "> ' +
 '              <textarea id="stalk_input_textarea" name="stalk_input_textarea" size="undefined" class="stalk_input_textarea_pre stalk_input_textarea_normal" placeholder="Type here and hit &lt;enter&gt; to chat" style="line-height: 21px; height: 21px; display: block;"></textarea> ' +
 '            </div> ' +
 '          </form> ' +
-          
+
+'          <div id="stalk_loginform" style="display: block;">' +
+'            <a href="#" onclick="return !window.open(STALK.getOAuthUrl(\'facebook\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=350,height=350\')" target="_blank" id="stalk_login_facebook"   class="stalk_login_button" style="background-position: -0px -88px; width: 64px; height: 34px">&nbsp;</a>' +
+//'            <a href="#" onclick="return !window.open(STALK.getOAuthUrl(\'twitter\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=700,height=450\')" target="_blank" id="stalk_login_twitter"    class="stalk_login_button" style="background-position: -0px -148px; width: 64px; height: 64px">&nbsp;</a>' +
+'            <a href="#" onclick="return !window.open(STALK.getOAuthUrl(\'google\'),\'STALK_OAUTH\',\'menubar=no,location=no,resizable=yes,scrollbars=yes,status=yes,width=800,height=450\')" target="_blank" id="stalk_login_googleplus" class="stalk_login_button" style="background-position: -0px -14px; width: 64px; height: 34px">&nbsp;</a>' +
+'          </div> ' +
+
 '        </div> ' +
 '        <div style="text-transform: uppercase; font-size: 9px; letter-spacing: 2px; font-weight: bold; padding: 8px 0px !important; font-family: helvetica, sans-serif !important; text-align: center !important; color: rgb(131, 136, 135) !important; clear: both;"> ' +
-'          Powered By ' +
 '          <a style="font-family: helvetica, sans-serif !important; text-transform: uppercase; font-size: 9px !important; letter-spacing: 2px; font-weight: bold; color: #c9362f !important; text-decoration: none; text-align:center !important;" ' +
 '          href="http://stalk.io" target="_blank">stalk.io</a> ' +
 '        </div> ' +
@@ -159,16 +195,31 @@ var STALK_WINDOW = {
     var div_contents = document.getElementById('stalk_contents');
     var div_chatform = document.getElementById('stalk_chatform');
     var el_textarea  = document.getElementById('stalk_input_textarea');
+    var div_logout   = document.getElementById('stalk_logoutbutton');
+
+    if(STALK_CONFIGURATION._user.name) {
+      self.setTitleBar('login');
+    }
+
+    div_logout.onclick = function(event){
+
+      STALK_UTILS.delUserInfo();
+      self.setTitleBar('logout');
+
+      STALK_CONFIGURATION._user = {};
+
+      event.preventDefault();
+      event.stopPropagation();
+
+    };    
 
     div_titlebar.onclick = function(){
       
       if(div_contents.style.display != 'none'){
         div_contents.style.display = 'none';
-        div_chatform.style.display = 'none';
 				document.getElementById('stalk').className = 'stalk_status_compressed';
       }else{
         div_contents.style.display = 'block';
-        div_chatform.style.display = 'block';
 				document.getElementById('stalk').className = 'stalk_status_expanded';
         
         el_textarea.focus();
@@ -202,8 +253,7 @@ var STALK_WINDOW = {
 
         }
       }
-    };
-    
+    }; 
   },
   
   addMessage : function(message, from){
@@ -273,6 +323,45 @@ var STALK_WINDOW = {
           }
         },1000);
     }
+  },
+
+  focusTextarea : function(){
+
+
+    if(STALK_UTILS.isIE()){
+      setTimeout(function() {
+        if(document.getElementById('stalk_chatform').style.display == 'block'){
+          document.getElementById('stalk_input_textarea').focus();
+        }
+      }, 1000);
+    }else{
+      var el_textarea  = document.getElementById('stalk_input_textarea');
+      el_textarea.focus();
+      el_textarea.value = el_textarea.value;
+    }
+
+  },  
+
+  setTitleBar : function(_event, data){
+
+    if(_event == 'login'){
+      document.getElementById('stalk_logoutbutton').style.display = 'block';
+      document.getElementById('stalk_chatform').style.display     = 'block';
+      document.getElementById('stalk_loginform').style.display    = 'none';
+
+      this.focusTextarea();
+
+    }else if(_event == 'logout'){
+      document.getElementById('stalk_logoutbutton').style.display = 'none';
+      document.getElementById('stalk_chatform').style.display     = 'none';
+      document.getElementById('stalk_loginform').style.display    = 'block';
+      this.addNotification('Logout completely. Try logging on again.');
+
+    }else if(_event == 'title'){
+      document.getElementById('stalk_oplink').innerHTML = 'Online : '+data+'';
+
+    }
+
   }
   
 };
@@ -301,7 +390,7 @@ var STALK = (function(CONF, UTILS, WIN) {
 
       console.log(data);
 
-      if(data.length == 0) return;
+      if(data.length === 0) return;
 
       CONF._operators = data;
 
@@ -311,7 +400,7 @@ var STALK = (function(CONF, UTILS, WIN) {
     },
 
     callbackInit : function(data){
-
+      console.log( data );
       if(data.status != 'ok') return;
 
       CONF._server = data.server;
@@ -326,12 +415,23 @@ var STALK = (function(CONF, UTILS, WIN) {
           'deviceId=WEB&'+
           'mode=CHANNEL_ONLY';
 
+      var _user = UTILS.getUserInfo();
+      if(_user.name){
+        CONF._user = _user;
+      }else{
+        CONF._user = {};
+      }          
+
       CONF._socket = io.connect(data.result.server.url+'/channel?'+query, {
         'force new connection': true
       });
 
-      CONF._socket.on('connect', function () {
 
+      console.log( data.result.server.url );
+      console.log( query );
+
+      CONF._socket.on('connect', function () {
+          console.log( 'connected' );
       });
       
       CONF._socket.on('message', function (data) {
@@ -343,12 +443,39 @@ var STALK = (function(CONF, UTILS, WIN) {
         
       });
 
+      CONF._socket.on('login-facebook', function (data) {
+
+        CONF._user = {
+          id: 'F'+data.id,
+          name: data.displayName,
+          url: data.profileUrl,
+          image: 'https://graph.facebook.com/'+data.id+'/picture'
+        };
+
+        UTILS.setUserInfo(CONF._user);
+        WIN.setTitleBar('login');
+
+      });
+
+      CONF._socket.on('login-google', function (data) {
+
+        CONF._user = {
+          id: 'G'+data.id,
+          name: data.name,
+          url: data.link,
+          image: data.picture
+        };
+
+        UTILS.setUserInfo(CONF._user);
+        WIN.setTitleBar('login');
+
+      });      
+
       CONF._socket.on('_event', function (data) {
         if (data.event == 'CONNECTION') {
           if( data.userId == CONF._userId ) {
 
             CONF._socket.emit('join', CONF._operators, function (data) {
-              console.log("<<<<<< >>>>>>");
               console.log(data);
             });
 
@@ -384,6 +511,10 @@ var STALK = (function(CONF, UTILS, WIN) {
 
       CONF._socket.emit('send', param, function (data) {
       });
+    },
+
+    getOAuthUrl : function(targetName){
+      return CONF.APP_URL + '/auth/'+targetName+'/check?app='+CONF._app+'&channel='+CONF._channel+'&socketId='+CONF._socket.socket.sessionid;
     }
 
   };
