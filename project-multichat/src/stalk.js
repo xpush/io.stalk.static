@@ -222,7 +222,7 @@ var STALK_WINDOW = {
         div_contents.style.display = 'block';
 				document.getElementById('stalk').className = 'stalk_status_expanded';
 
-        this.focusTextarea();
+        self.focusTextarea();
 
         var div_message = document.getElementById('stalk_conversation');
         div_message.scrollTop = div_message.scrollHeight;
@@ -347,7 +347,7 @@ var STALK_WINDOW = {
     if(STALK_UTILS.isIE()){
       setTimeout(function() {
         if(document.getElementById('stalk_chatform').style.display == 'block'){
-          document.getElementById('stalk_input_textarea').focus(); 
+          document.getElementById('stalk_input_textarea').focus();
         }
       }, 1000);
     }else{
