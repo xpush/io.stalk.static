@@ -234,7 +234,9 @@ var STALK_WINDOW = {
 
       self.blinkHeader(true);
 
-      if(event.keyCode == 13 && !event.shiftKey) {
+      var keyCode = event.keyCode ? event.keyCode : event.which;
+
+      if(keyCode == 13 && !event.shiftKey) {
 
         if(event.preventDefault) {
           event.preventDefault();
