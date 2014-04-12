@@ -230,20 +230,19 @@ var STALK_WINDOW = {
       }
     };
 
-    el_textarea.onkeydown = function(event) {
+    el_textarea.onkeydown = function(e) {
 
       self.blinkHeader(true);
 
-      var keyCode = (event.which) ? event.which : event.keyCode;
-      //var keyCode = (window.event) ? event.which : event.keyCode;
-      //var keyCode = e.keyCode ? e.keyCode : e.which;
+      var e = window.event || e;
+      var keyCode = (e.which) ? e.which : e.keyCode;
 
       if(keyCode == 13 && !e.shiftKey) {
 
-        if(event.preventDefault) {
-          event.preventDefault();
+        if(e.preventDefault) {
+          e.preventDefault();
         }else{
-          event.returnValue = false;
+          e.returnValue = false;
         }
 
         var message = el_textarea.value;
