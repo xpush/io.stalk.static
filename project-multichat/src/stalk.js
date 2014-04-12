@@ -230,19 +230,20 @@ var STALK_WINDOW = {
       }
     };
 
-    el_textarea.onkeydown = function(e) {
+    el_textarea.onkeydown = function(event) {
 
       self.blinkHeader(true);
 
-      var keyCode = (window.event) ? e.which : e.keyCode;
+      var keyCode = (event.which) ? event.which : event.keyCode;
+      //var keyCode = (window.event) ? event.which : event.keyCode;
       //var keyCode = e.keyCode ? e.keyCode : e.which;
 
       if(keyCode == 13 && !e.shiftKey) {
 
-        if(e.preventDefault) {
-          e.preventDefault();
+        if(event.preventDefault) {
+          event.preventDefault();
         }else{
-          e.returnValue = false;
+          event.returnValue = false;
         }
 
         var message = el_textarea.value;
