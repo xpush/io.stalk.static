@@ -8397,7 +8397,7 @@ body {
 
 @media (max-width: 992px) {
     .navbar-custom .navbar-brand {
-        width:63px;
+      /*  width:63px;*/
         overflow: hidden
     }
 }
@@ -8416,7 +8416,7 @@ body {
 
 .topic {
     position: relative;
-    padding: 50px 0 110px
+    padding: 10px 0 110px
 }
 
 .topic h3 {
