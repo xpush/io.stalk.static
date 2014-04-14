@@ -8351,7 +8351,7 @@ body {
     width: 100%;
     z-index: 2000
   /* works for IE 5+. */
-  filter:alpha(opacity=90); 
+  filter:alpha(opacity=90);
   /* works for IE 8. */
   -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
 
@@ -8846,7 +8846,7 @@ body {
 
 .project {
     margin-top: 80px;
-    padding-bottom: 80px;
+    padding-bottom: 5px;
     text-align: left;
     border-bottom: 1px solid #e8e9eb
 }
