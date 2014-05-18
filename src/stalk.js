@@ -432,6 +432,7 @@ var STALK = (function(CONF, UTILS, WIN) {
 
 
       CONF._socket = io.connect(data.result.server.url+'/channel?'+query, {
+      	'sync disconnect on unload': true,
         'force new connection': true
       });
 
