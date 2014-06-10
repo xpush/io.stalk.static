@@ -8,27 +8,16 @@
       "email": "yohany@gmail.com"
     }
   ],
-  "main": "server.js",
-  "scripts": {
-    "test": "grunt qunit"
-  },
-  "dependencies": {
-    "restify": "2.x.x",
-    "optimist": "0.6.x",
-    "node-static": "~0.7.3",
-    "redis": "~0.10.1"
-  },
+  "main": "web.js",
+  "scripts": {},
+  "dependencies": {},
   "devDependencies": {
-    "grunt-contrib-jshint": "~0.6.0",
-    "grunt-contrib-qunit": "~0.2.0",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-uglify": "~0.2.0",
-    "grunt-contrib-watch": "~0.4.0",
-    "grunt-contrib-clean": "~0.4.0",
-    "grunt-contrib-cssmin": "~0.4.0",
-    "grunt-contrib-copy": "~0.5.0",
-    "grunt": "~0.4.2",
-    "socket.io-client": ">= 0.9"
+    "gulp": "^3.8.0",
+    "gulp-concat": "^2.2.0",
+    "gulp-minify-css": "^0.3.4",
+    "gulp-uglify": "^0.3.0",
+    "rimraf": "^2.2.8",
+    "socket.io-client": "^1.0.4"
   },
   "keywords": [
     "chat",

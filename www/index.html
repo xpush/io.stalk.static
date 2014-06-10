@@ -1,200 +1,427 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>STALK.IO :: real live conversations with visitors</title>
-    <!-- Sets initial viewport load and disables zooming  -->
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+<html lang="en-US" class="no-js">
+	<head>
+
+		<!-- ==============================================
+		Title and Meta Tags
+		=============================================== -->
+		<meta charset="utf-8">
+		<title>STALK.IO | real live conversations with visitors</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="STALK.IO is the most beautiful and effective way to make visitors stay on your website. Just check the bottom on this page! It's super easy to install this chat widget for your website.">
+    <meta name="author" content="xpush.io@gmail.com">
     <meta property="og:title" content="real live conversation service" />
     <meta property="og:description" content="It’s a useful communication tool for your web sites that lets you create free and multi-user live chat with no Active-X and no plugins, just by very simple installation." />
     <meta property="og:image" content="http://stalk.io/img/logo_big.png" />
-    <link rel="shortcut icon" href="favicon_16.ico"/>
-    <link rel="bookmark" href="favicon_16.ico"/>
-    <!-- site css -->
-    <link rel="stylesheet" href="css/site.css">
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
-    <!--[if lt IE 9]>
-      <script src="/js/html5shiv.js"></script>
-      <script src="/js/respond.min.js"></script>
-    <![endif]-->
-    <script type="text/javascript" src="js/site.js"></script>
-  </head>
-  <body>
+
+		<!-- ==============================================
+		Favicons
+		=============================================== -->
+		<link rel="shortcut icon" href="assets/favicon.ico">
+		<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="assets/apple-touch-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="assets/apple-touch-icon-114x114.png">
+
+		<!-- ==============================================
+		CSS
+		=============================================== -->
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/font-awesome.css">
+		<link rel="stylesheet" href="css/flexslider.css">
+		<link rel="stylesheet" href="css/designr-theme-red.css">
 
 
-    <div class="docs-header">
-      <!--nav-->
-      <nav class="navbar navbar-default navbar-custom" role="navigation">
-        <div class="container">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="index.html"><img src="img/logo.png" height="40"></a>
-          </div>
-        </div>
-      </nav>
-    </div>
+		<!-- ==============================================
+		Fonts
+		=============================================== -->
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,700,700italic,900' rel='stylesheet' type='text/css'>
 
-    <div class="container">
+		<!-- ==============================================
+		JS
+		=============================================== -->
 
-      <section class="project"><br><br>
-        <div class="row">
-          <div class="col-md-6">
+		<!--[if lt IE 9]>
+			<script src="js/respond.min.js"></script>
+		<![endif]-->
 
-          <h2>Let visitors chat each others on your website</h2>
-          <h3><b>STALK.IO</b> is the most beautiful and effective way to make visitors stay on your website. Just check the bottom on this page! It's super easy to install this chat widget for your website.</h3>
-
-          <div class="options">
-            <div id="fb-root"></div>
-            <script>(function(d, s, id) {
-              var js, fjs = d.getElementsByTagName(s)[0];
-              if (d.getElementById(id)) return;
-              js = d.createElement(s); js.id = id;
-              js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=543747469030440";
-              fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
-            </script>
-
-            <div class="fb-like" data-href="http://stalk.io" data-width="The pixel width of the plugin" data-height="The pixel height of the plugin" data-colorscheme="light" data-layout="button_count" data-action="like" data-show-faces="false" data-send="true"></div>
-            <br><br>
-          </div>
-          </div>
-          <div class="col-md-6">
-
-              <h2>Make the sale and keep customers happy.</h2>
-              <h3><b>LINK.STALK.IO</b> is the live conversation service with visitors on your website. Experience the easiest way to boost your sales, help solve issues and understand your customers with this live chat.</h3>
-
-              <div class="options">
-                <a href="http://link.stalk.io" class="btn btn-primary" target="_blank">Visit <b>link.stalk.io</b> </a>
-              </div>
-              <br><br>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <div class="docs-header">
-      <!--header-->
-      <div class="topic">
-        <div class="container">
-          <h3>live web chat service on your web pages</h3>
-          <h4>It’s a useful communication tool for your web sites that lets you create free and multi-user live chat with no Active-X and no plugins, just by very simple installation.</h4>
-        </div>
-        <div class="topic__infos">
-          <div class="container">
-            Place this beautiful chat widget on your website, and start having conversations with visitors within minutes.
-          </div>
-        </div>
-      </div>
-    </div>
+		<script type="text/javascript" src="js/libs/modernizr.min.js"></script>
 
 
+	</head>
 
-    <div class="container documents">
-      <div class="row">
-        <div class="col-md-12">
-          <!-- Overview
-          ================================================== -->
-          <div class="docs-article docs--start" id="overview">
-            <h3>Overview</h3>
-            <p>STALK.IO let visiters talk each others on the same web page.</p>
-            <dl>
-              <dt>Every Web Browsers Support</dt>
-              <dd>STALK.IO works in IE 6+, chrome, safari and all mobile browsers.<em>" Cross Browser Compatibility "</em></dd>
-              <dt>With Social Network Service</dt>
-              <dd>Those who access your web sites will be able to talk to each other after login with Facebook and Google+.</dd>
-              <dt>Easy Installation</dt>
-              <dd>Copy and paste just tow line of code at the bottom of your <code>body</code> tag. That’s it!</dd>
-              <dt>Provides stable communication service</dt>
-              <dd>STALK.IO service is using the distributed systems with XPUSH servers. <a href="https://github.com/xpush/node-xpush" target="_blank" rel="external nofollow">XPUSH</a> is a reliable realtime communication channel server for quickly, easily adding scalable functionality to web and mobile apps.</dd>
+	<body data-spy="scroll" data-target="#main-nav" data-offset="200">
 
-            </dl>
-          </div>
-          <!--
-          ================================================== -->
-          <div class="docs-article docs--start" id="install">
-            <h3>Install</h3>
-            <p>
-              Very simple scripts that you can add to your Web pages in minutes, no knowing coding required. <br>
-              Just copy the script code and paste it into your HTML code.
-            </p>
-            <p>Put the tags and the javascript codes before the last <code>&lt;/body&gt;</code> tag in your HTML page</p>
+		<!-- ==============================================
+		MAIN NAV
+		=============================================== -->
+		<div id="main-nav" class="navbar navbar-fixed-top">
+			<div class="container">
 
-<pre><code class="bash">&lt;script src="http://www.stalk.io/stalk.js">&lt;/script>
+				<div class="navbar-header">
+
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#site-nav">
+						<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+					</button>
+
+					<!-- ======= LOGO ========-->
+					<a class="navbar-brand scrollto ir-logo" href="#">STALK.IO<br><span>social chat</span></a>
+
+				</div>
+
+				<div id="site-nav" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li class="sr-only">
+							<a href="#home" class="scrollto">Home</a>
+						</li>
+						<li>
+							<a href="#home" class="scrollto">Home</a>
+						</li>
+						<li>
+							<a href="#services" class="scrollto">Features</a>
+						</li>
+						<li>
+							<a href="#about" class="scrollto"><b>How to install</b></a>
+						</li>
+						<li>
+							<a href="#twitter" class="scrollto">Services</a>
+						</li>
+						<li>
+							<a href="#contact" class="scrollto">Contact Us</a>
+						</li>
+					</ul>
+				</div><!--End navbar-collapse -->
+
+
+			</div><!--End container -->
+
+		</div><!--End main-nav -->
+
+		<!-- ==============================================
+		HEADER
+		=============================================== -->
+		<header id="home" class="jumbotron">
+
+			<div class="container">
+
+				<div class="message-box clearfix" style="margin-top: 140px;">
+
+					<div class="left-col">
+						<p>YES ! <b>STALK.IO</b><br/>chat widget is</p>
+					</div>
+
+					<div class="right-col flexslider home-slider">
+
+						<ul class="slides text-center">
+
+							<li><p>For WEB</p></li>
+
+							<li><p><span style="color:gray">X</span> ActiveX</p></li>
+
+							<li><p><span style="color:gray">X</span> Plugins</p></li>
+
+							<li><p>Very Easy</p></li>
+
+							<li><p>AWESOME</p></li>
+
+							<li><p>YOURS !</p></li>
+
+						</ul>
+
+
+					</div><!--End home-slider -->
+
+					<div class="text-center">
+
+<div id="fb-root"></div>
+                    <script>(function(d, s, id) {
+                      var js, fjs = d.getElementsByTagName(s)[0];
+                      if (d.getElementById(id)) return;
+                      js = d.createElement(s); js.id = id;
+                      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=543747469030440";
+                      fjs.parentNode.insertBefore(js, fjs);
+                    }(document, 'script', 'facebook-jssdk'));
+                    </script>
+
+                    <div class="fb-like" data-href="http://stalk.io" data-width="The pixel width of the plugin" data-height="The pixel height of the plugin" data-colorscheme="light" data-layout="button_count" data-action="like" data-show-faces="false" data-send="true"></div>
+
+
+					</div>
+
+				</div><!--End message-box -->
+
+			</div><!--End container -->
+
+		</header><!--End header -->
+
+		<!-- ==============================================
+		SERVICES
+		=============================================== -->
+		<section id="services">
+
+			<div class="container">
+
+				<h1 class="section-title scrollimation scale-in">The <span>Features</span> We offer<i class="icon-wrench"></i></h1>
+
+				<div class="row services scrollimation fade-left">
+					<div class="col-md-3 text-center">
+						<a href="#fakelink" class="icon"><i class="icon-flag"></i></a>
+						<h2>Any Browsers</h2>
+					</div>
+					<div class="col-md-3 details">
+						<p>STALK.IO works in IE 6+, chrome, safari and all mobile browsers. Every Web Browsers Support.<br><em>" Cross Browser Compatibility "</em></p>
+					</div>
+					<div class="col-md-3 text-center">
+						<a href="#about" class="icon"><i class="icon-code"></i></a>
+						<h2>Easy Installation</h2>
+					</div>
+					<div class="col-md-3 details">
+						<p>
+							Copy and paste just two line of code at the bottom of your body tag. That’s it!
+							<a href="#about" class="btn btn-theme transparent scrollto">Installation</a>
+						</p>
+					</div>
+				</div><!--End row (top) -->
+
+				<div class="row line visible-md visible-lg">
+					<div class="col-md-3"><span class="spot"></span></div>
+					<div class="col-md-3"><span class="spot"></span></div>
+					<div class="col-md-3"><span class="spot"></span></div>
+					<div class="col-md-3"><span class="spot"></span></div>
+				</div><!--End row -->
+
+				<div class="row services bottom-row scrollimation fade-right">
+					<div class="col-md-3 text-center col-md-push-3">
+						<h2>Social</h2>
+						<a href="#fakelink" class="icon"><i class="icon-pencil"></i></a>
+					</div>
+					<div class="col-md-3 details col-md-pull-3">
+						<p>Those who access your web sites will be able to talk to each other after login with Facebook and Google+.</p>
+					</div>
+					<div class="col-md-3 text-center  col-md-push-3">
+						<h2>Stable and Fast</h2>
+						<a href="#fakelink" class="icon"><i class="icon-rocket"></i></a>
+					</div>
+					<div class="col-md-3 details  col-md-pull-3">
+						<p>STALK.IO service is using the distributed systems with XPUSH servers. <a href="https://github.com/xpush/node-xpush" target="_blank" rel="external nofollow">XPUSH</a> is a reliable realtime communication channel server for quickly, easily adding scalable functionality to web and mobile apps.</p>
+					</div>
+				</div><!--End row (bottom)-->
+
+			</div><!--End container -->
+
+		</section><!--End services section-->
+
+		<!-- ==============================================
+		ABOUT
+		=============================================== -->
+		<section id="about">
+
+			<div class="container">
+
+				<div class="row">
+					<div class="col-sm-1 col-sm-offset-1 scrollimation fade-right">
+						<h1 class="text-center icon" style="font-size: 82px;"><i class="icon-code"></i></h1>
+					</div>
+					<div class="col-sm-9 col-sm-offset-1 scrollimation fade-left">
+						<h1><strong>Super Easy Installation</strong></h1>
+						<p>Very simple scripts that you can add to your Web pages in minutes, no knowing coding required.
+							Copy and paste just tow line of code at the bottom of your body tag. That’s it!</p>
+						<p>Put the tags and the javascript codes before the last &lt;/body&gt; tag in your HTML page</p>
+<pre class="text-left"><code class="html" style="font-size: 16px;">&lt;script src="http://www.stalk.io/stalk.js">&lt;/script>
 &lt;script>STALK.init();&lt;/script>
 </code></pre>
 
-          </div>
+					</div>
+				</div><!--End row -->
 
-          <!-- Licensing
-          ================================================== -->
-          <div class="docs-article docs--start" id="licensing">
-            <h3>Licensing</h3>
-            <p>
-              STALK.IO system is an open source software released under a permisive <a href="http://opensource.org/licenses/MIT">MIT</a> license. <br>
-              This means you can use and install <a href="https://github.com/xpush/stalk.io" target="_blank" rel="external nofollow">stalk.io</a> in your own personal or commercial projects for free.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--footer-->
-    <div class="site-footer">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-7">
-            <h3>Developers</h3>
-            <ul class="item__infos">
-              <li>
-                  <b>John Kim</b> <a title="Facebook" href="https://www.facebook.com/JohnKim0331" target="_blank" rel="external nofollow"><i class="icon" data-icon="&#xe10b"></i></a> |
-                  <b>John Ko</b> <a title="Facebook" href="https://www.facebook.com/john.ko.54" target="_blank" rel="external nofollow"><i class="icon" data-icon="&#xe10b"></i></a> |
-                  <b>James</b> <a title="Facebook" href="https://www.facebook.com/jung.jinyung.9" target="_blank" rel="external nofollow"><i class="icon" data-icon="&#xe10b"></i></a> |
-                  <b>Notdol</b> <a title="Facebook" href="https://www.facebook.com/notdol" target="_blank" rel="external nofollow"><i class="icon" data-icon="&#xe10b"></i></a> |</li>
-            </ul>
-            <p>Developer who subconsciously views himself as an artist will enjoy what he does and will do it better !</p>
-          </div>
-          <div class="col-md-5">
-            <h3>Supported by </h3>
-            <p>
-              <a href="https://github.com/xpush/node-xpush" target="_blank" rel="external nofollow"><img class="bootflat" src="img/xpush.png"></a>
-            </p>
-          </div>
-        </div>
-        <hr class="dashed" />
-        <div class="row">
-          <div class="col-md-6">
-            <h3>Talk to us</h3>
-            <ul>
-              <li>Email us at <span class="connect">xpush.io@gmail.com</span></li>
-              <li>
-                <a title="Twitter" href="https://twitter.com/xpushio" target="_blank" rel="external nofollow"><i class="icon" data-icon="&#xe121"></i></a>
-                <a title="Facebook" href="https://www.facebook.com/xpush.team" target="_blank" rel="external nofollow"><i class="icon" data-icon="&#xe10b"></i></a>
-                <!-- a title="Google+" href="https://plus.google.com/u/0/" target="_blank" rel="external nofollow"><i class="icon" data-icon="&#xe110"></i></a -->
-                <a title="Github" href="https://github.com/xpush" target="_blank" rel="external nofollow"><i class="icon" data-icon="&#xe10e"></i></a>
-              </li>
-            </ul>
-          </div>
-          <div class="col-md-6">
-            <!-- Begin MailChimp Signup Form -->
-            <link href="//cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
-            <div id="mc_embed_signup">
-            <h3 style="margin-bottom: 15px;">Newsletter</h3>
-            <form action="http://stalk.us7.list-manage1.com/subscribe/post?u=8a74b6894774f96cd66532167&amp;id=cf45eb3f4d" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
-                <input style="margin-bottom: 10px;" type="email" value="" name="EMAIL" class="email form-control" id="mce-EMAIL" placeholder="email address" required>
-                <span class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="btn btn-primary"></span>
-            </form>
-            </div>
-            <!--End mc_embed_signup-->
-          </div>
-        </div>
-        <hr class="dashed" />
-        <div class="copyright clearfix">
-          <p><b>STALK.IO</b></p>
-          <p>&copy; 2014 <a href="http://stalk.io" target="_blank">STALK.IO</a>, Inc. All rights reserved. &nbsp;&nbsp;</p>
-        </div>
-      </div>
-    </div>
+			</div><!--End container -->
+
+		</section><!--End about section -->
+
+		<!-- ==============================================
+		SKILLS
+		=============================================== -->
+		<section id="skills">
+
+			<div class="container">
+
+				<div class="row skills">
+
+					<div class="text-center scrollimation scale-in">
+						<p class="lead"><span>"STALK.IO"</span> is the most beautiful and effective way to make visitors stay on your website. <b>Just check the bottom on this page!</b> It's super easy to install this chat widget for your website.</p>
+<p>You can install this right where you want it. For <b>Wordpress, Tumblr, Blogger and your Any Web Sites</b></p>
+						<br><br>
+					</div>
+
+				</div><!--End row -->
+
+			</div><!--End container -->
+
+		</section><!--End skills section -->
+
+		<!-- ==============================================
+		portfolio
+		=============================================== -->
+		<section id="twitter">
+			<div class="container">
+				<div class="row scrollimation fade-in">
+					<div class="col-sm-3 twitter-icon">
+<br><br>
+						<h1 style="color:white">another <strong>awesome</strong> service</h1>
+					</div>
+					<div class="col-sm-9">
+<br><br>
+						<h1 style="color:white"><strong>LINK</strong>.STALK.IO</h1>
+						<p><a href="http://link.stalk.io">LINK.STALK.IO</a> is the live conversation service with visitors on your website. Experience the easiest way to boost your sales, help solve issues and understand your customers with this live chat.</p>
+						<a href="http://link.stalk.io" class="btn btn-theme transparent">Visit <strong>"LINK.STALK.IO"</strong> service</a>
+<br><br><br>
+					</div>
+				</div><!-- End row -->
+			</div><!-- End container -->
+
+		</section><!-- End Twitter section -->
+
+		<!-- ==============================================
+		CONTACT
+		=============================================== -->
+		<section  id="contact">
+
+			<div class="container">
+
+				<h1 class="section-title scrollimation scale-in">Keep in <span>Touch</span> with us</h1>
+
+				<div class="row">
+
+					<div class="col-sm-5 contact-info scrollimation fade-right">
+						<p>
+							It’s a useful communication tool for your web sites that lets you create free and multi-user live chat with no Active-X and no plugins, just by very simple installation.
+						</p>
+
+						<p>I hope you will enjoy this new product, and if you use it, do not forget to share your projects with us. I love to see all the great things you are working on!.....</p>
+
+						<address>
+							STALK.IO<br>
+							<i class="icon-map-marker"></i>&nbsp;&nbsp;Seoul, Korea<br>
+							contact with us by e-mail<br>
+							<i class="icon-envelope"></i>&nbsp;&nbsp;xpush.io@gmail.com<br>
+						</address>
+
+						<ul class="socials">
+							<li><a href="https://www.facebook.com/JohnKim0331"><i class="icon-facebook"></i></a></li>
+								<li><a href="https://github.com/xpush"><i class="icon-github"></i></a></li>
+							<!-- li><a href="#fakelink"><i class="icon-dribbble"></i></a></li>
+							<li><a href="#fakelink"><i class="icon-google-plus"></i></a></li -->
+<li>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="KNYRHWYU6SAUA">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+</li>
+						</ul>
+
+					</div>
+
+					<!--=== Contact Form ===-->
+
+					<!--form id="contact-form" class="col-sm-7 scrollimation fade-left" action="javascript:alert('we are developing now..');" method="post" novalidate -->
+					<form id="contact-form" class="col-sm-7 scrollimation fade-left"  method="post" action="a#" novalidate>
+						<div class="form-group">
+						  <label class="control-label" for="contact-name">Name</label>
+						  <div class="controls">
+							<i class="icon-user"></i>
+							<input id="contact-name" name="name" placeholder="My name is..." class="form-control input-lg requiredField" type="text" data-error-empty="Please enter your name">
+						  </div>
+						</div><!-- End name input -->
+
+						<div class="form-group">
+						  <label class="control-label" for="contact-mail">Email</label>
+						  <div class=" controls">
+							<i class="icon-envelope"></i>
+							<input id="contact-mail" name="email" placeholder="Please respond at..." class="form-control input-lg requiredField" type="email" data-error-empty="Please enter your email" data-error-invalid="Invalid email address">
+						  </div>
+						</div><!-- End email input -->
+
+						<div class="form-group">
+						  <label class="control-label" for="contact-message">Message</label>
+							<div class="controls">
+								<i class="icon-comment"></i>
+								<textarea id="contact-message" name="message"  placeholder="I wanna talk about..." class="form-control input-lg requiredField" rows="5" data-error-empty="Please enter your message"></textarea>
+							</div>
+						</div><!-- End textarea -->
+
+						<p><button name="submit" type="submit" class="btn btn-theme btn-lg" data-error-message="Error!" data-sending-message="Sending..." data-ok-message="Message Sent"><i class="icon-location-arrow"></i>Send Message</button></p>
+						<input type="hidden" name="submitted" id="submitted" value="true" />
+						<input type="hidden" name="app" id="app" value="stalk.io" />
+
+					</form><!-- End contact-form -->
+
+				</div><!-- End row -->
+
+			</div><!-- End container -->
+
+		</section><!-- End contact section -->
+
+		<!-- ==============================================
+		FOOTER
+		=============================================== -->
+		<footer id="main-footer">
+
+			<div class="container">
+
+				<div class="row">
+
+					<div class="col-sm-6 left-col">
+						<h1 class="small-logo">STALK.IO<br><span>for your web pages</span></h1>
+						<ul class="footer-nav">
+							<li><a class="scrollto" href="#home">Home</a></li>
+							<li><a class="scrollto" href="#services">Features</a></li>
+							<li><a class="scrollto" href="#about">Install</a></li>
+							<li><a class="scrollto" href="#twitter">Services</a></li>
+						</ul>
+						<p>&copy;Copyright 2014 / All Rights Reserved</p>
+					</div>
+
+					<div class="col-sm-6 right-col">
+						<h2>Who Are Developers</h2>
+						<p>
+							Developer who subconsciously views himself as an artist will enjoy what he does and will do it better ! <br>
+							<a href="https://www.facebook.com/JohnKim0331"><strong>John Kim</strong> <i class="icon-facebook"></i></a> |
+							<a href="https://www.facebook.com/john.ko.54"><strong>John Ko</strong> <i class="icon-facebook"></i></a> |
+							<a href="https://www.facebook.com/jung.jinyung.9"><strong>James</strong> <i class="icon-facebook"></i></a> |
+							<a href="https://www.facebook.com/notdol"><strong>Notdol</strong> <small>(weird name ?)</small> <i class="icon-facebook"></i></a>
+						</p>
+
+					</div>
+
+				</div><!-- End row -->
+
+			</div><!-- End container -->
+
+		</footer><!-- End footer -->
+
+		<!-- ==============================================
+		SCRIPTS
+		=============================================== -->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script>window.jQuery || document.write('<script src="js/libs/jquery-1.8.2.min.js">\x3C/script>')</script>
+
+		<script src="js/libs/bootstrap.min.js"></script>
+		<script src='js/jquery.scrollto.js'></script>
+		<script src='js/jquery.flexslider.min.js'></script>
+		<script src='js/twitterFetcher_v10_min.js'></script>
+		<script src='js/jquery.masonry.min.js'></script>
+		<script src="js/waypoints.min.js"></script>
+		<script src="js/jquery.easypiechart.js"></script>
+		<script src="js/jquery.backstretch.min.js"></script>
+		<script src="js/contact.js"></script>
+		<script src="js/designr.js"></script>
 
 <script src="http://www.stalk.io/stalk.js"></script>
 <script>STALK.init();</script>
 
-  </body>
+	</body>
+
 </html>
