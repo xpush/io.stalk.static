@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/xpush/stalk.io/master/www/img/logo.png"/>
+  <img src="https://raw.githubusercontent.com/xpush/stalk.io/master/doc/stalk-logo.jpg"/>
 </p>
 
 stalk.io
