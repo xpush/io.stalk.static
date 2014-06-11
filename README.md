@@ -29,6 +29,32 @@ Features
 
   STALK.IO service is using the distributed systems with [XPUSH] servers. [XPUSH] is a reliable realtime communication channel server for quickly, easily adding scalable functionality to web and mobile apps.
 
+
+
+Development
+-----------
+```
+	// Install GULP build tool
+	$ sudo npm install -g gulp
+
+	// Download and build
+	$ git clone https://github.com/xpush/stalk.io.git
+	$ cd stalk.io
+	$ npm install
+	$ gulp
+
+	// Start web server
+	$ sudo node web.js
+	// or start web server with python
+	$ cd www
+	$ sudo python -m SimpleHTTPServer 80
+
+	// watching /src for developing client files
+	$ gulp watch
+
+```
+
+
 License
 ----
 
