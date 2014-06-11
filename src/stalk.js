@@ -430,7 +430,6 @@ var STALK = (function(CONF, UTILS, WIN) {
         CONF._user = {};
       }
 
-
       CONF._socket = io.connect(data.result.server.url+'/channel?'+query, {
       	'sync disconnect on unload': true,
         'force new connection': true
@@ -502,7 +501,6 @@ var STALK = (function(CONF, UTILS, WIN) {
         if (data.event == 'CONNECTION') {
 
           WIN.setTitleBar('title', data.count);
-
           /*if( data.userId == CONF._userId ) {
 
             WIN.addSysMessage(CONF.MESSAGE.default_message);
@@ -542,7 +540,7 @@ var STALK = (function(CONF, UTILS, WIN) {
     },
 
     getOAuthUrl : function(targetName){
-      return CONF.APP_URL + '/auth/'+targetName+'/check?app='+CONF._app+'&channel='+CONF._channel+'&socketId='+CONF._socket.socket.sessionid;
+      return CONF.APP_URL + '/auth/'+targetName+'/check?app='+CONF._app+'&channel='+CONF._channel+'&socketId='+CONF._socket.io.engine.id;
     }
 
   };
