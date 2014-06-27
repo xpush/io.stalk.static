@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-
+var runSequence = require('run-sequence');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var minify = require('gulp-minify-css');
@@ -52,4 +52,11 @@ gulp.task('watch', function() {
 });
 
 // The default task (called when you run `gulp` from cli)
-gulp.task('default', ['clean', 'scripts', 'styles', 'images', 'move']);
+gulp.task('default', function(cb){
+
+  runSequence('clean',
+              ['scripts', 'styles', 'images'],
+              'move',
+              cb);
+
+});
