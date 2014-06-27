@@ -29,7 +29,7 @@ gulp.task('scripts', ['clean'], function() {
 
 gulp.task('styles', ['clean'], function() {
  return gulp.src(paths.styles)
-    .pipe(minify())
+    .pipe(minify({keepSpecialComments: false, noAdvanced: true}))
     .pipe(concat('stalk.css'))
     .pipe(gulp.dest('build'));
 });
