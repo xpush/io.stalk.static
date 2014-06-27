@@ -18,6 +18,7 @@
     "gulp-uglify": "^0.3.0",
     "node-static": "^0.7.3",
     "rimraf": "^2.2.8",
+    "run-sequence": "^0.3.6",
     "socket.io-client": "^1.0.4"
   },
   "keywords": [
