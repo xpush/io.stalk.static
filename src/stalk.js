@@ -416,12 +416,12 @@ var STALK = (function(CONF, UTILS, WIN) {
       CONF._server = data.result.server;
 
       var query =
-          'app='+CONF._app+'&'+
-          'channel='+CONF._channel+'&'+
-          'server='+data.result.server.name+'&'+
+          'A='+CONF._app+'&'+
+          'C='+CONF._channel+'&'+
+          'S='+data.result.server.name+'&'+
           //'userId='+CONF._userId+'&'+
-          'deviceId=WEB&'+
-          'mode=CHANNEL_ONLY';
+          'D=WEB&'+
+          'MD=CHANNEL_ONLY';
 
       var _user = UTILS.getUserInfo();
       if(_user.name){
@@ -517,7 +517,6 @@ var STALK = (function(CONF, UTILS, WIN) {
           }else{
             WIN.addSysMessage(data.userId + ' was disconnected.');
           }*/
-
         }
 
       });
@@ -526,10 +525,10 @@ var STALK = (function(CONF, UTILS, WIN) {
 
     sendMessage : function(msg){
       var param = {
-        app:      CONF._app,
-        channel:  CONF._channel,
-        name:     'message',
-        data:     {
+        A:      CONF._app,
+        C:  CONF._channel,
+        NM:     'message',
+        DT:     {
           user:     CONF._user,
           message:  msg
         }

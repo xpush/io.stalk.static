@@ -46,9 +46,9 @@ gulp.task('move', [], function() {
 
 // Rerun the task when a file changes
 gulp.task('watch', function() {
-  gulp.watch(paths.scripts, ['clean', 'scripts', 'move']);
-  gulp.watch(paths.styles,  ['clean', 'styles',  'move']);
-  gulp.watch(paths.images,  ['clean', 'images',  'move']);
+  gulp.watch(paths.scripts, ['scripts', 'move']);
+  gulp.watch(paths.styles,  ['styles',  'move']);
+  gulp.watch(paths.images,  ['images',  'move']);
 });
 
 // The default task (called when you run `gulp` from cli)
