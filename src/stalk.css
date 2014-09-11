@@ -264,12 +264,70 @@
   overflow:visible;
   line-height: 1.4em
 }
+#stalk_window .small_name {
+  font-size : 11px;
+  display : block;
+}
+#stalk_window .stalk_message_clearfix {
+  background:transparent none repeat scroll 0 0;
+  color:black;
+  padding:0;
+  overflow:visible;
+  line-height: 1.4em;
+  clear:both;
+}
 #stalk_window .stalk_message_me {
   color:#979797;
   padding-right:5px;
   display:inline
 }
-
+#stalk_window .stalk_messages_to {
+  background:transparent none repeat scroll 0 0;
+  color:#979797;
+  padding:0;
+  overflow:visible;
+}
+#stalk_window .messages_to {
+  float: right;
+  background-color: #dbedfe;
+  background-image: -webkit-gradient(linear, center bottom, center top, from(#c7defe), to(#e7f1fe));
+  background-image: -webkit-linear-gradient(bottom, #c7defe, #e7f1fe);
+  border: 1px solid #dfdfdf;
+  border: 1px solid rgba(0, 0, 0, .18);
+  border-bottom-color: rgba(0, 0, 0, .29);
+  -webkit-border-radius: 4px;
+  -webkit-box-shadow: 0 1px 0 #dce0e6;
+  color: #3e454c;
+  padding: 2px 4px 2px 4px;
+  clear: both;
+  max-width: 250px;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  margin-bottom: 8px;
+  word-wrap: break-word;
+  text-align: left;
+  text-shadow: rgba(255, 255, 255, .5) 0 1px 0;
+}
+#stalk_window .messages_from {
+  float:left;
+  background-color: #f7f7f7;
+  background-image: -webkit-gradient(linear, center bottom, center top, from(#f2f2f2), to(#fff));
+  background-image: -webkit-linear-gradient(bottom, #f2f2f2, #fff);  
+  border: 1px solid rgba(0, 0, 0, .18);
+  border-bottom-color: rgba(0, 0, 0, .29);
+  -webkit-border-radius: 4px;
+  -webkit-box-shadow: 0 1px 0 #dce0e6;
+  color: #3e454c;
+  padding: 2px 4px 2px 4px;
+  max-width: 216px;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  margin-bottom: 8px;
+  word-wrap: break-word;
+  text-align: left;
+  text-shadow: rgba(255, 255, 255, .5) 0 1px 0;
+  margin-left : 2px;
+}
 #stalk_window .stalk_message_note {
   color:#979797;
   padding-right:2px;
@@ -278,6 +336,7 @@
 #stalk_window .stalk_message_from {
   color:#5ba0d0;
   padding-right:5px
+  display:block;
 }
 #stalk_window .stalk_message>span:empty {
   padding-right:0

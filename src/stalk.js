@@ -263,34 +263,35 @@ var STALK_WINDOW = {
 
     var div_message = document.getElementById('stalk_conversation');
 
-    if(from.id == STALK_CONFIGURATION._last_id){
-      var messageId = from.id+'-'+STALK_CONFIGURATION._last_count;
-      var sp_msg = document.getElementById(messageId);
-      sp_msg.innerHTML = sp_msg.innerHTML+"<br>"+decodeURIComponent(message);
+    STALK_CONFIGURATION._last_id = from.id;
+    STALK_CONFIGURATION._last_count = STALK_CONFIGURATION._last_count + 1;
+    var messageId = STALK_CONFIGURATION._last_id+'-'+STALK_CONFIGURATION._last_count;
 
-    }else{
+    var msg = '';
+    if(STALK_CONFIGURATION._user && STALK_CONFIGURATION._user.id != from.id ){
 
-      STALK_CONFIGURATION._last_id = from.id;
-      STALK_CONFIGURATION._last_count = STALK_CONFIGURATION._last_count + 1;
-      var messageId = STALK_CONFIGURATION._last_id+'-'+STALK_CONFIGURATION._last_count;
-
-      var msg = '';
       msg = msg + '<span class="stalk_message_from stalk_message_fg ">'+
-        '<a href="'+from.url+'" target="_blank">'+
-        '<img src="'+from.image+'" style="width: 23px;" /></a> '+from.name+' :'+
+        '<span class="small_name">'+ from.name+'</span>'+
+        '<a href="'+from.url+'" target="_blank"  style="float:left">'+
+        '<img src="'+from.image+'" style="width: 30px;" /></a> '+
         '</span>' +
-        '<span id="'+messageId+'">'+decodeURIComponent(message)+'</span>';
+        '<span id="'+messageId+'" class="messages_from">'+decodeURIComponent(message)+'</span>';
 
       var chatDiv = document.createElement("p");
-      chatDiv.className = 'stalk_message';
+      chatDiv.className = 'stalk_message_clearfix';
       chatDiv.innerHTML = msg;
 
-      if(STALK_CONFIGURATION._user && STALK_CONFIGURATION._user.id == from.id ){
-        chatDiv.style.textAlign = "right";
-      }
+    } else {
 
-      div_message.appendChild(chatDiv);
+      msg += '<span id="'+messageId+'" class="messages_to">'+decodeURIComponent(message)+'</span>';
+
+      var chatDiv = document.createElement("p");
+      chatDiv.className = 'stalk_messages_to';
+      chatDiv.innerHTML = msg;
+      chatDiv.style.textAlign = "right";
     }
+
+    div_message.appendChild(chatDiv);
 
     div_message.scrollTop = div_message.scrollHeight;
 
@@ -472,7 +473,7 @@ var STALK = (function(CONF, UTILS, WIN) {
 
         CONF._user = {
           id: 'F'+data.id,
-          name: data.displayName,
+          name: encodeURIComponent( data.displayName ),
           url: data.profileUrl,
           image: 'https://graph.facebook.com/'+data.id+'/picture'
         };
@@ -486,7 +487,7 @@ var STALK = (function(CONF, UTILS, WIN) {
 
         CONF._user = {
           id: 'G'+data.id,
-          name: data.name,
+          name: encodeURIComponent( data.name ),
           url: data.link,
           image: data.picture
         };
