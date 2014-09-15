@@ -1,7 +1,7 @@
 var STALK_CONFIGURATION = {
   APP: 'stalk-io',
-  APP_URL: 'http://stalk-front-s01.cloudapp.net:8000',
-  CSS_URL: 'http://stalk-front-s01.cloudapp.net/stalk.css',
+  APP_URL: 'http://chat.stalk.io:8000',
+  CSS_URL: 'http://chat.stalk.io/stalk.css',
   MESSAGE: {
     title: '',
   default_message: 'Welcome !  ',
@@ -271,7 +271,7 @@ var STALK_WINDOW = {
     if(STALK_CONFIGURATION._user && STALK_CONFIGURATION._user.id != from.id ){
 
       msg = msg + '<span class="stalk_message_from stalk_message_fg ">'+
-        '<span class="small_name">'+ decodeURIComponent(from.name)+'</span>'+
+        '<span class="small_name">'+ decodeURIComponent( from.name )+'</span>'+
         '<a href="'+from.url+'" target="_blank"  style="float:left">'+
         '<img src="'+from.image+'" style="width: 30px;" /></a> '+
         '</span>' +
