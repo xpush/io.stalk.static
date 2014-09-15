@@ -412,6 +412,7 @@
   display:none
 }
 #stalk_window .stalk_message_notification {
+  clear:both;
   display:block!important;
   text-indent:0!important;
   padding:2px 14px 2px 14px!important;
