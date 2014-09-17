@@ -180,6 +180,9 @@ var STALK_WINDOW = {
 '        <div style="text-transform: uppercase; font-size: 9px; letter-spacing: 2px; font-weight: bold; padding: 8px 0px !important; font-family: helvetica, sans-serif !important; text-align: center !important; color: rgb(131, 136, 135) !important; clear: both;"> ' +
 '          <a style="font-family: helvetica, sans-serif !important; text-transform: uppercase; font-size: 9px !important; letter-spacing: 2px; font-weight: bold; color: #c9362f !important; text-decoration: none; text-align:center !important;" ' +
 '          href="http://stalk.io" target="_blank">stalk.io</a> ' +
+'          <a href="" id="stalk_mylink" target="_blank">       '+           
+'          <img id="stalk_myimage" />                        ' +
+'          </a>                        ' +
 '        </div> ' +
 '      </div> ' +
 ''+
@@ -366,8 +369,12 @@ var STALK_WINDOW = {
 
     if(_event == 'login'){
       document.getElementById('stalk_logoutbutton').style.display = 'block';
-      document.getElementById('stalk_chatform').style.display     = 'block';
+      document.getElementById('stalk_chatform').style.display     = 'block';      
       document.getElementById('stalk_loginform').style.display    = 'none';
+      document.getElementById('stalk_myimage').style.display    = 'block';
+
+      document.getElementById('stalk_myimage').src = STALK_CONFIGURATION._user.image;
+      document.getElementById('stalk_mylink').href = STALK_CONFIGURATION._user.url;
 
       this.focusTextarea();
 
@@ -375,6 +382,7 @@ var STALK_WINDOW = {
       document.getElementById('stalk_logoutbutton').style.display = 'none';
       document.getElementById('stalk_chatform').style.display     = 'none';
       document.getElementById('stalk_loginform').style.display    = 'block';
+      document.getElementById('stalk_myimage').style.display    = 'none';
       this.addNotification('Logout completely. Try logging on again.');
 
     }else if(_event == 'title'){
@@ -470,6 +478,7 @@ var STALK = (function(CONF, UTILS, WIN) {
       });
 
       CONF._socket.on('login-facebook', function (data) {
+        console.log( 'login-facebook');
 
         CONF._user = {
           id: 'F'+data.id,
@@ -484,6 +493,7 @@ var STALK = (function(CONF, UTILS, WIN) {
       });
 
       CONF._socket.on('login-google', function (data) {
+        console.log( 'login-facebook');
 
         CONF._user = {
           id: 'G'+data.id,
