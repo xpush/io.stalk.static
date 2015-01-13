@@ -3,8 +3,8 @@ var STALK_CONFIGURATION = {
   APP_URL: 'http://chat.stalk.io:8000',
   CSS_URL: 'http://stalk.io/stalk.css',
   MESSAGE: {
-    title: '',
-  default_message: 'Welcome !  ',
+    title: 'Online : {title}',
+    default_message: 'Welcome !  ',
   }
 };
 
@@ -144,25 +144,33 @@ var STALK_UTILS = {
 var STALK_WINDOW = {
   initWin : function(){
 
+    var isEmbeded = STALK_CONFIGURATION._div ? true : false;
+
+    var _height = isEmbeded ? (document.getElementById(STALK_CONFIGURATION._div).clientHeight - 106)+'px!important' : STALK_CONFIGURATION._height || '200px!important';
+    var _width  = isEmbeded ? '100%; min-width: 100%' : STALK_CONFIGURATION._width  || '300px!important';
+    var _fontFamily = STALK_CONFIGURATION._fontFamily;
+    var _titleColor = STALK_CONFIGURATION._titleColor;
+
     var div_root = document.createElement('div');
     div_root.id = 'stalk';
-    div_root.className = 'stalk_status_compressed';
+    div_root.className = isEmbeded ? 'stalk_status_expanded' : 'stalk_status_compressed';
+
     div_root.innerHTML =
-'  <div id="stalk_window" style="margin: 0px 20px; bottom: 0px; right: 0px; display: none; position: fixed;" class="stalk_window_base stalk_window_width stalk_window_fixed_bottom stalk_window_fixed_right "> ' +
+'  <div id="stalk_window" style="margin: '+ (isEmbeded?'0px 0px':'0px 20px')+ (_fontFamily ? '; font-family: '+_fontFamily : '') +'; bottom: 0px; right: 0px; display: none; position: '+ (isEmbeded?'static':'fixed')+'; width: '+_width+'" class="stalk_window_base stalk_window_width stalk_window_fixed_bottom stalk_window_fixed_right "> ' +
 '    <div id="stalk_panel" class="stalk_panel_border stalk_panel_bg" style="display: block;"> ' +
 ''+
 '     <div id="stalk_title" style="display: block;"> ' +
-'        <div id="stalk_topbar" class="stalk_panel_title_fg stalk_panel_title_bg"> ' +
+'        <div id="stalk_topbar" class="stalk_panel_title_fg stalk_panel_title_bg" style="text-align: center; '+(_titleColor?'background-color: '+_titleColor+'!important;':'')+' "> ' +
 '          <a id="stalk_sizebutton" class="stalk_button">^</a> ' +
 '          <a id="stalk_logoutbutton" class="stalk_button" style="display: none">X</a> ' +
 '          <a id="stalk_oplink" class="stalk_panel_title_fg" > . . . . </a> ' +
 '        </div> ' +
 '      </div> ' +
 ''+
-'      <div id="stalk_contents" style="display: none;"> ' +
+'      <div id="stalk_contents" style="display: '+(isEmbeded?'block':'none')+';"> ' +
 '        <div id="stalk_body"> ' +
 ''+
-'          <div id="stalk_conversation" class="stalk_conversation stalk_panel_height stalk_panel_bg" style="height: 200px; display: block;"></div>' +
+'          <div id="stalk_conversation" class="stalk_conversation stalk_panel_bg" style="height: '+_height+'; display: block;"></div>' +
 
 '          <form id="stalk_chatform" action="#" method="GET" autocomplete="off" style="display: none;"> ' +
 '            <div id="stalk_input" class="stalk_input "> ' +
@@ -177,10 +185,10 @@ var STALK_WINDOW = {
 '          </div> ' +
 
 '        </div> ' +
-'        <div style="text-transform: uppercase; font-size: 9px; letter-spacing: 2px; font-weight: bold; padding: 8px 0px !important; font-family: helvetica, sans-serif !important; text-align: center !important; color: rgb(131, 136, 135) !important; clear: both;"> ' +
+'        <div id="stalk_footer" style="text-transform: uppercase; font-size: 9px; letter-spacing: 2px; font-weight: bold; padding: 6px 0px !important; font-family: helvetica, sans-serif !important; text-align: center !important; color: rgb(131, 136, 135) !important; clear: both;"> ' +
 '          <a style="font-family: helvetica, sans-serif !important; text-transform: uppercase; font-size: 9px !important; letter-spacing: 2px; font-weight: bold; color: #c9362f !important; text-decoration: none; text-align:center !important;" ' +
 '          href="http://stalk.io" target="_blank">stalk.io</a> ' +
-'          <a href="" id="stalk_mylink" target="_blank">       '+           
+'          <a href="" id="stalk_mylink" target="_blank">       '+
 '          <img id="stalk_myimage" />                        ' +
 '          </a>                        ' +
 '        </div> ' +
@@ -190,7 +198,8 @@ var STALK_WINDOW = {
 '    <div style="display: none;"></div> ' +
 '  </div> ';
 
-    document.getElementsByTagName('body')[0].appendChild(div_root);
+    var _root = isEmbeded ? document.getElementById(STALK_CONFIGURATION._div) : document.getElementsByTagName('body')[0];
+    _root.appendChild(div_root);
 
     var self = this;
     var div_titlebar = document.getElementById('stalk_title');
@@ -215,23 +224,28 @@ var STALK_WINDOW = {
 
     };
 
-    div_titlebar.onclick = function(){
+    if(!isEmbeded) {
 
-      if(div_contents.style.display != 'none'){
-        div_contents.style.display = 'none';
-				document.getElementById('stalk').className = 'stalk_status_compressed';
-      }else{
-        self.blinkHeader(true);
-        div_contents.style.display = 'block';
-				document.getElementById('stalk').className = 'stalk_status_expanded';
+      document.getElementById('stalk_sizebutton').style.display = 'none';
 
-        self.focusTextarea();
+      div_titlebar.onclick = function(){
 
-        var div_message = document.getElementById('stalk_conversation');
-        div_message.scrollTop = div_message.scrollHeight;
+        if(div_contents.style.display != 'none'){
+          div_contents.style.display = 'none';
+  				document.getElementById('stalk').className = 'stalk_status_compressed';
+        }else{
+          self.blinkHeader(true);
+          div_contents.style.display = 'block';
+  				document.getElementById('stalk').className = 'stalk_status_expanded';
 
-      }
-    };
+          self.focusTextarea();
+
+          var div_message = document.getElementById('stalk_conversation');
+          div_message.scrollTop = div_message.scrollHeight;
+
+        }
+      };
+    }
 
     el_textarea.onkeydown = function(e) {
 
@@ -369,9 +383,9 @@ var STALK_WINDOW = {
 
     if(_event == 'login'){
       document.getElementById('stalk_logoutbutton').style.display = 'block';
-      document.getElementById('stalk_chatform').style.display     = 'block';      
+      document.getElementById('stalk_chatform').style.display     = 'block';
       document.getElementById('stalk_loginform').style.display    = 'none';
-      document.getElementById('stalk_myimage').style.display    = 'block';
+      document.getElementById('stalk_myimage').style.display      = 'block';
 
       document.getElementById('stalk_myimage').src = STALK_CONFIGURATION._user.image;
       document.getElementById('stalk_mylink').href = STALK_CONFIGURATION._user.url;
@@ -382,11 +396,11 @@ var STALK_WINDOW = {
       document.getElementById('stalk_logoutbutton').style.display = 'none';
       document.getElementById('stalk_chatform').style.display     = 'none';
       document.getElementById('stalk_loginform').style.display    = 'block';
-      document.getElementById('stalk_myimage').style.display    = 'none';
+      document.getElementById('stalk_myimage').style.display      = 'none';
       this.addNotification('Logout completely. Try logging on again.');
 
     }else if(_event == 'title'){
-      document.getElementById('stalk_oplink').innerHTML = 'Online : '+data+'';
+      document.getElementById('stalk_oplink').innerHTML = String(STALK_CONFIGURATION.MESSAGE.title).replace(/{title}/g, data);
 
     }
 
@@ -399,15 +413,26 @@ var STALK = (function(CONF, UTILS, WIN) {
 
   return {
 
-    init: function(data) {
+    init: function(data, callback) {
 
       if(CONF._isReady) return false;
+
+      CONF._callback = callback;
 
       CONF._isReady = true;
       //CONF._userId  = data.userId || 'unknown';
       CONF._app     = CONF.APP; //+':'+location.hostname;
       CONF._channel = encodeURIComponent(location.hostname + location.pathname); //.substr(0);
       CONF._last_count = 0;
+
+      if(data && data.div)        CONF._div        = data.div;
+      if(data && data.fontFamily) CONF._fontFamily = data.fontFamily;
+      if(data && data.width)      CONF._width      = data.width;
+      if(data && data.height)     CONF._height     = data.height;
+      if(data && data.titleColor) CONF._titleColor = data.titleColor;
+
+      if(data && data.title)      CONF.MESSAGE.title = data.title;
+
 
       if( !CONF._channel ) return;
 
@@ -451,6 +476,8 @@ var STALK = (function(CONF, UTILS, WIN) {
 
           WIN.initWin();
 
+          if(CONF._callback) CONF._callback();
+
           var initMessage = CONF.MESSAGE.default_message;
           if(!CONF._user.name){
             initMessage = initMessage + 'Try logging on for chatting.';
@@ -478,8 +505,6 @@ var STALK = (function(CONF, UTILS, WIN) {
       });
 
       CONF._socket.on('login-facebook', function (data) {
-        console.log( 'login-facebook');
-
         CONF._user = {
           id: 'F'+data.id,
           name: encodeURIComponent( data.displayName ),
@@ -493,8 +518,6 @@ var STALK = (function(CONF, UTILS, WIN) {
       });
 
       CONF._socket.on('login-google', function (data) {
-        console.log( 'login-facebook');
-
         CONF._user = {
           id: 'G'+data.id,
           name: encodeURIComponent( data.name ),

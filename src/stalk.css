@@ -224,7 +224,8 @@
 }
 #stalk_window #stalk_contents {
   border-left:1px solid #ededed;
-  border-right:1px solid #ededed
+  border-right:1px solid #ededed;
+  border-bottom:1px solid #ededed
 }
 #stalk_window.stalk_window_position_inline .stalk_panel_border {
   border-bottom:1px solid #ededed
@@ -312,7 +313,7 @@
   float:left;
   background-color: #f7f7f7;
   background-image: -webkit-gradient(linear, center bottom, center top, from(#f2f2f2), to(#fff));
-  background-image: -webkit-linear-gradient(bottom, #f2f2f2, #fff);  
+  background-image: -webkit-linear-gradient(bottom, #f2f2f2, #fff);
   border: 1px solid rgba(0, 0, 0, .18);
   border-bottom-color: rgba(0, 0, 0, .29);
   -webkit-border-radius: 4px;
@@ -356,7 +357,7 @@
   text-decoration:none;
   text-transform: uppercase;
   font-weight: bold;
-  font-family: helvetica, sans-serif !important;
+  /*font-family: helvetica, sans-serif !important; */
   text-align: center !important;
 }
 #stalk_window #stalk_oplink.stalk_oplink_hover {
