@@ -4,7 +4,7 @@ var STALK_CONFIGURATION = {
   CSS_URL: 'http://stalk.io/stalk.css',
   MESSAGE: {
     title: 'Online : {title}',
-    default_message: 'Welcome !  ',
+    default_message: 'Welcome !  '
   }
 };
 
