@@ -472,6 +472,8 @@
 
     _CONFIG._socket.on('connect', function () {
 
+      console.log('asdfasdf');
+
       if (!_CONFIG._isCreate) {
 
         layout.initWin();
@@ -498,6 +500,33 @@
       layout.addMessage(data.message, data.user);
     });
 
+
+    _CONFIG._socket.on('login-facebook', function (data) {
+      _CONFIG.user = {
+        id: 'F' + data.id,
+        name: encodeURIComponent(data.displayName),
+        url: data.profileUrl,
+        image: 'https://graph.facebook.com/' + data.id + '/picture'
+      };
+
+      utils.setUserInfo(CONF._user);
+      layout.setTitleBar('login');
+
+    });
+
+    _CONFIG._socket.on('login-google', function (data) {
+      _CONFIG.user = {
+        id: 'G' + data.id,
+        name: encodeURIComponent(data.name),
+        url: data.link,
+        image: data.picture
+      };
+
+      utils.setUserInfo(CONF._user);
+      layout.setTitleBar('login');
+
+    });
+
   };
 
   STALK.sendMessage = function (msg) {
@@ -513,6 +542,10 @@
     _CONFIG._socket.emit('send', param, function (data) {
     });
   };
+
+  STALK.getOAuthUrl = function (targetName) {
+    return _CONFIG.server_url + '/auth/' + targetName + '/check?app=' + _CONFIG.app_id + '&channel=' + _CONFIG.channel + '&socketId=' + _CONFIG._socket.io.engine.id;
+  }
 
 
 }(this));
