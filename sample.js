@@ -5,6 +5,7 @@
   // 1. private variable (using this scope)
   var version = '1.0';
   var _CONFIG = {
+    user: 'guest',
     div: undefined,
     app_id: 'stalk:public',
     server_url: 'http://chat.stalk.io:8000',
@@ -21,6 +22,15 @@
     _isCreate: false
   };
 
+  var _STATUS = {
+    last: '',
+    current: '',
+    timestamp: {
+      admin: 0,
+      user: 0
+    }
+  };
+
   var divLauncher = document.getElementById('stalk-launcher');
   var btnLauncher = document.getElementById('stalk-launcher-button');
   var divChatbox = document.getElementById('stalk-chatbox');
@@ -28,15 +38,6 @@
   var txMessage = document.getElementById('txMessage');
 
   var utils = {
-    getUniqueKey: function () {
-      var s = [], itoh = '0123456789ABCDEF';
-      for (var i = 0; i < 36; i++) s[i] = Math.floor(Math.random() * 0x10);
-      s[14] = 4;
-      s[19] = (s[19] & 0x3) | 0x8;
-      for (var x = 0; x < 36; x++) s[x] = itoh[s[x]];
-      s[8] = s[13] = s[18] = s[23] = '-';
-      return s.join('');
-    },
     getEscapeHtml: function (html) {
       return String(html)
         .replace(/&/g, '&amp;')
@@ -145,19 +146,34 @@
       utils.addClass(divLauncher, 'stalk-launcher-active');
       divChatbox.style.display = 'none';
     },
-    addUserMessage: function (message) {
+    addMessage: function (message, admin) {
+
+      console.log(admin);
 
       var div_message = document.getElementById('stalk-message');
 
-      var msgHtml = '<div class="stalk-comment stalk-comment-by-user"> <div class="stalk-comment-body-container"> <div class="stalk-comment-body stalk-embed-body"> <p>' +
+
+      _STATUS.current = 'admin';
+      if (!admin) {
+        _STATUS.current = 'user';
+      }
+
+      var classStr = 'stalk-conversation-part stalk-conversation-part-grouped';
+      if (_STATUS.last != _STATUS.current) {
+        classStr = classStr + '-first';
+      }
+
+      var msgHtml = '<div class="stalk-comment stalk-comment-by-' + _STATUS.current + '"> <div class="stalk-comment-body-container"> <div class="stalk-comment-body stalk-embed-body"> <p>' +
         message + '</p> </div> <div class="stalk-comment-caret"></div> </div> </div>';
 
       var chatDiv = document.createElement("div");
-      chatDiv.className = 'stalk-conversation-part stalk-conversation-part-grouped-first';
+      chatDiv.className = classStr;
       chatDiv.innerHTML = msgHtml;
 
       div_message.appendChild(chatDiv);
       div_message.scrollTop = div_message.scrollHeight;
+
+      _STATUS.last = _STATUS.current;
 
     }
   };
@@ -188,7 +204,8 @@
       message = utils.getEscapeHtml(message.replace(/^\s+|\s+$/g, ''));
 
       if (message !== "") {
-        layout.addUserMessage(message);
+        STALK.sendMessage
+        layout.addMessage(message);
         txMessage.value = "";
       }
 
@@ -223,6 +240,65 @@
 
   STALK._callbackInit = function (data) {
 
+    console.log(data);
+
+    if (
+      _CONFIG.isReady ||
+      data.status != 'ok' || !data.result.server
+    ) return false;
+
+    var query =
+      'A=' + _CONFIG.app_id + '&' +
+      'U=' + _CONFIG.user + '&' +
+      'D=' + '_' + '&' +
+      'C=' + _CONFIG.channel + '&' +
+        //'DT=' + JSON.stringify(_CONFIG.user) + '&' +
+      'S=' + data.result.server.name;
+
+    _CONFIG._socket = io.connect(data.result.server.url + '/channel?' + query);
+
+    _CONFIG._socket.on('connect', function () {
+
+      console.log('CONNECTION');
+
+      if (!_CONFIG._isCreate) {
+
+        // TODO 나중에 개발해야 함
+        //layout.initWin();
+
+        var initMessage = _CONFIG.message.welcome;
+        // TODO welcome 메시지 보여줄 것.
+      }
+      _CONFIG._isCreate = true;
+
+    });
+
+    _CONFIG._socket.on('_event', function (data) {
+      if (data.event == 'CONNECTION') {
+        //layout.setTitleBar('title', data.count);
+      } else if (data.event == 'DISCONNECT') {
+        //layout.setTitleBar('title', data.count);
+      }
+    });
+
+    _CONFIG._socket.on('message', function (data) {
+      layout.addMessage(data.message, data.user);
+    });
+
+  };
+
+  STALK.sendMessage = function (msg) {
+    var param = {
+      A: _CONFIG.app_id,
+      C: _CONFIG.channel,
+      NM: 'message',
+      DT: {
+        user: _CONFIG.user,
+        message: msg
+      }
+    };
+    _CONFIG._socket.emit('send', param, function (data) {
+    });
   };
 
 }(this));
