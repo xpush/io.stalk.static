@@ -43,7 +43,7 @@
             <div class="stalk-sheet-content" style="bottom: 74px;">
                 <div class="stalk-sheet-content-container">
                     <div class="stalk-conversation-parts-container">
-                        <div class="stalk-conversation-parts">
+                        <div id="stalk-message" class="stalk-conversation-parts">
 
 
                             <div class="stalk-conversation-part stalk-conversation-part-grouped-first">
@@ -149,6 +149,19 @@
 </div>
 
 
+<script>
+    window.stalkConfig = {
+        app_id: "stalk:vu3it197",
+        server_url: 'http://session.stalk.io:8888',
+        //css_url: "",
+        message: {
+            title: "Online : {title}",
+            welcome: "Welcome !"
+        }
+    };
+</script>
+<script src="../node_modules/socket.io-client/socket.io.js"></script>
+<script src="../src/json2.js"></script>
 <script src="./sample.js"></script>
 
 </body>
