@@ -41,13 +41,11 @@ Development
 	$ git clone https://github.com/xpush/stalk.io.git
 	$ cd stalk.io
 	$ npm install
-	$ gulp
+	$ gulp stalk
+	$ gulp widget
 
 	// Start web server
 	$ sudo node web.js
-	// or start web server with python
-	$ cd www
-	$ sudo python -m SimpleHTTPServer 80
 
 	// watching /src for developing client files
 	$ gulp watch
