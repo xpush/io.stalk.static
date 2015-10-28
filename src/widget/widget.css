@@ -373,20 +373,20 @@
 }
 
 #stalk-container.stalk-acquire .stalk-launcher-button {
-    background-image: url(https://js.intercomcdn.com/images/acquire.png) /* noembed */;
-    background-size: 26px 25px;
+    background-image: url(http://static.stalk.io/images/widget_ic.png) /* noembed */;
+    background-size: 25px 25px;
     background-repeat: no-repeat;
 }
 
 @media (min--moz-device-pixel-ratio: 1.3), (-webkit-min-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
     #stalk-container.stalk-acquire .stalk-launcher-button {
-        background-image: url(https://js.intercomcdn.com/images/acquire@2x.png) /* noembed */;
+        background-image: url(http://static.stalk.io/images/widget_ic.png) /* noembed */;
     }
-}l
+}
 
- #stalk-container .stalk-chatbox {
-     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
- }
+#stalk-container .stalk-chatbox {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 
 #stalk-container .stalk-sheet {
     z-index: 2147483000;
@@ -577,25 +577,10 @@
     margin-right: 0;
 }
 
-#stalk-container .stalk-sheet-header-minimize-button .stalk-sheet-header-button-icon {
-    background-image: url(https://js.intercomcdn.com/images/icon-minimize.png) /* noembed */;
-    background-size: 15px 15px;
-    background-repeat: no-repeat;
-    width: 16px;
-    opacity: 0.4;
-}
-
-@media (min--moz-device-pixel-ratio: 1.3), (-webkit-min-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
-    #stalk-container .stalk-sheet-header-minimize-button .stalk-sheet-header-button-icon {
-        background-image: url(https://js.intercomcdn.com/images/icon-minimize@2x.png) /* noembed */;
-    }
-}
-
 #stalk-container .stalk-sheet-header-minimize-button .stalk-sheet-header-button-icon:hover {
     opacity: 1;
     transition: opacity 200ms linear;
 }
-
 
 @media (max-width: 460px) {
     #stalk-container .stalk-sheet {
@@ -634,7 +619,6 @@
     display: none;
 }
 
-
 #stalk-container .stalk-default-admin-avatar {
     background-color: #0071b2;
     font-size: 13px;
@@ -655,35 +639,6 @@
     text-align: center;
     color: #e4e5e7;
     display: none;
-}
-
-#stalk-container .stalk-no-conversations .stalk-no-conversations-icon {
-    background-image: url(https://js.intercomcdn.com/images/icon-no-conversations.png) /* noembed */;
-    background-size: 79px 59px;
-    background-repeat: no-repeat;
-    display: block;
-    width: 79px;
-    height: 59px;
-    margin: 0 auto 10px auto;
-}
-
-@media (min--moz-device-pixel-ratio: 1.3), (-webkit-min-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
-    #stalk-container .stalk-no-conversations .stalk-no-conversations-icon {
-        background-image: url(https://js.intercomcdn.com/images/icon-no-conversations@2x.png) /* noembed */;
-    }
-}
-
-#stalk-container.stalk-learn .stalk-no-conversations .stalk-no-conversations-icon {
-    height: 46px;
-    background-image: url(https://js.intercomcdn.com/images/empty-inbox.png) /* noembed */;
-    background-size: 79px 46px;
-    background-repeat: no-repeat;
-}
-
-@media (min--moz-device-pixel-ratio: 1.3), (-webkit-min-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
-    #stalk-container.stalk-learn .stalk-no-conversations .stalk-no-conversations-icon {
-        background-image: url(https://js.intercomcdn.com/images/empty-inbox@2x.png) /* noembed */;
-    }
 }
 
 #stalk-container .stalk-conversations-empty .stalk-no-conversations {
@@ -957,7 +912,6 @@
     border-right-color: #dadee2;
 }
 
-
 #stalk-container .stalk-composer {
     z-index: 2147483001;
     position: absolute;
@@ -975,15 +929,6 @@
 
 #stalk-container .stalk-powered-by-enabled .stalk-composer {
     padding: 8px 6px 0;
-}
-
-
-#stalk-container .stalk-composer-upload-error {
-    display: none;
-    padding-bottom: 10px;
-    text-align: center;
-    color: #c00;
-    font-size: 13px;
 }
 
 #stalk-container .stalk-composer-textarea-container {
@@ -1072,43 +1017,6 @@
     box-shadow: 0px 0px 4px 0px rgba(75, 171, 255, 0.38);
 }
 
-#stalk-container .stalk-composer-send-button {
-    border-radius: 4px;
-    font-size: 13px;
-    margin-left: 8px;
-    height: 40px;
-    float: right;
-    display: none;
-}
-
-#stalk-container .stalk-composer-upload-button {
-    z-index: 2147483001;
-    opacity: 0.4;
-    background-image: url(https://js.intercomcdn.com/images/icon-upload.png) /* noembed */;
-    background-size: 15px 14px;
-    background-repeat: no-repeat;
-    background-position: center;
-    display: none;
-    height: 15px;
-    width: 14px;
-    position: absolute;
-    cursor: pointer;
-    top: 7px;
-    right: 40px;
-    padding: 5px;
-}
-
-@media (min--moz-device-pixel-ratio: 1.3), (-webkit-min-device-pixel-ratio: 1.3), (min-device-pixel-ratio: 1.3), (min-resolution: 1.3dppx) {
-    #stalk-container .stalk-composer-upload-button {
-        background-image: url(https://js.intercomcdn.com/images/icon-upload@2x.png) /* noembed */;
-    }
-}
-
-#stalk-container .stalk-composer-upload-button:hover {
-    opacity: .8;
-    transition: opacity 200ms linear;
-}
-
 #stalk-container .stalk-composer-press-enter-to-send {
     display: none;
     text-align: right;
@@ -1127,7 +1035,6 @@
     right: 8px;
     width: auto;
 }
-
 
 #stalk-container .stalk-powered-by {
     width: 100%;
@@ -1190,7 +1097,6 @@
     transition: opacity .2s;
 }
 
-
 #stalk-container .stalk-sheet {
     -webkit-transform: scale(1);
     -ms-transform: scale(1);
@@ -1202,10 +1108,8 @@
     transition: transform 250ms ease-in-out, opacity 100ms linear 150ms;
 }
 
-
 #stalk-container {
 }
-
 
 @-webkit-keyframes fade-in {
     0% {

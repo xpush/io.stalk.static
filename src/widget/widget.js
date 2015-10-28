@@ -1,5 +1,7 @@
 (function (global) {
 
+  var TEMPLATE = '<div id="stalk-container" class="stalk-container stalk-reset stalk-acquire"> <div id="stalk-launcher" class="stalk-launcher stalk-launcher-enabled stalk-launcher-active"> <div id="stalk-launcher-button" class="stalk-launcher-button"></div></div><div id="stalk-chatbox" class="stalk-chatbox" style="display: none;"> <div id="stalk-conversation" class="stalk-conversation stalk-sheet stalk-sheet-active"> <div class="stalk-sheet-header"> <div class="stalk-sheet-header-title-container"> <b class="stalk-sheet-header-title stalk-sheet-header-with-presence">정진영</b> <div class="stalk-last-active" style="display: block;"><span class="relative-time-in-text">Last active 1 hour ago</span> </div></div><div class="stalk-sheet-header-generic-title"></div><a id="btnClose" class="stalk-sheet-header-button stalk-sheet-header-close-button" href="#"> <div class="stalk-sheet-header-button-icon"></div></a> </div><div class="stalk-sheet-body"></div><div class="stalk-sheet-content" style="bottom: 74px;"> <div class="stalk-sheet-content-container"> <div class="stalk-conversation-parts-container"> <div id="stalk-message" class="stalk-conversation-parts"> </div></div></div></div><div class="stalk-composer-container"> <div id="stalk-composer" class="stalk-composer" style="transform: translate(0px, 0px);"> <div class="stalk-composer-upload-error">The maximum upload size is 40MB</div><div class="stalk-composer-textarea-container"> <div class="stalk-composer-textarea stalk-composer-focused"> <pre><span></span><br></pre> <textarea id="txMessage" placeholder="Write a reply…"></textarea> </div></div></div></div></div></div></div>';
+
   var root = global;
 
   // 1. private variable (using this scope)
@@ -10,7 +12,7 @@
     div: undefined,
     app_id: undefined,
     server_url: 'http://chat.stalk.io:8000',
-    css_url: 'http://stalk.io/stalk.css',
+    css_url: 'http://static.stalk.io/widget.css',
     height: '200px',
     width: '300px',
     fontFamily: undefined,
@@ -31,6 +33,13 @@
       user: 0
     }
   };
+
+  var div_root = document.createElement('div');
+  div_root.id = 'stalk';
+  div_root.innerHTML = TEMPLATE;
+
+  var _root = document.getElementsByTagName('body')[0];
+  _root.appendChild(div_root);
 
   var divLauncher = document.getElementById('stalk-launcher');
   var btnLauncher = document.getElementById('stalk-launcher-button');
@@ -272,25 +281,25 @@
       utils.addClass(divLauncher, 'stalk-launcher-active');
       divChatbox.style.display = 'none';
     },
-    addMessage: function (message, admin) {
-
-      console.log(admin);
+    addMessage: function (message, type) {
 
       var div_message = document.getElementById('stalk-message');
 
-
       _STATUS.current = 'admin';
-      if (!admin) {
+      if (type == _CONFIG.user) {
         _STATUS.current = 'user';
-      }
-
-      var classStr = 'stalk-conversation-part stalk-conversation-part-grouped';
-      if (_STATUS.last != _STATUS.current) {
-        classStr = classStr + '-first';
       }
 
       var msgHtml = '<div class="stalk-comment stalk-comment-by-' + _STATUS.current + '"> <div class="stalk-comment-body-container"> <div class="stalk-comment-body stalk-embed-body"> <p>' +
         message + '</p> </div> <div class="stalk-comment-caret"></div> </div> </div>';
+
+      var classStr = 'stalk-conversation-part stalk-conversation-part-grouped';
+      if (_STATUS.last != _STATUS.current) {
+        if(_STATUS.current == 'admin'){ // add avatar image (on the first admin message)
+          msgHtml = '<img src="'+''+'" class="stalk-comment-avatar">' + msgHtml;
+        }
+        classStr = classStr + '-first';
+      }
 
       var chatDiv = document.createElement("div");
       chatDiv.className = classStr;
@@ -306,6 +315,7 @@
 
   // element event handlers
   btnLauncher.onclick = function (e) {
+    STALK._start();
     layout.open();
   };
 
@@ -333,7 +343,6 @@
 
         STALK.sendMessage(message);
 
-        layout.addMessage(message);
         txMessage.value = "";
       }
 
@@ -362,7 +371,7 @@
 
   STALK._start = function () {
 
-    /* TODO : Loading CSS  */ //utils.loadCss(_CONFIG.css_url);
+    utils.loadCss(_CONFIG.css_url);
 
     utils.requestAdminInfo(function (data) {
       data = JSON.parse(data);
@@ -380,11 +389,6 @@
 
     data = JSON.parse(data);
 
-    console.log(data);
-    console.log(data.status);
-    console.log(data.status != 'ok');
-    console.log(!data.result.server);
-    console.log(_CONFIG.isReady);
     if (
       _CONFIG.isReady ||
       data.status != 'ok' || !data.result.server
@@ -401,8 +405,6 @@
     _CONFIG._socket = io.connect(data.result.server.url + '/channel?' + query);
 
     _CONFIG._socket.on('connect', function () {
-
-      console.log('CONNECTION');
 
       if (!_CONFIG._isCreate) {
 
@@ -426,6 +428,9 @@
     });
 
     _CONFIG._socket.on('message', function (data) {
+
+      console.log(data);
+
       layout.addMessage(data.message, data.user);
     });
 
@@ -450,6 +455,5 @@
   };
 
 
-  STALK._start();
 
 }(this));
