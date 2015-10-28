@@ -6,8 +6,9 @@
   var version = '1.0';
   var _CONFIG = {
     user: 'guest',
+    admin: undefined,
     div: undefined,
-    app_id: 'stalk:public',
+    app_id: undefined,
     server_url: 'http://chat.stalk.io:8000',
     css_url: 'http://stalk.io/stalk.css',
     height: '200px',
@@ -132,7 +133,132 @@
         }
       }
       return obj1;
+    },
+    initXMLhttp: function () {
+      var xmlhttp;
+      if (window.XMLHttpRequest) {
+        //code for IE7,firefox chrome and above
+        xmlhttp = new XMLHttpRequest();
+      } else {
+        //code for Internet Explorer
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      return xmlhttp;
+    },
+    minAjax: function (config) {
+
+      if (!config.url) {
+        if (config.debugLog == true)
+          console.log("No Url!");
+        return;
+      }
+
+      if (!config.type) {
+        if (config.debugLog == true)
+          console.log("No Default type (GET/POST) given!");
+        return;
+      }
+
+      if (!config.method) {
+        config.method = true;
+      }
+
+      if (!config.debugLog) {
+        config.debugLog = false;
+      }
+
+      var xmlhttp = this.initXMLhttp();
+
+      xmlhttp.onreadystatechange = function () {
+
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+          if (config.success) {
+            config.success(xmlhttp.responseText, xmlhttp.readyState);
+          }
+
+          if (config.debugLog == true)
+            console.log("SuccessResponse");
+          if (config.debugLog == true)
+            console.log("Response Data:" + xmlhttp.responseText);
+
+        } else {
+
+          if (config.debugLog == true)
+            console.log("FailureResponse --> State:" + xmlhttp.readyState + "Status:" + xmlhttp.status);
+        }
+      };
+
+      var sendString = [],
+        sendData = config.data;
+      if (typeof sendData === "string") {
+        var tmpArr = String.prototype.split.call(sendData, '&');
+        for (var i = 0, j = tmpArr.length; i < j; i++) {
+          var datum = tmpArr[i].split('=');
+          sendString.push(encodeURIComponent(datum[0]) + "=" + encodeURIComponent(datum[1]));
+        }
+      } else if (typeof sendData === 'object' && !( sendData instanceof String || (FormData && sendData instanceof FormData) )) {
+        for (var k in sendData) {
+          var datum = sendData[k];
+          if (Object.prototype.toString.call(datum) == "[object Array]") {
+            for (var i = 0, j = datum.length; i < j; i++) {
+              sendString.push(encodeURIComponent(k) + "[]=" + encodeURIComponent(datum[i]));
+            }
+          } else {
+            sendString.push(encodeURIComponent(k) + "=" + encodeURIComponent(datum));
+          }
+        }
+      }
+      sendString = sendString.join('&');
+
+      if (config.type == "GET") {
+        xmlhttp.open("GET", config.url + "?" + sendString, config.method);
+        xmlhttp.send();
+
+        if (config.debugLog == true)
+          console.log("GET fired at:" + config.url + "?" + sendString);
+      }
+      if (config.type == "POST") {
+        xmlhttp.open("POST", config.url, config.method);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(sendString);
+
+        if (config.debugLog == true)
+          console.log("POST fired at:" + config.url + " || Data:" + sendString);
+      }
+    },
+    requestAdminInfo: function (_callback) {
+
+      if(!_CONFIG.server_url || !_CONFIG.app_id){
+        console.error('error on initiation.'); // @ TODO console logging !
+        return false;
+      }
+
+      this.minAjax({
+        url: _CONFIG.server_url + '/user/list/active',
+        type: "POST",
+        data: {
+          A: _CONFIG.app_id
+        },
+        //method: "true",
+        //debugLog: "true",
+        success: _callback
+      });
+    },
+    requestServerInfo: function (_callback) {
+
+      if(!_CONFIG.server_url || !_CONFIG.app_id || !_CONFIG.channel){
+        console.error('error on initiation.'); // @ TODO console logging !
+        return false;
+      }
+
+      this.minAjax({
+        url: _CONFIG.server_url + '/node/' + encodeURIComponent(_CONFIG.app_id) + '/' + encodeURIComponent(_CONFIG.channel),
+        type: "GET",
+        success: _callback
+      });
     }
+
   };
 
   var layout = {
@@ -204,7 +330,9 @@
       message = utils.getEscapeHtml(message.replace(/^\s+|\s+$/g, ''));
 
       if (message !== "") {
-        STALK.sendMessage
+
+        STALK.sendMessage(message);
+
         layout.addMessage(message);
         txMessage.value = "";
       }
@@ -228,20 +356,35 @@
   if (root.stalkConfig) {
     _CONFIG = utils.mergeConfig(_CONFIG, root.stalkConfig);
   }
+  _CONFIG.app_id = 'STALK:' + _CONFIG.app_id; // append prefix ('STALK')
 
-  if (!_CONFIG.channel) _CONFIG.channel = encodeURIComponent(location.hostname + location.pathname);
+  if (!_CONFIG.channel) _CONFIG.channel = encodeURIComponent(/*location.hostname + */ location.pathname);
 
-  //utils.loadCss(_CONFIG.css_url); // @ TODO 이거 처리 어떻게 할 것인지 확인 필요 !!
-  utils.loadJson(_CONFIG.server_url + '/node/' + encodeURIComponent(_CONFIG.app_id) + '/' + encodeURIComponent(_CONFIG.channel) + '?1=1', 'STALK._callbackInit');
+  STALK._start = function () {
 
-  STALK.getVersion = function () {
-    return version;
+    /* TODO : Loading CSS  */ //utils.loadCss(_CONFIG.css_url);
+
+    utils.requestAdminInfo(function (data) {
+      data = JSON.parse(data);
+      if (data.status == 'ok' && data.result.length > 0) {
+
+        _CONFIG.admin = data.result[0].U; // @ TODO U is not user real name (just user id)
+
+        utils.requestServerInfo(STALK._callbackInit);
+      }
+    });
+
   };
 
   STALK._callbackInit = function (data) {
 
-    console.log(data);
+    data = JSON.parse(data);
 
+    console.log(data);
+    console.log(data.status);
+    console.log(data.status != 'ok');
+    console.log(!data.result.server);
+    console.log(_CONFIG.isReady);
     if (
       _CONFIG.isReady ||
       data.status != 'ok' || !data.result.server
@@ -270,6 +413,7 @@
         // TODO welcome 메시지 보여줄 것.
       }
       _CONFIG._isCreate = true;
+      _CONFIG.isReady = true;
 
     });
 
@@ -300,5 +444,12 @@
     _CONFIG._socket.emit('send', param, function (data) {
     });
   };
+
+  STALK.getVersion = function () {
+    return version;
+  };
+
+
+  STALK._start();
 
 }(this));

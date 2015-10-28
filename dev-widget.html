@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>stalk widget UI template</title>
+    <link rel="stylesheet" href="backup/sample.css">
 </head>
-<body data-project-type="webpage">
+<body>
+
 
 
 <div class="wrapper">
@@ -236,25 +238,161 @@
             assistance.&#8221;</p></article>
 </div>
 
+
+<div id="stalk-container" class="stalk-container stalk-reset stalk-acquire">
+
+    <!-- launcher -->
+    <div id="stalk-launcher" class="stalk-launcher stalk-launcher-enabled stalk-launcher-active">
+        <div id="stalk-launcher-button" class="stalk-launcher-button"></div>
+    </div>
+
+    <!-- chatbox -->
+    <div id="stalk-chatbox" class="stalk-chatbox" style="display: none;">
+        <div id="stalk-conversation"
+             class="stalk-conversation stalk-sheet stalk-sheet-active">
+            <div class="stalk-sheet-header">
+                <a class="stalk-sheet-header-button stalk-sheet-header-conversations-button" href="#">
+                    <div class="stalk-sheet-header-button-icon"></div>
+                </a>
+
+                <div class="stalk-sheet-header-title-container">
+                    <b class="stalk-sheet-header-title stalk-sheet-header-with-presence">정진영</b>
+
+                    <div class="stalk-last-active" style="display: block;"><span class="relative-time-in-text">Last active 1 hour ago</span>
+                    </div>
+                </div>
+                <div class="stalk-sheet-header-generic-title"><!-- 타이틀! --></div>
+                <a id="btnClose" class="stalk-sheet-header-button stalk-sheet-header-close-button" href="#">
+                    <div class="stalk-sheet-header-button-icon"></div>
+                </a>
+                <a class="stalk-sheet-header-button stalk-sheet-header-minimize-button" href="#">
+                    <div class="stalk-sheet-header-button-icon"></div>
+                </a>
+            </div>
+            <div class="stalk-sheet-body"></div>
+            <div class="stalk-sheet-content" style="bottom: 74px;">
+                <div class="stalk-sheet-content-container">
+                    <div class="stalk-conversation-parts-container">
+                        <div id="stalk-message" class="stalk-conversation-parts">
+
+
+                            <div class="stalk-conversation-part stalk-conversation-part-grouped-first">
+                                <div class="stalk-comment stalk-comment-by-user">
+                                    <div class="stalk-comment-body-container">
+                                        <div class="stalk-comment-body stalk-embed-body">
+                                            <p>안녕하세요</p>
+                                        </div>
+                                        <div class="stalk-comment-caret"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stalk-conversation-part stalk-conversation-part-grouped">
+                                <div class="stalk-comment stalk-comment-by-user">
+
+                                    <div class="stalk-comment-body-container">
+                                        <div class="stalk-comment-body stalk-embed-body">
+                                            <p>안녕하세요</p>
+                                        </div>
+                                        <div class="stalk-comment-caret"></div>
+
+                                    </div>
+                                    <div class="stalk-comment-metadata-container">
+                                        <div class="stalk-comment-metadata">
+                                            <span class="stalk-comment-state"> <!-- 상태 정보 --> </span>
+                                            <span class="stalk-relative-time">9h ago</span>. Seen.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stalk-conversation-part stalk-conversation-part-grouped-first">
+                                <div class="stalk-comment stalk-comment-by-admin">
+
+                                    <img src="https://static.intercomcdn.com/avatars/160835/square_128/profile_resized.jpg?1439950132"
+                                         class="stalk-comment-avatar">
+
+                                    <div class="stalk-comment-body-container">
+                                        <div class="stalk-comment-body stalk-embed-body">
+                                            <p>안녕하세요! Hellocafe를 찾아주셔서 감사합니다~</p>
+                                        </div>
+                                        <div class="stalk-comment-caret"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="stalk-conversation-part stalk-conversation-part-grouped">
+                                <div class="stalk-comment stalk-comment-by-admin">
+
+                                    <div class="stalk-comment-body-container">
+                                        <div class="stalk-comment-body stalk-embed-body">
+                                            <p>안녕하세요! Hellocafe를 찾아주셔서 감사합니다~</p>
+                                        </div>
+                                        <div class="stalk-comment-caret"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stalk-conversation-part stalk-conversation-part-grouped-last">
+                                <div class="stalk-comment stalk-comment-by-admin">
+                                    <div class="stalk-comment-body-container">
+                                        <div class="stalk-comment-body stalk-embed-body">
+                                            <p>제가 도울수있을까요?</p>
+                                        </div>
+                                        <div class="stalk-comment-caret"></div>
+                                    </div>
+                                    <div class="stalk-comment-metadata-container">
+                                        <div class="stalk-comment-metadata">
+                                            <span class="stalk-comment-state"></span>
+                                            <span class="stalk-relative-time">9h ago</span></div>
+                                        <div class="stalk-comment-readstate"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="stalk-composer-container">
+                <form action="" method="POST" id="stalk-composer" class="stalk-composer"
+                      style="transform: translate(0px, 0px);">
+                    <div class="stalk-composer-upload-error">The maximum upload size is 40MB</div>
+                    <div class="stalk-composer-textarea-container">
+                        <input type="submit" class="stalk-composer-send-button" value="Send" disabled="">
+                        <input style="display:none" type="file">
+
+                        <div class="stalk-composer-textarea stalk-composer-focused">
+                            <strong class="stalk-composer-upload-button" title="Send attachment"
+                                    style="display: inline;"></strong>
+                            <pre><span></span><br></pre>
+                            <textarea id="txMessage" placeholder="Write a reply…"></textarea>
+                        </div>
+                    </div>
+                    <div class="stalk-composer-press-enter-to-send" style="height: auto; display: none;">Press Enter
+                        to send
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
     window.stalkConfig = {
-        app_id: "stalk:vu3it197",
+        app_id: 'a80857e6-7d3e-11e5-8bcf-feff819cdc9f', /* SAMPLE */
         server_url: 'http://session.stalk.io:8888',
-        //css_url: "",
         message: {
             title: "Online : {title}",
             welcome: "Welcome !"
         }
     };
 </script>
-
-<script src="node_modules/socket.io-client/socket.io.js"></script>
+<script src="/node_modules/socket.io-client/socket.io.js"></script>
 <script src="src/json2.js"></script>
-<script src="src/stalk.js"></script>
-
-<script>
-    //console.log(STALK.getVersion());
-</script>
+<script src="src/minAjax.js"></script>
+<script src="src/widget/widget.js"></script>
 
 </body>
 </html>
