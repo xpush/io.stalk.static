@@ -41,19 +41,6 @@
     }
   };
 
-  var div_root = document.createElement('div');
-  div_root.id = 'stalk';
-  div_root.innerHTML = TEMPLATE;
-
-  var _root = document.getElementsByTagName('body')[0];
-  _root.appendChild(div_root);
-
-  var divLauncher = document.getElementById('stalk-launcher');
-  var btnLauncher = document.getElementById('stalk-launcher-button');
-  var divChatbox = document.getElementById('stalk-chatbox');
-
-  var txMessage = document.getElementById('txMessage');
-
   var utils = {
     getEscapeHtml: function (html) {
       return String(html)
@@ -277,16 +264,49 @@
 
   };
 
+  var _Elements = {};
+
   var layout = {
+    initWin: function () {
+
+      utils.requestAdminInfo(function (data) {
+        data = JSON.parse(data);
+        console.log(data);
+
+        if (data.status == 'ok' && data.result.length > 0) {
+
+          utils.loadCss(_CONFIG.css_url);
+
+          var div_root = document.createElement('div');
+          div_root.id = 'stalk';
+          div_root.innerHTML = TEMPLATE;
+
+          var _root = document.getElementsByTagName('body')[0];
+          _root.appendChild(div_root);
+
+          _Elements['divLauncher'] = document.getElementById('stalk-launcher');
+          _Elements['divChatbox'] = document.getElementById('stalk-chatbox');
+          _Elements['txMessage'] = document.getElementById('txMessage');
+
+          _CONFIG.admin = data.result[0].U; // @ TODO U is not user real name (just user id)
+
+          // Add Event on elements
+          this.initEventHandler();
+
+          utils.requestServerInfo(STALK._callbackInit);
+        }
+      });
+
+    },
     open: function () {
-      utils.removeClass(divLauncher, 'stalk-launcher-active');
-      utils.addClass(divLauncher, 'stalk-launcher-inactive');
-      divChatbox.style.display = 'block';
+      utils.removeClass(_Elements.divLauncher, 'stalk-launcher-active');
+      utils.addClass(_Elements.divLauncher, 'stalk-launcher-inactive');
+      _Elements.divChatbox.style.display = 'block';
     },
     close: function () {
-      utils.removeClass(divLauncher, 'stalk-launcher-inactive');
-      utils.addClass(divLauncher, 'stalk-launcher-active');
-      divChatbox.style.display = 'none';
+      utils.removeClass(_Elements.divLauncher, 'stalk-launcher-inactive');
+      utils.addClass(_Elements.divLauncher, 'stalk-launcher-active');
+      _Elements.divChatbox.style.display = 'none';
     },
     addMessage: function (message, type) {
 
@@ -317,43 +337,43 @@
 
       _STATUS.last = _STATUS.current;
 
-    }
-  };
+    },
+    initEventHandler: function () {
 
-  // element event handlers
-  btnLauncher.onclick = function (e) {
-    STALK._start();
-    layout.open();
-  };
+      // element event handlers
+      document.getElementById('stalk-launcher-button').btnLauncher.onclick = function (e) {
+        layout.open();
+      };
 
-  document.getElementById('btnClose').onclick = function (e) {
-    layout.close();
-  };
+      document.getElementById('btnClose').onclick = function (e) {
+        layout.close();
+      };
 
-  txMessage.onkeydown = function (e) {
+      _Elements.txMessage.onkeydown = function (e) {
 
-    e = root.event || e;
-    var keyCode = (e.which) ? e.which : e.keyCode;
+        e = root.event || e;
+        var keyCode = (e.which) ? e.which : e.keyCode;
 
-    if (keyCode == 13 && !e.shiftKey) {
+        if (keyCode == 13 && !e.shiftKey) {
 
-      if (e.preventDefault) {
-        e.preventDefault();
-      } else {
-        e.returnValue = false;
-      }
+          if (e.preventDefault) {
+            e.preventDefault();
+          } else {
+            e.returnValue = false;
+          }
 
-      var message = txMessage.value.toString().trim();
-      message = utils.getEscapeHtml(message.replace(/^\s+|\s+$/g, ''));
+          var message = _Elements.txMessage.value.toString().trim();
+          message = utils.getEscapeHtml(message.replace(/^\s+|\s+$/g, ''));
 
-      if (message !== "") {
+          if (message !== "") {
+            STALK.sendMessage(message);
+            _Elements.txMessage.value = "";
+          }
 
-        STALK.sendMessage(message);
+          return false;
+        }
+      };
 
-        txMessage.value = "";
-      }
-
-      return false;
     }
   };
 
@@ -374,23 +394,9 @@
   }
   _CONFIG.app_id = 'STALK:' + _CONFIG.app_id; // append prefix ('STALK')
 
+  console.log(_CONFIG.app_id);
+
   if (!_CONFIG.channel) _CONFIG.channel = encodeURIComponent(/*location.hostname + */ location.pathname);
-
-  STALK._start = function () {
-
-    utils.loadCss(_CONFIG.css_url);
-
-    utils.requestAdminInfo(function (data) {
-      data = JSON.parse(data);
-      if (data.status == 'ok' && data.result.length > 0) {
-
-        _CONFIG.admin = data.result[0].U; // @ TODO U is not user real name (just user id)
-
-        utils.requestServerInfo(STALK._callbackInit);
-      }
-    });
-
-  };
 
   STALK._callbackInit = function (data) {
 
@@ -458,5 +464,10 @@
     return version;
   };
 
+  STALK.init = function () {
+    layout.initWin();
+  };
+
+  STALK.init();
 
 }(this));
