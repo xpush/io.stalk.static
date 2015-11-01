@@ -21,8 +21,8 @@
     user: 'guest',
     admin: undefined,
     div: undefined,
-    server_url: 'http://admin.stalk.io:8000',
-    api_server_url: undefined,
+    server: 'http://admin.stalk.io:8000',
+    api_server: undefined,
     css_url: 'http://static.stalk.io/widget.css',
     height: '200px',
     width: '300px',
@@ -236,13 +236,13 @@
     },
     requestAdminInfo: function (_callback) {
 
-      if (!_CONFIG.server_url || !_CONFIG.id) {
+      if (!_CONFIG.server || !_CONFIG.id) {
         console.error('error on initiation.'); // @ TODO console logging !
         return false;
       }
 
       this.minAjax({
-        url: _CONFIG.server_url + '/api/apps/operators/' + _CONFIG.id,
+        url: _CONFIG.server + '/api/apps/operators/' + _CONFIG.id,
         type: "GET",
         success: _callback
       });
@@ -250,13 +250,13 @@
     },
     requestServerInfo: function (_callback) {
 
-      if (!_CONFIG.api_server_url || !_CONFIG.id || !_CONFIG.channel) {
+      if (!_CONFIG.api_server || !_CONFIG.id || !_CONFIG.channel) {
         console.error('error on initiation.'); // @ TODO console logging !
         return false;
       }
 
       this.minAjax({
-        url: _CONFIG.api_server_url + '/node/' + encodeURIComponent(_CONFIG.id) + '/' + encodeURIComponent(_CONFIG.channel),
+        url: _CONFIG.api_server + '/node/' + encodeURIComponent(_CONFIG.id) + '/' + encodeURIComponent(_CONFIG.channel),
         type: "GET",
         //method: "true", debugLog: "true",
         success: _callback
@@ -278,7 +278,7 @@
 
           utils.loadCss(_CONFIG.css_url);
 
-          if (data.server) _CONFIG.api_server_url = data.server;
+          if (data.server) _CONFIG.api_server = data.server;
           if (data.app) _CONFIG.app = data.app;
 
           var div_root = document.createElement('div');
