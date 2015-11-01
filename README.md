@@ -1,13 +1,15 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/xpush/stalk.io/master/doc/stalk-logo.jpg"/>
+  <img src="https://raw.githubusercontent.com/xpush/io.stalk.static/master/logo.jpeg"/>
 </p>
 
 stalk.io
 ===============
 
+**This master branch is currently under development**
+
 STALK.IO is the most beautiful and effective way to make visitors stay on your website. Just check the bottom on this page! It's super easy to install this chat widget for your website.
 
-STALK.IO lets visiters talk each others on the same web page.
+STALK.IO lets visitors talk with each others on the same web page.
 
 **check this out !! [stalk.io]**
 
@@ -34,9 +36,11 @@ Features
 Development
 -----------
 
-0. Startup STALK Admin Server ( Check STALK Admin Project - https://github.com/xpush/io.stalk.admin )
+**0. Startup STALK Admin Server** 
 
-1. Pull repository and build this project
+Check STALK Admin Project - https://github.com/xpush/io.stalk.admin
+
+**1. Pull repository and build this project**
 
 ```
 	// Install GULP build tool
@@ -50,15 +54,15 @@ Development
 	$ gulp widget
 ```
 
-2. Configuration for testing 
+**2. Configuration for testing**
 
-(Add host url at /etc/hosts)
+- Add host url at /etc/hosts
 ```
 	127.0.0.1 static.stalk.io
 	127.0.0.1 dev.admin.stalk.io
 ```
 
-(Modify /www/index.html)
+- Modify /www/index.html
 ```
 	<script>
 		window.stalkConfig = {
@@ -69,37 +73,39 @@ Development
 	<script src="http://static.stalk.io/widget.js"></script>
 ```
 
-3. Start static web server
+**3. Start static web server**
 ```
 	// Start web server
 	$ sudo node web.js
 ```
 
-3.1 Watching this project (If you want..)
+**3.1 Watching this project (If you want..)**
 ```
 	// watching /src for developing client files
 	$ gulp watch
 ```
 
-4. Open web page, http://localhost/ , via web browser 
+**4. Open web page, http://localhost/ , via web browser**
 
 
 
 Development (with source file, except for build)
 -----------
 
-0. Startup STALK Admin Server ( Check STALK Admin Project - https://github.com/xpush/io.stalk.admin )
+**0. Startup STALK Admin Server** 
 
-1. Pull repository and build this project (same with the upper step)
+Check STALK Admin Project - https://github.com/xpush/io.stalk.admin
 
-2. Configuration for testing
+**1. Pull repository and build this project** (same with the upper step)
 
-(Add host url at /etc/hosts)
+**2. Configuration for testing**
+
+- Add host url at /etc/hosts
 ```
 	127.0.0.1 dev.admin.stalk.io
 ```
 
-(Modify /www/index.html)
+- Modify /www/index.html
 ```
 	<script>
 		window.stalkConfig = {
@@ -109,13 +115,13 @@ Development (with source file, except for build)
 	</script>
 ```
 
-3. Start static web server at project root directory (via Python)
+**3. Start static web server at project root directory (via Python)**
 
 ```
 	$ sudo python -m SimpleHTTPServer 80
 ```
 
-4. Open web page, http://localhost/dev-widget.html , via web browser
+**4. Open web page, http://localhost/dev-widget.html , via web browser**
 
 
 
