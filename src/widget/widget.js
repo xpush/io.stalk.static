@@ -12,12 +12,15 @@
   var root = global;
 
   // 1. private variable (using this scope)
+
   var version = '1.0';
+
   var _CONFIG = {
+    id: undefined,
+    app: 'STALK',
     user: 'guest',
     admin: undefined,
     div: undefined,
-    app_id: undefined,
     server_url: 'http://chat.stalk.io:8000',
     css_url: 'http://static.stalk.io/widget.css',
     height: '200px',
@@ -232,30 +235,27 @@
     },
     requestAdminInfo: function (_callback) {
 
-      if (!_CONFIG.server_url || !_CONFIG.app_id) {
+      if (!_CONFIG.server_url || !_CONFIG.id) {
         console.error('error on initiation.'); // @ TODO console logging !
         return false;
       }
-
-      this.minAjax({
-        url: _CONFIG.server_url + '/user/list/active',
-        type: "POST",
-        data: {
-          A: _CONFIG.app_id
-        },
-        //method: "true", debugLog: "true",
-        success: _callback
-      });
+      http://54.65.235.3:9000/api/apps/operators/48e647a0-7f5f-11e5-ae68-cb988d7a71ff
+        this.minAjax({
+          url: _CONFIG.server_url + '/api/apps/operators/' + _CONFIG.id,
+          type: "GET",
+          //method: "true", debugLog: "true",
+          success: _callback
+        });
     },
     requestServerInfo: function (_callback) {
 
-      if (!_CONFIG.server_url || !_CONFIG.app_id || !_CONFIG.channel) {
+      if (!_CONFIG.server_url || !_CONFIG.id || !_CONFIG.channel) {
         console.error('error on initiation.'); // @ TODO console logging !
         return false;
       }
 
       this.minAjax({
-        url: _CONFIG.server_url + '/node/' + encodeURIComponent(_CONFIG.app_id) + '/' + encodeURIComponent(_CONFIG.channel),
+        url: _CONFIG.server_url + '/node/' + encodeURIComponent(_CONFIG.id) + '/' + encodeURIComponent(_CONFIG.channel),
         type: "GET",
         //method: "true", debugLog: "true",
         success: _callback
@@ -392,9 +392,11 @@
   if (root.stalkConfig) {
     _CONFIG = utils.mergeConfig(_CONFIG, root.stalkConfig);
   }
-  _CONFIG.app_id = 'STALK:' + _CONFIG.app_id; // append prefix ('STALK')
 
-  console.log(_CONFIG.app_id);
+  if (!_CONFIG.id) {
+    console.error('"id" is not existed.');
+    return false;
+  }
 
   if (!_CONFIG.channel) _CONFIG.channel = encodeURIComponent(/*location.hostname + */ location.pathname);
 
@@ -408,7 +410,7 @@
     ) return false;
 
     var query =
-      'A=' + _CONFIG.app_id + '&' +
+      'A=' + _CONFIG.app + ':' + _CONFIG.id + '&' +
       'U=' + _CONFIG.user + '&' +
       'D=' + '_' + '&' +
       'C=' + _CONFIG.channel + '&' +
@@ -448,7 +450,7 @@
 
   STALK.sendMessage = function (msg) {
     var param = {
-      A: _CONFIG.app_id,
+      A: _CONFIG.app + ':' + _CONFIG.id,
       C: _CONFIG.channel,
       NM: 'message',
       DT: {
