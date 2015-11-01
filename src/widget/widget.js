@@ -21,7 +21,8 @@
     user: 'guest',
     admin: undefined,
     div: undefined,
-    server_url: 'http://chat.stalk.io:8000',
+    server_url: 'http://admin.stalk.io:8000',
+    api_server_url: undefined,
     css_url: 'http://static.stalk.io/widget.css',
     height: '200px',
     width: '300px',
@@ -239,23 +240,23 @@
         console.error('error on initiation.'); // @ TODO console logging !
         return false;
       }
-      http://54.65.235.3:9000/api/apps/operators/48e647a0-7f5f-11e5-ae68-cb988d7a71ff
-        this.minAjax({
-          url: _CONFIG.server_url + '/api/apps/operators/' + _CONFIG.id,
-          type: "GET",
-          //method: "true", debugLog: "true",
-          success: _callback
-        });
+
+      this.minAjax({
+        url: _CONFIG.server_url + '/api/apps/operators/' + _CONFIG.id,
+        type: "GET",
+        success: _callback
+      });
+
     },
     requestServerInfo: function (_callback) {
 
-      if (!_CONFIG.server_url || !_CONFIG.id || !_CONFIG.channel) {
+      if (!_CONFIG.api_server_url || !_CONFIG.id || !_CONFIG.channel) {
         console.error('error on initiation.'); // @ TODO console logging !
         return false;
       }
 
       this.minAjax({
-        url: _CONFIG.server_url + '/node/' + encodeURIComponent(_CONFIG.id) + '/' + encodeURIComponent(_CONFIG.channel),
+        url: _CONFIG.api_server_url + '/node/' + encodeURIComponent(_CONFIG.id) + '/' + encodeURIComponent(_CONFIG.channel),
         type: "GET",
         //method: "true", debugLog: "true",
         success: _callback
@@ -273,9 +274,12 @@
         data = JSON.parse(data);
         console.log(data);
 
-        if (data.status == 'ok' && data.result.length > 0) {
+        if (!data.operator) {
 
           utils.loadCss(_CONFIG.css_url);
+
+          if (data.server) _CONFIG.api_server_url = data.server;
+          if (data.app) _CONFIG.app = data.app;
 
           var div_root = document.createElement('div');
           div_root.id = 'stalk';
@@ -288,12 +292,13 @@
           _Elements['divChatbox'] = document.getElementById('stalk-chatbox');
           _Elements['txMessage'] = document.getElementById('txMessage');
 
-          _CONFIG.admin = data.result[0].U; // @ TODO U is not user real name (just user id)
+          _CONFIG.admin = data.operator; // @ TODO U is not user real name (just user id)
 
           // Add Event on elements
           this.initEventHandler();
 
           utils.requestServerInfo(STALK._callbackInit);
+
         }
       });
 
