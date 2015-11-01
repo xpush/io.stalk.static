@@ -7,6 +7,8 @@ stalk.io
 
 **This master branch is currently under development**
 
+**This Project(io.stalk.static) is client-side web chat widget, a part of stalk.io project.**
+
 STALK.IO is the most beautiful and effective way to make visitors stay on your website. Just check the bottom on this page! It's super easy to install this chat widget for your website.
 
 STALK.IO lets visitors talk with each others on the same web page.
