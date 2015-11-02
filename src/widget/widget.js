@@ -7,7 +7,7 @@
     }
   };
 
-  var TEMPLATE = '<div id="stalk-container" class="stalk-container stalk-reset stalk-acquire"> <div id="stalk-launcher" class="stalk-launcher stalk-launcher-enabled stalk-launcher-active"> <div id="stalk-launcher-button" class="stalk-launcher-button"></div></div><div id="stalk-chatbox" class="stalk-chatbox" style="display: none;"> <div id="stalk-conversation" class="stalk-conversation stalk-sheet stalk-sheet-active"> <div class="stalk-sheet-header"> <div class="stalk-sheet-header-title-container"> <b class="stalk-sheet-header-title stalk-sheet-header-with-presence">정진영</b> <div class="stalk-last-active" style="display: block;"><span class="relative-time-in-text">Last active 1 hour ago</span> </div></div><div class="stalk-sheet-header-generic-title"></div><a id="btnClose" class="stalk-sheet-header-button stalk-sheet-header-close-button" href="#"> <div class="stalk-sheet-header-button-icon"></div></a> </div><div class="stalk-sheet-body"></div><div class="stalk-sheet-content" style="bottom: 74px;"> <div class="stalk-sheet-content-container"> <div class="stalk-conversation-parts-container"> <div id="stalk-message" class="stalk-conversation-parts"> </div></div></div></div><div class="stalk-composer-container"> <div id="stalk-composer" class="stalk-composer" style="transform: translate(0px, 0px);"> <div class="stalk-composer-upload-error">The maximum upload size is 40MB</div><div class="stalk-composer-textarea-container"> <div class="stalk-composer-textarea stalk-composer-focused"> <pre><span></span><br></pre> <textarea id="txMessage" placeholder="Write a reply…"></textarea> </div></div></div></div></div></div></div>';
+  var TEMPLATE = '<div id="stalk-container" class="stalk-container stalk-reset stalk-acquire"> <div id="stalk-launcher" class="stalk-launcher stalk-launcher-enabled stalk-launcher-active"> <div id="stalk-launcher-button" class="stalk-launcher-button"></div></div><div id="stalk-chatbox" class="stalk-chatbox" style="display: none;"> <div id="stalk-conversation" class="stalk-conversation stalk-sheet stalk-sheet-active"> <div class="stalk-sheet-header"> <div class="stalk-sheet-header-title-container"> <b class="stalk-sheet-header-title stalk-sheet-header-with-presence">정진영</b> <div class="stalk-last-active" style="display: block;"><span class="relative-time-in-text">Last active 1 hour ago</span> </div></div><div class="stalk-sheet-header-generic-title"></div><a id="btnClose" class="stalk-sheet-header-button stalk-sheet-header-close-button" href="#"> <div class="stalk-sheet-header-button-icon"></div></a> </div><div class="stalk-sheet-body"></div><div class="stalk-sheet-content" style="bottom: 74px;"> <div class="stalk-sheet-content-container"> <div class="stalk-conversation-parts-container"> <div id="stalk-message" class="stalk-conversation-parts"> </div></div></div></div><div class="stalk-composer-container"> <div id="stalk-composer" class="stalk-composer" style="transform: translate(0px, 0px);"> <div class="stalk-composer-textarea-container"> <div class="stalk-composer-textarea stalk-composer-focused"> <pre><span></span><br></pre> <textarea id="txMessage" placeholder="Write a reply…"></textarea> </div></div></div></div></div></div></div>';
 
   var root = global;
 
@@ -276,7 +276,7 @@
         data = JSON.parse(data);
         console.log(data);
 
-        if (!data.operator) {
+        if (data.operator) {
 
           utils.loadCss(_CONFIG.css_url);
 
@@ -294,7 +294,7 @@
           _Elements['divChatbox'] = document.getElementById('stalk-chatbox');
           _Elements['txMessage'] = document.getElementById('txMessage');
 
-          _CONFIG.admin = data.operator; // @ TODO U is not user real name (just user id)
+          _CONFIG.admin = data.operator;
 
           // Add Event on elements
           self.initEventHandler();
@@ -430,14 +430,18 @@
 
       if (!_CONFIG._isCreate) {
 
-        // TODO 나중에 개발해야 함
-        //layout.initWin();
-
         var initMessage = _CONFIG.message.welcome;
         // TODO welcome 메시지 보여줄 것.
       }
       _CONFIG._isCreate = true;
       _CONFIG.isReady = true;
+
+      _CONFIG._socket.emit('channel.join', {U: _CONFIG.admin.ID}, function (err) {
+        console.log(err);
+        if (err) {
+          console.error(err)
+        }
+      });
 
     });
 
