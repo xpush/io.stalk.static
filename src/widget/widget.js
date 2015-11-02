@@ -348,7 +348,7 @@
     initEventHandler: function () {
 
       // element event handlers
-      document.getElementById('stalk-launcher-button').btnLauncher.onclick = function (e) {
+      document.getElementById('stalk-launcher-button').onclick = function (e) {
         layout.open();
       };
 
