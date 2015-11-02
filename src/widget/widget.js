@@ -46,6 +46,18 @@
   };
 
   var utils = {
+    getUniqueKey : function () {
+      var s = [], itoh = '0123456789ABCDEF';
+      for (var i = 0; i < 36; i++) s[i] = Math.floor(Math.random()*0x10);
+      s[14] = 4;
+      s[19] = (s[19] & 0x3) | 0x8;
+
+      for (var x = 0; x < 36; x++) s[x] = itoh[s[x]];
+      s[8] = s[13] = s[18] = s[23] = '-';
+
+      return s.join('');
+    },
+
     getEscapeHtml: function (html) {
       return String(html)
         .replace(/&/g, '&amp;')
@@ -405,7 +417,7 @@
     return false;
   }
 
-  if (!_CONFIG.channel) _CONFIG.channel = encodeURIComponent(/*location.hostname + */ location.pathname);
+  if (!_CONFIG.channel) _CONFIG.channel = utils.getUniqueKey(); //encodeURIComponent(/*location.hostname + */ location.pathname);
 
   STALK._callbackInit = function (data) {
 
@@ -417,14 +429,16 @@
     ) return false;
 
     var query =
-      'A=' + _CONFIG.app + ':' + _CONFIG.id + '&' +
+      'A=' + _CONFIG.app + '&' + //+ ':' + _CONFIG.id + '&' +
       'U=' + _CONFIG.user + '&' +
       'D=' + '_' + '&' +
       'C=' + _CONFIG.channel + '&' +
-        //'DT=' + JSON.stringify(_CONFIG.user) + '&' +
+      //'DT=' + JSON.stringify(_CONFIG.user) + '&' +
       'S=' + data.result.server.name;
 
-    _CONFIG._socket = io.connect(data.result.server.url + '/channel?' + query);
+    _CONFIG._socket = io.connect(data.result.server.url + '/channel?' + query, {
+        'force new connection': true
+    });
 
     _CONFIG._socket.on('connect', function () {
 
@@ -436,7 +450,7 @@
       _CONFIG._isCreate = true;
       _CONFIG.isReady = true;
 
-      _CONFIG._socket.emit('channel.join', {U: _CONFIG.admin.ID}, function (err) {
+      _CONFIG._socket.emit('channel.join', {C: _CONFIG.channel, U: _CONFIG.admin.UID}, function (err) {
         console.log(err);
         if (err) {
           console.error(err)
@@ -461,7 +475,7 @@
 
   STALK.sendMessage = function (msg) {
     var param = {
-      A: _CONFIG.app + ':' + _CONFIG.id,
+      A: _CONFIG.app,// + ':' + _CONFIG.id,
       C: _CONFIG.channel,
       NM: 'message',
       DT: {
