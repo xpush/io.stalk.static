@@ -270,6 +270,8 @@
   var layout = {
     initWin: function () {
 
+      var self = this;
+
       utils.requestAdminInfo(function (data) {
         data = JSON.parse(data);
         console.log(data);
@@ -295,7 +297,7 @@
           _CONFIG.admin = data.operator; // @ TODO U is not user real name (just user id)
 
           // Add Event on elements
-          this.initEventHandler();
+          self.initEventHandler();
 
           utils.requestServerInfo(STALK._callbackInit);
 
