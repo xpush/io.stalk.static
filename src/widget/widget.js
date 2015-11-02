@@ -461,6 +461,7 @@
 
     _CONFIG._socket.on('_event', function (data) {
       if (data.event == 'CONNECTION') {
+        _CONF._socket.emit("send", {NM:"info",DT:{C: _CONFIG.channel, NM: document.title}});
         //layout.setTitleBar('title', data.count);
       } else if (data.event == 'DISCONNECT') {
         //layout.setTitleBar('title', data.count);
