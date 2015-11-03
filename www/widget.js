@@ -7753,6 +7753,27 @@ function toArray(list, index) {
         success: _callback
       });
     },
+    getCookie : function(c_name)
+    {
+      var i,x,y,ARRcookies=document.cookie.split(";");
+      for (i=0;i<ARRcookies.length;i++)
+      {
+        x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+        y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+        x=x.replace(/^\s+|\s+$/g,"");
+        if (x==c_name)
+        {
+        return unescape(y);
+        }
+        }
+    },
+    setCookie : function(c_name,value,exdays)
+    {
+      var exdate=new Date();
+      exdate.setDate(exdate.getDate() + exdays);
+      var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+      document.cookie=c_name + "=" + c_value;
+    },
     getUserAgent : function(){
         return navigator.userAgent.toLowerCase();
     },
@@ -7894,9 +7915,23 @@ function toArray(list, index) {
         if(cb) cb();
       });
     },
+    getUserStayTime: function(){
+      function pad(num, size) {
+          var s = num + "";
+          while (s.length < size) s = "0" + s;
+          return s;
+      }
+      var ms = (new Date()) - _CONFIG._enterDate;
+      var seconds = ms / 1000;
+      var hh = Math.floor(seconds / 3600);
+      var mm = Math.floor(seconds / 60) % 60;
+      var ss = Math.floor(seconds) % 60;
+      var mss = ms % 1000;
+      return pad(hh,2)+':'+pad(mm,2)+':'+pad(ss,2)+'.'+pad(mss,3);
+    },
     onLeaveSite : function(cb){
       var data = {url: location.href};
-      //data.st = this.getUserStayTime();
+      data.st = this.getUserStayTime();
       window.addEventListener('beforeunload',function(){
         if(cb)cb();
         //LSTALK.sendClientInfoAjax({a:'L',st: data.st}); 
@@ -8110,6 +8145,8 @@ function toArray(list, index) {
     _CONFIG._socket.on('message', function (data) {
       layout.addMessage(data.message, data.user);
     });
+
+    _CONFIG._enterDate = new Date();
 
     utils.onLeaveSite();
     utils.onChangeUrl();

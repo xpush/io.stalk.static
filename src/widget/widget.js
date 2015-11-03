@@ -274,6 +274,27 @@
         success: _callback
       });
     },
+    getCookie : function(c_name)
+    {
+      var i,x,y,ARRcookies=document.cookie.split(";");
+      for (i=0;i<ARRcookies.length;i++)
+      {
+        x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+        y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+        x=x.replace(/^\s+|\s+$/g,"");
+        if (x==c_name)
+        {
+        return unescape(y);
+        }
+        }
+    },
+    setCookie : function(c_name,value,exdays)
+    {
+      var exdate=new Date();
+      exdate.setDate(exdate.getDate() + exdays);
+      var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+      document.cookie=c_name + "=" + c_value;
+    },
     getUserAgent : function(){
         return navigator.userAgent.toLowerCase();
     },
@@ -591,7 +612,7 @@
     return false;
   }
 
-  if (!_CONFIG.channel) _CONFIG.channel = utils.getUniqueKey(); //encodeURIComponent(/*location.hostname + */ location.pathname);
+  if (!_CONFIG.channel) _CONFIG.channel = utils.getCookie("ST") == undefined ? utils.getUniqueKey() :utils.getCookie("ST"); //encodeURIComponent(/*location.hostname + */ location.pathname);
 
   STALK._callbackInit = function (data) {
 
@@ -647,6 +668,8 @@
     });
 
     _CONFIG._enterDate = new Date();
+
+    utils.setCookie("ST", _CONFIG.channel, 1);
 
     utils.onLeaveSite();
     utils.onChangeUrl();
