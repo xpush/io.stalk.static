@@ -52,7 +52,7 @@ var widget_paths = {
 
 gulp.task('widget_scripts', [], function () {
   return gulp.src(widget_paths.scripts)
-    .pipe(uglify())
+    //.pipe(uglify())
     .pipe(concat('widget.js'))
     .pipe(gulp.dest('build'));
 });

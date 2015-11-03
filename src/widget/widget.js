@@ -273,6 +273,180 @@
         //method: "true", debugLog: "true",
         success: _callback
       });
+    },
+    getUserAgent : function(){
+        return navigator.userAgent.toLowerCase();
+    },
+    getBrowserName : function(){
+        var BrowserKey = {ie: "msie", ie6: "msie 6", ie7 : "msie 7", ie8 : "msie 8", ie9 :"msie 9", ie10: "msie 10",chrome : "chrome", safari: "safari", safari3: "applewebkir/5", mac : "mac",  firefox: "firefox"
+        }
+
+        var ua = this.getUserAgent();
+        var re = /\S*\/[\d.]*/g;
+        var m;
+         
+        while ((m = re.exec(ua)) != null) {
+            if (m.index === re.lastIndex) {
+                re.lastIndex++;
+            }
+            for(var k in BrowserKey) {
+                if(m[0].indexOf( BrowserKey[k] ) != -1) return k;
+            }
+        }
+    },
+    getOSName : function(){
+
+            var uanaVigatorOs = navigator.userAgent;
+            var AgentUserOs= uanaVigatorOs.replace(/ /g,'');
+            var Ostxt="";
+            var OSName="";
+            var OsVers="";
+            new function() {
+            var OsNo = navigator.userAgent.toLowerCase(); 
+            jQuery = {};
+                jQuery.os = {
+                    Linux: /linux/.test(OsNo),
+                    Unix: /x11/.test(OsNo),
+                    Mac: /mac/.test(OsNo),
+                    Windows: /win/.test(OsNo)
+                }
+            }
+            // Android의 단말 이름을 반환
+            function getAndroidDevName() {
+            var uaAdata = navigator.userAgent;
+            var regex = /Android (.*);.*;\s*(.*)\sBuild/;
+            var match = regex.exec(uaAdata);
+            if(match) {
+            var ver = match[1];
+            var dev_name = match[2];
+            return "Android " + ver + " " + dev_name;
+            }
+            return "Android OS";
+            }
+        if(jQuery.os.Windows) {
+        if(AgentUserOs.indexOf("WindowsCE") != -1) OSName="Windows CE";
+        else if(AgentUserOs.indexOf("Windows95") != -1) OSName="Windows 95";
+        else if(AgentUserOs.indexOf("Windows98") != -1) {
+        if (AgentUserOs.indexOf("Win9x4.90") != -1) OSName="Windows Millennium Edition (Windows Me)" 
+        else OSName="Windows 98"; 
+        }
+        else if(AgentUserOs.indexOf("WindowsNT4.0") != -1) OSName="Microsoft Windows NT 4.0";
+        else if(AgentUserOs.indexOf("WindowsNT5.0") != -1) OSName="Windows 2000";
+        else if(AgentUserOs.indexOf("WindowsNT5.01") != -1) OSName="Windows 2000, Service Pack 1 (SP1)";
+        else if(AgentUserOs.indexOf("WindowsNT5.1") != -1) OSName="Windows XP";
+        else if(AgentUserOs.indexOf("WindowsNT5.2") != -1) OSName="Windows 2003";
+        else if(AgentUserOs.indexOf("WindowsNT6.0") != -1) OSName="Windows Vista/Server 2008";
+        else if(AgentUserOs.indexOf("WindowsNT6.1") != -1) OSName="Windows 7";
+        else if(AgentUserOs.indexOf("WindowsNT6.2") != -1) OSName="Windows 8";
+        else if(AgentUserOs.indexOf("WindowsNT6.3") != -1) OSName="Windows 8.1";
+        else if(AgentUserOs.indexOf("WindowsPhone8.0") != -1) OSName="Windows Phone 8.0";
+        else if(AgentUserOs.indexOf("WindowsPhoneOS7.5") != -1) OSName="Windows Phone OS 7.5";
+        else if(AgentUserOs.indexOf("Xbox") != -1) OSName="Xbox 360";
+        else if(AgentUserOs.indexOf("XboxOne") != -1) OSName="Xbox One";
+        else if(AgentUserOs.indexOf("Win16") != -1) OSName="Windows 3.x";
+        else if(AgentUserOs.indexOf("ARM") != -1) OSName="Windows RT";
+        else OSName="Windows (Unknown)";
+        
+        if(AgentUserOs.indexOf("WOW64") != -1) OsVers=" 64-bit(s/w 32-bit)";
+        else if(AgentUserOs.indexOf("Win64;x64;") != -1) OsVers=" 64-bit(s/w 64-bit)";
+        else if(AgentUserOs.indexOf("Win16") != -1) OsVers=" 16-bit";
+        else OsVers=" 32-bit";
+        
+        } else if (jQuery.os.Linux) {
+        if(AgentUserOs.indexOf("Android") != -1) { OSName = getAndroidDevName(); }
+        else if(AgentUserOs.indexOf("BlackBerry9000") != -1) OSName="BlackBerry9000";
+        else if(AgentUserOs.indexOf("BlackBerry9300") != -1) OSName="BlackBerry9300";
+        else if(AgentUserOs.indexOf("BlackBerry9700") != -1) OSName="BlackBerry9700";
+        else if(AgentUserOs.indexOf("BlackBerry9780") != -1) OSName="BlackBerry9780";
+        else if(AgentUserOs.indexOf("BlackBerry9900") != -1) OSName="BlackBerry9900";
+        else if(AgentUserOs.indexOf("BlackBerry;Opera Mini") != -1) OSName="Opera/9.80";
+        else if(AgentUserOs.indexOf("Symbian/3") != -1) OSName="Symbian OS3";
+        else if(AgentUserOs.indexOf("SymbianOS/6") != -1) OSName="Symbian OS6";
+        else if(AgentUserOs.indexOf("SymbianOS/9") != -1) OSName="Symbian OS9";
+        else if(AgentUserOs.indexOf("Ubuntu") != -1) OSName="Ubuntu";
+        else if(AgentUserOs.indexOf("PDA") != -1) OSName="PDA";
+        else if(AgentUserOs.indexOf("NintendoWii") != -1) OSName="Nintendo Wii"; 
+        else if(AgentUserOs.indexOf("PSP") != -1) OSName="PlayStation Portable";
+        else if(AgentUserOs.indexOf("PS2;") != -1) OSName="PlayStation 2";
+        else if(AgentUserOs.indexOf("PLAYSTATION3") != -1) OSName="PlayStation 3"; 
+        else OSName="Linux (Unknown)";
+        
+        if(AgentUserOs.indexOf("x86_64") != -1) OsVers=" 64-bit";
+        else if(AgentUserOs.indexOf("i386") != -1) OsVers=" 32-bit";
+        else if(AgentUserOs.indexOf("IA-32") != -1) OsVers=" 32-bit";
+        else OsVers="";
+        
+        } else if (jQuery.os.Unix) {
+        OSName="UNIX";
+        } else if (jQuery.os.Mac) {
+        if(AgentUserOs.indexOf("iPhoneOS3") != -1) OSName="iPhone OS 3";
+        else if(AgentUserOs.indexOf("iPhoneOS4") != -1) OSName="iPhone OS 4";
+        else if(AgentUserOs.indexOf("iPhoneOS5") != -1) OSName="iPhone OS 5";
+        else if(AgentUserOs.indexOf("iPhoneOS6") != -1) OSName="iPhone OS 6";
+        else if(AgentUserOs.indexOf("iPad") != -1) OSName="iPad";
+        else if((AgentUserOs.indexOf("MacOSX10_9")||AgentUserOs.indexOf("MacOSX10.1")) != -1) OSName="Mac OS X Puma";
+        else if((AgentUserOs.indexOf("MacOSX10_9")||AgentUserOs.indexOf("MacOSX10.2")) != -1) OSName="Mac OS X Jaguar";
+        else if((AgentUserOs.indexOf("MacOSX10_9")||AgentUserOs.indexOf("MacOSX10.3")) != -1) OSName="Mac OS X Panther";
+        else if((AgentUserOs.indexOf("MacOSX10_9")||AgentUserOs.indexOf("MacOSX10.4")) != -1) OSName="Mac OS X Tiger";
+        else if((AgentUserOs.indexOf("MacOSX10_9")||AgentUserOs.indexOf("MacOSX10.5")) != -1) OSName="Mac OS X Leopard";
+        else if((AgentUserOs.indexOf("MacOSX10_9")||AgentUserOs.indexOf("MacOSX10.6")) != -1) OSName="Mac OS X Snow Leopard";
+        else if((AgentUserOs.indexOf("MacOSX10_9")||AgentUserOs.indexOf("MacOSX10.7")) != -1) OSName="Mac OS X Lion";
+        else if((AgentUserOs.indexOf("MacOSX10_9")||AgentUserOs.indexOf("MacOSX10.8")) != -1) OSName="Mac OS X Mountain Lion";
+        else if((AgentUserOs.indexOf("MacOSX10_9")||AgentUserOs.indexOf("MacOSX10.9")) != -1) OSName="Mac OS X Mavericks";
+        else OSName="MacOS (Unknown)";
+        } else {
+        OSName="Unknown OS";
+        }
+        var OSDev = OSName + OsVers;
+        return OSDev;
+    },
+    getReferrerSite : function(){ // if referrer site is other site, then return value is url. but undefined.
+      var referrer = document.referrer || '';
+      var otherSite;
+      if( document.referrer.indexOf( location.host ) < 0 ){
+        otherSite = document.referrer;
+      }
+      return otherSite;
+    },
+    onChangeUrl : function(cb){
+      window.addEventListener('hashchange', function(e){
+        var data = {oldURL : e.oldURL, newURL: e.newURL};
+        //sendClientInfo('urlChange', data);
+        if(cb) cb();
+      });
+    },
+    getUserStayTime: function(){
+      function pad(num, size) {
+          var s = num + "";
+          while (s.length < size) s = "0" + s;
+          return s;
+      }
+      var ms = (new Date()) - _CONFIG._enterDate;
+      var seconds = ms / 1000;
+      var hh = Math.floor(seconds / 3600);
+      var mm = Math.floor(seconds / 60) % 60;
+      var ss = Math.floor(seconds) % 60;
+      var mss = ms % 1000;
+      return pad(hh,2)+':'+pad(mm,2)+':'+pad(ss,2)+'.'+pad(mss,3);
+    },
+    onLeaveSite : function(cb){
+      var data = {url: location.href};
+      data.st = this.getUserStayTime();
+      window.addEventListener('beforeunload',function(){
+        if(cb)cb();
+        //LSTALK.sendClientInfoAjax({a:'L',st: data.st}); 
+        //LSTALK.sendClientInfo('leavePage', data);
+      });
+    },
+    browserInfo : function(){
+      var info = {};
+      info.title = document.title;
+      info.url = location.href;
+      info.agent = utils.getUserAgent();
+      info.browser = utils.getBrowserName();
+      info.os = utils.getOSName();
+      info.refer = utils.getReferrerSite();
+      return info;
     }
 
   };
@@ -432,7 +606,7 @@
       'A=' + _CONFIG.app + '&' + //+ ':' + _CONFIG.id + '&' +
       'U=' + _CONFIG.user + '&' +
       'D=' + '_' + '&' +
-      'C=' + _CONFIG.channel + '&' +
+      'C=' + _CONFIG.channel + '&' + 
       //'DT=' + JSON.stringify(_CONFIG.user) + '&' +
       'S=' + data.result.server.name;
 
@@ -461,7 +635,7 @@
 
     _CONFIG._socket.on('_event', function (data) {
       if (data.event == 'CONNECTION') {
-        _CONF._socket.emit("send", {NM:"info",DT:{C: _CONFIG.channel, NM: document.title}});
+        _CONFIG._socket.emit("send", {NM:"info",DT: utils.browserInfo()});
         //layout.setTitleBar('title', data.count);
       } else if (data.event == 'DISCONNECT') {
         //layout.setTitleBar('title', data.count);
@@ -472,6 +646,10 @@
       layout.addMessage(data.message, data.user);
     });
 
+    _CONFIG._enterDate = new Date();
+
+    utils.onLeaveSite();
+    utils.onChangeUrl();
   };
 
   STALK.sendMessage = function (msg) {
