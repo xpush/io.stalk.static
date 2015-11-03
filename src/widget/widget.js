@@ -442,7 +442,7 @@
           while (s.length < size) s = "0" + s;
           return s;
       }
-      var ms = (new Date()) - _CONFIG._enterDate;
+      var ms = (new Date()) - _STATUS.timestamp.user;
       var seconds = ms / 1000;
       var hh = Math.floor(seconds / 3600);
       var mm = Math.floor(seconds / 60) % 60;
@@ -481,7 +481,6 @@
 
       utils.requestAdminInfo(function (data) {
         data = JSON.parse(data);
-        console.log(data);
 
         if (data.operator) {
 
@@ -646,7 +645,6 @@
       _CONFIG.isReady = true;
 
       _CONFIG._socket.emit('channel.join', {C: _CONFIG.channel, U: _CONFIG.admin.UID}, function (err) {
-        console.log(err);
         if (err) {
           console.error(err)
         }
@@ -664,10 +662,11 @@
     });
 
     _CONFIG._socket.on('message', function (data) {
+      if(_STATUS.timestamp.admin == 0 ) _STATUS.timestamp.admin = new Date();
       layout.addMessage(data.message, data.user);
     });
 
-    _CONFIG._enterDate = new Date();
+    _STATUS.timestamp.user = new Date();
 
     utils.setCookie("ST", _CONFIG.channel, 1);
 

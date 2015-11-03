@@ -7921,7 +7921,7 @@ function toArray(list, index) {
           while (s.length < size) s = "0" + s;
           return s;
       }
-      var ms = (new Date()) - _CONFIG._enterDate;
+      var ms = (new Date()) - _STATUS.timestamp.user;
       var seconds = ms / 1000;
       var hh = Math.floor(seconds / 3600);
       var mm = Math.floor(seconds / 60) % 60;
@@ -8091,7 +8091,7 @@ function toArray(list, index) {
     return false;
   }
 
-  if (!_CONFIG.channel) _CONFIG.channel = utils.getUniqueKey(); //encodeURIComponent(/*location.hostname + */ location.pathname);
+  if (!_CONFIG.channel) _CONFIG.channel = utils.getCookie("ST") == undefined ? utils.getUniqueKey() :utils.getCookie("ST"); //encodeURIComponent(/*location.hostname + */ location.pathname);
 
   STALK._callbackInit = function (data) {
 
@@ -8143,10 +8143,13 @@ function toArray(list, index) {
     });
 
     _CONFIG._socket.on('message', function (data) {
+      if(_STATUS.timestamp.admin == 0 ) _STATUS.timestamp.admin = new Date();
       layout.addMessage(data.message, data.user);
     });
 
-    _CONFIG._enterDate = new Date();
+    _STATUS.timestamp.user = new Date();
+
+    utils.setCookie("ST", _CONFIG.channel, 1);
 
     utils.onLeaveSite();
     utils.onChangeUrl();
