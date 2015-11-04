@@ -40,8 +40,9 @@
     last: '',
     current: '',
     timestamp: {
-      admin: 0,
-      user: 0
+      enter: 0,  // enter the site
+      admin: 0,  // first message from admin
+      user: 0   // first message to admin
     }
   };
 
@@ -468,8 +469,12 @@
       info.os = utils.getOSName();
       info.refer = utils.getReferrerSite();
       return info;
+    },
+    isMobile : function(){
+      var isMobile = (/iphone|ipod|android|ie|blackberry|fennec/).test
+           (navigator.userAgent.toLowerCase());
+      return isMobile;
     }
-
   };
 
   var _Elements = {};
@@ -579,6 +584,7 @@
           message = utils.getEscapeHtml(message.replace(/^\s+|\s+$/g, ''));
 
           if (message !== "") {
+            if(!_CONFIG.isReady) STALK._init();
             STALK.sendMessage(message);
             _Elements.txMessage.value = "";
           }
@@ -612,6 +618,7 @@
   }
 
   if (!_CONFIG.channel) _CONFIG.channel = utils.getCookie("ST") == undefined ? utils.getUniqueKey() :utils.getCookie("ST"); //encodeURIComponent(/*location.hostname + */ location.pathname);
+  STALK._unsendMessages = []; // send message before operator is connected!
 
   STALK._callbackInit = function (data) {
 
@@ -621,7 +628,24 @@
       _CONFIG.isReady ||
       data.status != 'ok' || !data.result.server
     ) return false;
+    _STATUS.timestamp.enter = new Date();
+    _STATUS._server = data;
 
+    utils.setCookie("ST", _CONFIG.channel, 1);
+    if( utils.isMobile() ){
+      document.getElementById('txMessage').addEventListener("focus",function (e) {
+        alert('focus');
+      });
+      document.getElementById('txMessage').addEventListener("blur",function (e) {
+        alert('blur');
+      });
+    }
+    utils.onLeaveSite();
+    utils.onChangeUrl();
+  };
+
+  STALK._init = function(){
+    var data = _STATUS._server;
     var query =
       'A=' + _CONFIG.app + '&' + //+ ':' + _CONFIG.id + '&' +
       'U=' + _CONFIG.user + '&' +
@@ -629,6 +653,8 @@
       'C=' + _CONFIG.channel + '&' + 
       //'DT=' + JSON.stringify(_CONFIG.user) + '&' +
       'S=' + data.result.server.name;
+
+    _STATUS.timestamp.user = new Date();
 
     _CONFIG._socket = io.connect(data.result.server.url + '/channel?' + query, {
         'force new connection': true
@@ -654,7 +680,15 @@
 
     _CONFIG._socket.on('_event', function (data) {
       if (data.event == 'CONNECTION') {
+        _CONFIG.isOperatorReady = true;
+
         _CONFIG._socket.emit("send", {NM:"info",DT: utils.browserInfo()});
+        if(STALK._unsendMessages){
+          STALK._unsendMessages.forEach(function(msg){
+            STALK.sendMessage(msg);
+          })
+          STALK._unsendMessages = [];
+        }
         //layout.setTitleBar('title', data.count);
       } else if (data.event == 'DISCONNECT') {
         //layout.setTitleBar('title', data.count);
@@ -666,23 +700,23 @@
       layout.addMessage(data.message, data.user);
     });
 
-    _STATUS.timestamp.user = new Date();
-
-    utils.setCookie("ST", _CONFIG.channel, 1);
-
-    utils.onLeaveSite();
-    utils.onChangeUrl();
-  };
+  }
 
   STALK.sendMessage = function (msg) {
+    if(!_CONFIG.isOperatorReady) {
+      return STALK._unsendMessages.push(msg);
+    }
     var param = {
       A: _CONFIG.app,// + ':' + _CONFIG.id,
       C: _CONFIG.channel,
       NM: 'message',
       DT: {
         user: _CONFIG.user,
-        message: msg
-      }
+        message: msg,
+        UO: {
+          U: _CONFIG.user
+        }        
+      },
     };
     _CONFIG._socket.emit('send', param, function (data) {
     });
