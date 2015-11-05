@@ -8013,6 +8013,7 @@ function toArray(list, index) {
       if (type == _CONFIG.user) {
         _STATUS.current = 'user';
       }
+      message = decodeURIComponent(message);
 
       var msgHtml = '<div class="stalk-comment stalk-comment-by-' + _STATUS.current + '"> <div class="stalk-comment-body-container"> <div class="stalk-comment-body stalk-embed-body"> <p>' +
         message + '</p> </div> <div class="stalk-comment-caret"></div> </div> </div>';
@@ -8060,7 +8061,8 @@ function toArray(list, index) {
           }
 
           var message = _Elements.txMessage.value.toString().trim();
-          message = utils.getEscapeHtml(message.replace(/^\s+|\s+$/g, ''));
+          //message = utils.getEscapeHtml(message.replace(/^\s+|\s+$/g, ''));
+          message = encodeURIComponent(message);
 
           if (message !== "") {
             if(!_CONFIG.isReady) STALK._init();
