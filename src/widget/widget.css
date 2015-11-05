@@ -660,7 +660,7 @@
     height: 28px;
     position: absolute;
     left: 0;
-    top: 9px;
+    top: 2px;
 }
 
 #stalk-container .stalk-comment-body-container {
@@ -799,7 +799,7 @@
 }
 
 #stalk-container .stalk-comment-body {
-    padding: 12px 17px;
+    padding: 4px 8px;
 }
 
 #stalk-container .stalk-comment-body p {
@@ -833,7 +833,7 @@
 }
 
 #stalk-container .stalk-comment-caret:after, #stalk-container .stalk-comment-caret:before {
-    top: 19px;
+    top: 10px;
     border: solid transparent;
     content: "";
     height: 0;
@@ -1155,3 +1155,28 @@
     margin: 0 auto;
     border-radius: 50%;
 }
+
+.stalk-conversation-part {
+    -webkit-animation: moveFromBottom .6s ease both;
+    -moz-animation: moveFromBottom .6s ease both;
+    -o-animation: moveFromBottom .6s ease both;   
+    animation: moveFromBottom .6s ease both;
+}
+
+@-webkit-keyframes moveFromBottom {
+    from { -webkit-transform: translateY(100%); }
+}
+@keyframes moveFromBottom {
+    from { -webkit-transform: translateY(100%); transform: translateY(100%); }
+}
+
+.stalk-sheet-content{
+  -webkit-transition: all 1s ease-in-out;
+  -moz-transition: all 1s ease-in-out;
+  -o-transition: all 1s ease-in-out;
+  transition: all 1s ease-in-out;    
+}
+
+
+
+

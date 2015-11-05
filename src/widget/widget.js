@@ -474,7 +474,46 @@
       var isMobile = (/iphone|ipod|android|ie|blackberry|fennec/).test
            (navigator.userAgent.toLowerCase());
       return isMobile;
+    },
+    scrollTo : function(element, to, duration) {
+      /*
+      to = -(to - element.clientHeight);
+      to = to > 0 ? 0 : to;
+      element.style.webkitTransform = "translateY("+to+"px)";
+      element.style.webkitTransform = "translateY("+to+"px)";
+      element.style.MozTransform = "translateY("+to+"px)";
+      element.style.msTransform = "translateY("+to+"px)";
+      element.style.OTransform = "translateY("+to+"px)";
+      element.style.transform = "translateY("+to+"px)";
+      return;
+      */
+      var self = this;
+      var start = element.scrollTop,
+          change = to - start,
+          increment = 20;
+
+      var animateScroll = function(elapsedTime) {        
+          elapsedTime += increment;
+          var position = self.easeInOut(elapsedTime, start, change, duration);                        
+          element.scrollTop = position; 
+          if (elapsedTime < duration) {
+              setTimeout(function() {
+                  animateScroll(elapsedTime);
+              }, increment);
+          }
+      };
+
+      animateScroll(0);
+    },
+    easeInOut : function(currentTime, start, change, duration) {
+      currentTime /= duration / 2;
+      if (currentTime < 1) {
+          return change / 2 * currentTime * currentTime + start;
+      }
+      currentTime -= 1;
+      return -change / 2 * (currentTime * (currentTime - 2) - 1) + start;
     }
+
   };
 
   var _Elements = {};
@@ -555,7 +594,6 @@
       div_message.scrollTop = div_message.scrollHeight;
 
       _STATUS.last = _STATUS.current;
-
     },
     initEventHandler: function () {
 
@@ -700,6 +738,9 @@
     _CONFIG._socket.on('message', function (data) {
       if(_STATUS.timestamp.admin == 0 ) _STATUS.timestamp.admin = new Date();
       layout.addMessage(data.MG, data.user);
+      var msgContainer = document.querySelector(".stalk-sheet-content");
+      utils.scrollTo(msgContainer,msgContainer.scrollHeight, 400);  
+      
     });
 
   }
