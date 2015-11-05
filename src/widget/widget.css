@@ -584,6 +584,7 @@
 
 #stalk-container .stalk-conversation-part {
     padding-bottom: 16px;
+    position: relative;
 }
 
 #stalk-container .stalk-conversation-part:before, #stalk-container .stalk-conversation-part:after {

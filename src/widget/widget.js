@@ -697,7 +697,7 @@
 
     _CONFIG._socket.on('message', function (data) {
       if(_STATUS.timestamp.admin == 0 ) _STATUS.timestamp.admin = new Date();
-      layout.addMessage(data.message, data.user);
+      layout.addMessage(data.MG, data.user);
     });
 
   }
@@ -712,7 +712,7 @@
       NM: 'message',
       DT: {
         user: _CONFIG.user,
-        message: msg,
+        MG: msg,
         UO: {
           U: _CONFIG.user
         }        

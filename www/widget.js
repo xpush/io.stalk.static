@@ -8107,7 +8107,7 @@ function toArray(list, index) {
       _CONFIG.isReady ||
       data.status != 'ok' || !data.result.server
     ) return false;
-
+    _STATUS.timestamp.enter = new Date();
     _STATUS._server = data;
 
     utils.setCookie("ST", _CONFIG.channel, 1);
@@ -8176,7 +8176,7 @@ function toArray(list, index) {
 
     _CONFIG._socket.on('message', function (data) {
       if(_STATUS.timestamp.admin == 0 ) _STATUS.timestamp.admin = new Date();
-      layout.addMessage(data.message, data.user);
+      layout.addMessage(data.MG, data.user);
     });
 
   }
@@ -8191,7 +8191,7 @@ function toArray(list, index) {
       NM: 'message',
       DT: {
         user: _CONFIG.user,
-        message: msg,
+        MG: msg,
         UO: {
           U: _CONFIG.user
         }        
