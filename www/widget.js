@@ -7991,8 +7991,20 @@ function toArray(list, index) {
       }
       currentTime -= 1;
       return -change / 2 * (currentTime * (currentTime - 2) - 1) + start;
-    }
+    },
+    secondsTohhmmss : function(totalSeconds) {
+      var hours   = Math.floor(totalSeconds / 3600);
+      var minutes = Math.floor((totalSeconds - (hours * 3600)) / 60);
+      var seconds = totalSeconds - (hours * 3600) - (minutes * 60);
 
+      // round seconds
+      seconds = Math.round(seconds * 100) / 100
+
+      var result = (hours < 10 ? "0" + hours : hours);
+          result += "-" + (minutes < 10 ? "0" + minutes : minutes);
+          result += "-" + (seconds  < 10 ? "0" + seconds : seconds);
+      return result;
+    }
   };
 
   var _Elements = {};
@@ -8048,7 +8060,7 @@ function toArray(list, index) {
       utils.removeClass(document.getElementById('stalk-conversation'),'stalk-active'); 
       utils.addClass(document.getElementById('stalk-conversation'),'stalk-inactive');      
     },
-    addMessage: function (message, type) {
+    addMessage: function (message, timestamp, type) {
 
       var div_message = document.getElementById('stalk-message');
 
@@ -8058,8 +8070,33 @@ function toArray(list, index) {
       }
       message = decodeURIComponent(message);
 
-      var msgHtml = '<div class="stalk-comment stalk-comment-by-' + _STATUS.current + '"> <div class="stalk-comment-body-container"> <div class="stalk-comment-body stalk-embed-body"> <p>' +
-        message + '</p> </div> <div class="stalk-comment-caret"></div> </div> </div>';
+      
+      var msgHtml = /*'<div class="stalk-comment stalk-comment-by-' + _STATUS.current + '"> */'<div class="stalk-comment-body-container"> <div class="stalk-comment-body stalk-embed-body"> <p>' +
+        message + '</p> </div> <div class="stalk-comment-caret"></div> </div>';/* </div>';*/
+      
+      var msgContainer = document.createElement("div");
+      utils.addClass(msgContainer,'stalk-comment stalk-comment-by-' + _STATUS.current);
+      msgContainer.innerHTML = msgHtml;
+
+      console.log("_STATUS.current : "+_STATUS.current);
+      console.log("_STATUS.last : "+_STATUS.last);
+      var t = document.querySelector('.stalk-comment-metadata-container');
+      if(_STATUS.last != _STATUS.current){
+        if(t){
+          utils.removeClass(t,'stalk-comment-metadata-container' );
+          utils.addClass(t,'stalk-comment-metadata-container-static' );
+        }
+      }else{
+        t.parentNode.removeChild(t);
+      }
+
+      window.metadata = this.metadata = document.createElement("div");
+      utils.addClass(this.metadata, "stalk-comment-metadata-container");
+      this.metadata.innerHTML = '<div class="stalk-comment-metadata"><span class="stalk-comment-state"></span><span class="stalk-relative-time">'+utils.secondsTohhmmss(timestamp)+'</span></div><div class="stalk-comment-readstate"></div></div>';
+
+      msgContainer.appendChild(this.metadata);
+
+      msgHtml = msgContainer.outerHTML;
 
       var classStr = 'stalk-conversation-part stalk-conversation-part-grouped';
       if (_STATUS.last != _STATUS.current) {
@@ -8230,7 +8267,7 @@ function toArray(list, index) {
 
     _CONFIG._socket.on('message', function (data) {
       if(_STATUS.timestamp.admin == 0 ) _STATUS.timestamp.admin = new Date();
-      layout.addMessage(data.MG, data.user);
+      layout.addMessage(data.MG, data.TS, data.user);
       var msgContainer = document.querySelector(".stalk-sheet-content");
       utils.scrollTo(msgContainer,msgContainer.scrollHeight, 400);  
       
