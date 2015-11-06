@@ -1156,7 +1156,7 @@
     border-radius: 50%;
 }
 
-.stalk-conversation-part {
+.fromBottomToUp {
     -webkit-animation: moveFromBottom .6s ease both;
     -moz-animation: moveFromBottom .6s ease both;
     -o-animation: moveFromBottom .6s ease both;   
@@ -1170,13 +1170,39 @@
     from { -webkit-transform: translateY(100%); transform: translateY(100%); }
 }
 
+#stalk-container .stalk-active{
+    -webkit-animation: moveFromRightFade .6s ease both;
+    -moz-animation: moveFromRightFade .6s ease both;
+    -o-animation: moveFromRightFade .6s ease both;   
+    animation: moveFromRightFade .6s ease both;
+}
+
+#stalk-container .stalk-inactive{
+    -webkit-animation: moveToRightFade .6s ease both;
+    -moz-animation: moveToRightFade .6s ease both;
+    -o-animation: moveToRightFade .6s ease both;   
+    animation: moveToRightFade .6s ease both;
+}
+@-webkit-keyframes moveFromRightFade {
+    from { opacity: 0.3; -webkit-transform: translateX(100%); }
+}
+@keyframes moveFromRightFade {
+    from { opacity: 0.3; -webkit-transform: translateX(100%); transform: translateX(100%); }
+}
+
+@-webkit-keyframes moveToRightFade {
+    from { }
+    to { opacity: 0.3; -webkit-transform: translateX(100%); }
+}
+@keyframes moveToRightFade {
+    from { }
+    to { opacity: 0.3; -webkit-transform: translateX(100%); transform: translateX(100%); }
+}
+
 .stalk-sheet-content{
   -webkit-transition: all 1s ease-in-out;
   -moz-transition: all 1s ease-in-out;
   -o-transition: all 1s ease-in-out;
   transition: all 1s ease-in-out;    
 }
-
-
-
 

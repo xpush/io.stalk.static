@@ -559,11 +559,15 @@
       utils.removeClass(_Elements.divLauncher, 'stalk-launcher-active');
       utils.addClass(_Elements.divLauncher, 'stalk-launcher-inactive');
       _Elements.divChatbox.style.display = 'block';
+      utils.removeClass(document.getElementById('stalk-conversation'),'stalk-inactive');
+      utils.addClass(document.getElementById('stalk-conversation'),'stalk-active');
     },
     close: function () {
       utils.removeClass(_Elements.divLauncher, 'stalk-launcher-inactive');
       utils.addClass(_Elements.divLauncher, 'stalk-launcher-active');
       _Elements.divChatbox.style.display = 'none';
+      utils.removeClass(document.getElementById('stalk-conversation'),'stalk-active'); 
+      utils.addClass(document.getElementById('stalk-conversation'),'stalk-inactive');      
     },
     addMessage: function (message, type) {
 
@@ -585,16 +589,26 @@
         }
         classStr = classStr + '-first';
       }
-
+      classStr += " fromBottomToUp";
+      //'<div class="stalk-comment-metadata-container"><div class="stalk-comment-metadata"><span class="stalk-comment-state"></span><span class="stalk-relative-time">'++'</span></div><div class="stalk-comment-readstate"></div></div>'
       var chatDiv = document.createElement("div");
       chatDiv.className = classStr;
       chatDiv.innerHTML = msgHtml;
+
+      var removeClass = function(){
+        this.classList.remove("fromBottomToUp");
+        this.removeEventListener("animationend",removeClass, false);
+      }
+      chatDiv.addEventListener("animationend", removeClass, false);
+
 
       div_message.appendChild(chatDiv);
       div_message.scrollTop = div_message.scrollHeight;
 
       _STATUS.last = _STATUS.current;
     },
+
+
     initEventHandler: function () {
 
       // element event handlers
