@@ -49,7 +49,7 @@ Check STALK Admin Project - https://github.com/xpush/io.stalk.admin
 	$ sudo npm install -g gulp
 
 	// Download and build
-	$ git clone https://github.com/xpush/stalk.io.git
+	$ git clone https://github.com/xpush/io.stalk.static.git
 	$ cd stalk.io
 	$ npm install
 	$ gulp stalk
