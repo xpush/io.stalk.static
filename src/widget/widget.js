@@ -459,7 +459,8 @@
       data.st = this.getUserStayTime();
       window.addEventListener('beforeunload',function(){
         var logData = {A: _CONFIG.app, OP : _CONFIG.admin.uid, ENS: _STATUS.timestamp.enter, 
-        SMT:  _STATUS.timestamp.user, RMT: _STATUS.timestamp.admin, U: location.href, REF: utils.getReferrerSite()};
+        SMT:  _STATUS.timestamp.user, RMT: _STATUS.timestamp.admin, U: location.href, REF: utils.getReferrerSite(),
+        IP: utils.getClientIp() };
 
         self.minAjax({
           url: _CONFIG.server + '/api/activitys',
@@ -822,7 +823,6 @@
     _CONFIG._socket.on("socket.address",function(data){
       var ipAddress = data.ip.split(':')[3];
       utils.setClientIp(ipAddress);
-
     });
 
     _CONFIG._socket.on('_event', function (data) {

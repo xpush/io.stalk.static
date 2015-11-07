@@ -8122,6 +8122,7 @@ function toArray(list, index) {
 
       if( _STATUS.current == "admin"){
         utils.watchLastResponseTime(document.querySelector(".stalk-last-active"), timestamp);
+        if(!_STATUS.timestamp.admin) _STATUS.timestamp.admin = new Date();
       }
 
       message = decodeURIComponent(message);
@@ -8208,7 +8209,8 @@ function toArray(list, index) {
 
           if (message !== "") {
             if(!_CONFIG.isReady){
-              utils.requestServerInfo(STALK._callbackInit);              
+              utils.requestServerInfo(STALK._callbackInit);   
+              _STATUS.timestamp.user = new Date();
               //STALK._init(); 
             }
             STALK.sendMessage(message);
@@ -8274,8 +8276,6 @@ function toArray(list, index) {
       //'DT=' + JSON.stringify(_CONFIG.user) + '&' +
       'S=' + data.result.server.name;
 
-    _STATUS.timestamp.user = new Date();
-
     _CONFIG._socket = io.connect(data.result.server.url + '/channel?' + query, {
         'force new connection': true
     });
@@ -8322,7 +8322,6 @@ function toArray(list, index) {
     });
 
     _CONFIG._socket.on('message', function (data) {
-      if(_STATUS.timestamp.admin == 0 ) _STATUS.timestamp.admin = new Date();
       layout.addMessage(data.MG, data.TS, data.user);
       var msgContainer = document.querySelector(".stalk-sheet-content");
       utils.scrollTo(msgContainer,msgContainer.scrollHeight, 400); 
