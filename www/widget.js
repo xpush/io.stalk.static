@@ -7501,7 +7501,6 @@ function toArray(list, index) {
     admin: undefined,
     div: undefined,
     server: 'http://admin.stalk.io:8000',
-    default_pic : '';
     api_server: undefined,
     css_url: 'http://static.stalk.io/widget.css',
     height: '200px',

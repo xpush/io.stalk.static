@@ -458,6 +458,8 @@
       data.st = this.getUserStayTime();
       window.addEventListener('beforeunload',function(){
         if(cb)cb();
+        // App, url, enterSiteTime, leaveSiteTime, startChatTime, firstResponseTime, 
+
         //LSTALK.sendClientInfoAjax({a:'L',st: data.st}); 
         //LSTALK.sendClientInfo('leavePage', data);
       });
@@ -584,7 +586,7 @@
           _Elements['txMessage'] = document.getElementById('txMessage');
 
           _CONFIG.admin = data.operator;
-          document.querySelector('.stalk-sheet-header-title').innerHTML = _CONFIG.admin.NM;
+          document.querySelector('.stalk-sheet-header-title').innerHTML = _CONFIG.admin.name;
 
           // Add Event on elements
           self.initEventHandler();
@@ -654,7 +656,7 @@
       var classStr = 'stalk-conversation-part stalk-conversation-part-grouped';
       if (_STATUS.last != _STATUS.current) {
         if (_STATUS.current == 'admin') { // add avatar image (on the first admin message)
-          msgHtml = '<img src="' + _CONFIG.admin.P + '" class="stalk-comment-avatar">' + msgHtml;
+          msgHtml = '<img src="' + _CONFIG.admin.image + '" class="stalk-comment-avatar">' + msgHtml;
         }
         classStr = classStr + '-first';
       }
@@ -756,14 +758,6 @@
     _STATUS._server = data;
 
     utils.setCookie("ST", _CONFIG.channel, 1);
-    if( utils.isMobile() ){
-      document.getElementById('txMessage').addEventListener("focus",function (e) {
-        alert('focus');
-      });
-      document.getElementById('txMessage').addEventListener("blur",function (e) {
-        alert('blur');
-      });
-    }
     utils.onLeaveSite();
     utils.onChangeUrl();
 
@@ -796,7 +790,7 @@
       _CONFIG._isCreate = true;
       _CONFIG.isReady = true;
 
-      _CONFIG._socket.emit('channel.join', {C: _CONFIG.channel, U: _CONFIG.admin.UID}, function (err) {
+      _CONFIG._socket.emit('channel.join', {C: _CONFIG.channel, U: _CONFIG.admin.uid}, function (err) {
         if (err) {
           console.error(err)
         }
