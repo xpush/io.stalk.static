@@ -472,7 +472,16 @@
       info.browser = utils.getBrowserName();
       info.os = utils.getOSName();
       info.refer = utils.getReferrerSite();
+      info.ip = utils.getClientIp();
       return info;
+    },
+    setClientIp : function(ip){
+      var self = this;
+      self.ip = ip;
+    },
+    getClientIp : function(){
+      var self = this;
+      return self.ip;
     },
     isMobile : function(){
       var isMobile = (/iphone|ipod|android|ie|blackberry|fennec/).test
@@ -795,6 +804,12 @@
           console.error(err)
         }
       });
+
+    });
+
+    _CONFIG._socket.on("socket.address",function(data){
+      var ipAddress = data.ip.split(':')[3];
+      utils.setClientIp(ipAddress);
 
     });
 
