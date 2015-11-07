@@ -7,7 +7,7 @@
     }
   };
 
-  var TEMPLATE = '<div id="stalk-container" class="stalk-container stalk-reset stalk-acquire"> <div id="stalk-launcher" class="stalk-launcher stalk-launcher-enabled stalk-launcher-active"> <div id="stalk-launcher-button" class="stalk-launcher-button"></div></div><div id="stalk-chatbox" class="stalk-chatbox" style="display: none;"> <div id="stalk-conversation" class="stalk-conversation stalk-sheet stalk-sheet-active"> <div class="stalk-sheet-header"> <div class="stalk-sheet-header-title-container"> <b class="stalk-sheet-header-title stalk-sheet-header-with-presence">정진영</b> <div class="stalk-last-active" style="display: block;"><span class="relative-time-in-text">Last active 1 hour ago</span> </div></div><div class="stalk-sheet-header-generic-title"></div><a id="btnClose" class="stalk-sheet-header-button stalk-sheet-header-close-button" href="#"> <div class="stalk-sheet-header-button-icon"></div></a> </div><div class="stalk-sheet-body"></div><div class="stalk-sheet-content" style="bottom: 74px;"> <div class="stalk-sheet-content-container"> <div class="stalk-conversation-parts-container"> <div id="stalk-message" class="stalk-conversation-parts"> </div></div></div></div><div class="stalk-composer-container"> <div id="stalk-composer" class="stalk-composer" style="transform: translate(0px, 0px);"> <div class="stalk-composer-textarea-container"> <div class="stalk-composer-textarea stalk-composer-focused"> <pre><span></span><br></pre> <textarea id="txMessage" placeholder="Write a reply…"></textarea> </div></div></div></div></div></div></div>';
+  var TEMPLATE = '<div id="stalk-container" class="stalk-container stalk-reset stalk-acquire"> <div id="stalk-launcher" class="stalk-launcher stalk-launcher-enabled stalk-launcher-active"> <div id="stalk-launcher-button" class="stalk-launcher-button"></div></div><div id="stalk-chatbox" class="stalk-chatbox" style="display: none;"> <div id="stalk-conversation" class="stalk-conversation stalk-sheet stalk-sheet-active"> <div class="stalk-sheet-header"> <div class="stalk-sheet-header-title-container"> <b class="stalk-sheet-header-title stalk-sheet-header-with-presence"></b> <div class="stalk-last-active" style="display: block;"><span class="relative-time-in-text"></span> </div></div><div class="stalk-sheet-header-generic-title"></div><a id="btnClose" class="stalk-sheet-header-button stalk-sheet-header-close-button" href="#"> <div class="stalk-sheet-header-button-icon"></div></a> </div><div class="stalk-sheet-body"></div><div class="stalk-sheet-content" style="bottom: 74px;"> <div class="stalk-sheet-content-container"> <div class="stalk-conversation-parts-container"> <div id="stalk-message" class="stalk-conversation-parts"> </div></div></div></div><div class="stalk-composer-container"> <div id="stalk-composer" class="stalk-composer" style="transform: translate(0px, 0px);"> <div class="stalk-composer-textarea-container"> <div class="stalk-composer-textarea stalk-composer-focused"> <pre><span></span><br></pre> <textarea id="txMessage" placeholder="Write a reply…"></textarea> </div></div></div></div></div></div></div>';
 
   var root = global;
 
@@ -43,6 +43,8 @@
       enter: 0,  // enter the site
       admin: 0,  // first message from admin
       user: 0   // first message to admin
+    },lastTimestamp : {
+      admin:0
     }
   };
 
@@ -515,6 +517,41 @@
     },
     secondsTohhmmss : function(totalSeconds) {
       return (new Date(totalSeconds)).toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+    },
+    timeSince : function(date) {
+      var seconds = Math.floor((new Date() - date) / 1000);
+      var interval = Math.floor(seconds / 31536000);
+
+      if (interval > 1) {
+          return interval + " years";
+      }
+      interval = Math.floor(seconds / 2592000);
+      if (interval > 1) {
+          return interval + " months";
+      }
+      interval = Math.floor(seconds / 86400);
+      if (interval > 1) {
+          return interval + " days";
+      }
+      interval = Math.floor(seconds / 3600);
+      if (interval > 1) {
+          return interval + " hours";
+      }
+      interval = Math.floor(seconds / 60);
+      if (interval > 1) {
+          return interval + " minutes";
+      }
+      return Math.floor(seconds) + " seconds";
+    },
+    watchLastResponseTime : function(dom, timestamp){
+      var self = this;
+      dom.innerHTML = "Last Response: 0 minitues ago";
+      if(_STATUS.watchTime){
+        clearInterval(_STATUS.watchTime); _STATUS.watchTime = undefined;
+      }
+      _STATUS.watchTime = setInterval(function(){
+        dom.innerHTML = "Last Response: "+self.timeSince(timestamp) +" ago";
+      }, 1000*60*1);
     }
   };
 
@@ -548,10 +585,12 @@
 
           _CONFIG.admin = data.operator;
 
+          document.querySelector('.stalk-sheet-header-title').innerHTML = _CONFIG.admin.NM;
+
           // Add Event on elements
           self.initEventHandler();
 
-          utils.requestServerInfo(STALK._callbackInit);
+          //utils.requestServerInfo(STALK._callbackInit);
 
         }
       });
@@ -579,8 +618,12 @@
       if (type == _CONFIG.user) {
         _STATUS.current = 'user';
       }
-      message = decodeURIComponent(message);
 
+      if( _STATUS.current == "admin"){
+        utils.watchLastResponseTime(document.querySelector(".stalk-last-active"), timestamp);
+      }
+
+      message = decodeURIComponent(message);
       
       var msgHtml = /*'<div class="stalk-comment stalk-comment-by-' + _STATUS.current + '"> */'<div class="stalk-comment-body-container"> <div class="stalk-comment-body stalk-embed-body"> <p>' +
         message + '</p> </div> <div class="stalk-comment-caret"></div> </div>';/* </div>';*/
@@ -634,8 +677,6 @@
 
       _STATUS.last = _STATUS.current;
     },
-
-
     initEventHandler: function () {
 
       // element event handlers
@@ -665,7 +706,10 @@
           message = encodeURIComponent(message);
 
           if (message !== "") {
-            if(!_CONFIG.isReady) STALK._init();
+            if(!_CONFIG.isReady){
+              utils.requestServerInfo(STALK._callbackInit);              
+              //STALK._init(); 
+            }
             STALK.sendMessage(message);
             _Elements.txMessage.value = "";
           }
@@ -723,6 +767,8 @@
     }
     utils.onLeaveSite();
     utils.onChangeUrl();
+
+    STALK._init();
   };
 
   STALK._init = function(){
@@ -780,10 +826,8 @@
       if(_STATUS.timestamp.admin == 0 ) _STATUS.timestamp.admin = new Date();
       layout.addMessage(data.MG, data.TS, data.user);
       var msgContainer = document.querySelector(".stalk-sheet-content");
-      utils.scrollTo(msgContainer,msgContainer.scrollHeight, 400);  
-      
+      utils.scrollTo(msgContainer,msgContainer.scrollHeight, 400); 
     });
-
   }
 
   STALK.sendMessage = function (msg) {
