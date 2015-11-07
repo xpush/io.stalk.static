@@ -584,7 +584,6 @@
           _Elements['txMessage'] = document.getElementById('txMessage');
 
           _CONFIG.admin = data.operator;
-
           document.querySelector('.stalk-sheet-header-title').innerHTML = _CONFIG.admin.NM;
 
           // Add Event on elements
@@ -655,7 +654,7 @@
       var classStr = 'stalk-conversation-part stalk-conversation-part-grouped';
       if (_STATUS.last != _STATUS.current) {
         if (_STATUS.current == 'admin') { // add avatar image (on the first admin message)
-          msgHtml = '<img src="' + '' + '" class="stalk-comment-avatar">' + msgHtml;
+          msgHtml = '<img src="' + _CONFIG.admin.P + '" class="stalk-comment-avatar">' + msgHtml;
         }
         classStr = classStr + '-first';
       }

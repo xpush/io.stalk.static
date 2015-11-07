@@ -7501,6 +7501,7 @@ function toArray(list, index) {
     admin: undefined,
     div: undefined,
     server: 'http://admin.stalk.io:8000',
+    default_pic : '';
     api_server: undefined,
     css_url: 'http://static.stalk.io/widget.css',
     height: '200px',
@@ -8063,13 +8064,12 @@ function toArray(list, index) {
           _Elements['txMessage'] = document.getElementById('txMessage');
 
           _CONFIG.admin = data.operator;
-
           document.querySelector('.stalk-sheet-header-title').innerHTML = _CONFIG.admin.NM;
 
           // Add Event on elements
           self.initEventHandler();
 
-          utils.requestServerInfo(STALK._callbackInit);
+          //utils.requestServerInfo(STALK._callbackInit);
 
         }
       });
@@ -8134,7 +8134,7 @@ function toArray(list, index) {
       var classStr = 'stalk-conversation-part stalk-conversation-part-grouped';
       if (_STATUS.last != _STATUS.current) {
         if (_STATUS.current == 'admin') { // add avatar image (on the first admin message)
-          msgHtml = '<img src="' + '' + '" class="stalk-comment-avatar">' + msgHtml;
+          msgHtml = '<img src="' + _CONFIG.admin.P + '" class="stalk-comment-avatar">' + msgHtml;
         }
         classStr = classStr + '-first';
       }
@@ -8185,7 +8185,10 @@ function toArray(list, index) {
           message = encodeURIComponent(message);
 
           if (message !== "") {
-            if(!_CONFIG.isReady) STALK._init();
+            if(!_CONFIG.isReady){
+              utils.requestServerInfo(STALK._callbackInit);              
+              //STALK._init(); 
+            }
             STALK.sendMessage(message);
             _Elements.txMessage.value = "";
           }
@@ -8243,6 +8246,8 @@ function toArray(list, index) {
     }
     utils.onLeaveSite();
     utils.onChangeUrl();
+
+    STALK._init();
   };
 
   STALK._init = function(){
