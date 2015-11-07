@@ -7486,7 +7486,7 @@ function toArray(list, index) {
     }
   };
 
-  var TEMPLATE = '<div id="stalk-container" class="stalk-container stalk-reset stalk-acquire"> <div id="stalk-launcher" class="stalk-launcher stalk-launcher-enabled stalk-launcher-active"> <div id="stalk-launcher-button" class="stalk-launcher-button"></div></div><div id="stalk-chatbox" class="stalk-chatbox" style="display: none;"> <div id="stalk-conversation" class="stalk-conversation stalk-sheet stalk-sheet-active"> <div class="stalk-sheet-header"> <div class="stalk-sheet-header-title-container"> <b class="stalk-sheet-header-title stalk-sheet-header-with-presence">정진영</b> <div class="stalk-last-active" style="display: block;"><span class="relative-time-in-text">Last active 1 hour ago</span> </div></div><div class="stalk-sheet-header-generic-title"></div><a id="btnClose" class="stalk-sheet-header-button stalk-sheet-header-close-button" href="#"> <div class="stalk-sheet-header-button-icon"></div></a> </div><div class="stalk-sheet-body"></div><div class="stalk-sheet-content" style="bottom: 74px;"> <div class="stalk-sheet-content-container"> <div class="stalk-conversation-parts-container"> <div id="stalk-message" class="stalk-conversation-parts"> </div></div></div></div><div class="stalk-composer-container"> <div id="stalk-composer" class="stalk-composer" style="transform: translate(0px, 0px);"> <div class="stalk-composer-textarea-container"> <div class="stalk-composer-textarea stalk-composer-focused"> <pre><span></span><br></pre> <textarea id="txMessage" placeholder="Write a reply…"></textarea> </div></div></div></div></div></div></div>';
+  var TEMPLATE = '<div id="stalk-container" class="stalk-container stalk-reset stalk-acquire"> <div id="stalk-launcher" class="stalk-launcher stalk-launcher-enabled stalk-launcher-active"> <div id="stalk-launcher-button" class="stalk-launcher-button"></div></div><div id="stalk-chatbox" class="stalk-chatbox" style="display: none;"> <div id="stalk-conversation" class="stalk-conversation stalk-sheet stalk-sheet-active"> <div class="stalk-sheet-header"> <div class="stalk-sheet-header-title-container"> <b class="stalk-sheet-header-title stalk-sheet-header-with-presence"></b> <div class="stalk-last-active" style="display: block;"><span class="relative-time-in-text"></span> </div></div><div class="stalk-sheet-header-generic-title"></div><a id="btnClose" class="stalk-sheet-header-button stalk-sheet-header-close-button" href="#"> <div class="stalk-sheet-header-button-icon"></div></a> </div><div class="stalk-sheet-body"></div><div class="stalk-sheet-content" style="bottom: 74px;"> <div class="stalk-sheet-content-container"> <div class="stalk-conversation-parts-container"> <div id="stalk-message" class="stalk-conversation-parts"> </div></div></div></div><div class="stalk-composer-container"> <div id="stalk-composer" class="stalk-composer" style="transform: translate(0px, 0px);"> <div class="stalk-composer-textarea-container"> <div class="stalk-composer-textarea stalk-composer-focused"> <pre><span></span><br></pre> <textarea id="txMessage" placeholder="Write a reply…"></textarea> </div></div></div></div></div></div></div>';
 
   var root = global;
 
@@ -7933,10 +7933,24 @@ function toArray(list, index) {
       return pad(hh,2)+':'+pad(mm,2)+':'+pad(ss,2)+'.'+pad(mss,3);
     },
     onLeaveSite : function(cb){
+      var self = this;
       var data = {url: location.href};
       data.st = this.getUserStayTime();
       window.addEventListener('beforeunload',function(){
-        if(cb)cb();
+        var logData = {A: _CONFIG.app, OP : _CONFIG.admin.uid, ENS: _STATUS.timestamp.enter, 
+        SMT:  _STATUS.timestamp.user, RMT: _STATUS.timestamp.admin, U: location.href, REF: utils.getReferrerSite()};
+
+        self.minAjax({
+          url: _CONFIG.server + '/api/activitys',
+          type: "POST",
+          data: logData,
+          success: function(){
+
+          }
+        });
+        if(cb)cb();        
+        // App, url, enterSiteTime, leaveSiteTime, startChatTime, firstResponseTime, 
+
         //LSTALK.sendClientInfoAjax({a:'L',st: data.st}); 
         //LSTALK.sendClientInfo('leavePage', data);
       });
@@ -8072,7 +8086,7 @@ function toArray(list, index) {
           _Elements['txMessage'] = document.getElementById('txMessage');
 
           _CONFIG.admin = data.operator;
-          document.querySelector('.stalk-sheet-header-title').innerHTML = _CONFIG.admin.NM;
+          document.querySelector('.stalk-sheet-header-title').innerHTML = _CONFIG.admin.name;
 
           // Add Event on elements
           self.initEventHandler();
@@ -8105,7 +8119,6 @@ function toArray(list, index) {
       if (type == _CONFIG.user) {
         _STATUS.current = 'user';
       }
-      message = decodeURIComponent(message);
 
       if( _STATUS.current == "admin"){
         utils.watchLastResponseTime(document.querySelector(".stalk-last-active"), timestamp);
@@ -8143,7 +8156,7 @@ function toArray(list, index) {
       var classStr = 'stalk-conversation-part stalk-conversation-part-grouped';
       if (_STATUS.last != _STATUS.current) {
         if (_STATUS.current == 'admin') { // add avatar image (on the first admin message)
-          msgHtml = '<img src="' + _CONFIG.admin.P + '" class="stalk-comment-avatar">' + msgHtml;
+          msgHtml = '<img src="' + _CONFIG.admin.image + '" class="stalk-comment-avatar">' + msgHtml;
         }
         classStr = classStr + '-first';
       }
@@ -8245,14 +8258,6 @@ function toArray(list, index) {
     _STATUS._server = data;
 
     utils.setCookie("ST", _CONFIG.channel, 1);
-    if( utils.isMobile() ){
-      document.getElementById('txMessage').addEventListener("focus",function (e) {
-        alert('focus');
-      });
-      document.getElementById('txMessage').addEventListener("blur",function (e) {
-        alert('blur');
-      });
-    }
     utils.onLeaveSite();
     utils.onChangeUrl();
 
@@ -8285,7 +8290,7 @@ function toArray(list, index) {
       _CONFIG._isCreate = true;
       _CONFIG.isReady = true;
 
-      _CONFIG._socket.emit('channel.join', {C: _CONFIG.channel, U: _CONFIG.admin.UID}, function (err) {
+      _CONFIG._socket.emit('channel.join', {C: _CONFIG.channel, U: _CONFIG.admin.uid}, function (err) {
         if (err) {
           console.error(err)
         }

@@ -454,10 +454,22 @@
       return pad(hh,2)+':'+pad(mm,2)+':'+pad(ss,2)+'.'+pad(mss,3);
     },
     onLeaveSite : function(cb){
+      var self = this;
       var data = {url: location.href};
       data.st = this.getUserStayTime();
       window.addEventListener('beforeunload',function(){
-        if(cb)cb();
+        var logData = {A: _CONFIG.app, OP : _CONFIG.admin.uid, ENS: _STATUS.timestamp.enter, 
+        SMT:  _STATUS.timestamp.user, RMT: _STATUS.timestamp.admin, U: location.href, REF: utils.getReferrerSite()};
+
+        self.minAjax({
+          url: _CONFIG.server + '/api/activitys',
+          type: "POST",
+          data: logData,
+          success: function(){
+
+          }
+        });
+        if(cb)cb();        
         // App, url, enterSiteTime, leaveSiteTime, startChatTime, firstResponseTime, 
 
         //LSTALK.sendClientInfoAjax({a:'L',st: data.st}); 
@@ -631,6 +643,7 @@
 
       if( _STATUS.current == "admin"){
         utils.watchLastResponseTime(document.querySelector(".stalk-last-active"), timestamp);
+        if(!_STATUS.timestamp.admin) _STATUS.timestamp.admin = new Date();
       }
 
       message = decodeURIComponent(message);
@@ -717,7 +730,8 @@
 
           if (message !== "") {
             if(!_CONFIG.isReady){
-              utils.requestServerInfo(STALK._callbackInit);              
+              utils.requestServerInfo(STALK._callbackInit);   
+              _STATUS.timestamp.user = new Date();
               //STALK._init(); 
             }
             STALK.sendMessage(message);
@@ -783,8 +797,6 @@
       //'DT=' + JSON.stringify(_CONFIG.user) + '&' +
       'S=' + data.result.server.name;
 
-    _STATUS.timestamp.user = new Date();
-
     _CONFIG._socket = io.connect(data.result.server.url + '/channel?' + query, {
         'force new connection': true
     });
@@ -831,7 +843,6 @@
     });
 
     _CONFIG._socket.on('message', function (data) {
-      if(_STATUS.timestamp.admin == 0 ) _STATUS.timestamp.admin = new Date();
       layout.addMessage(data.MG, data.TS, data.user);
       var msgContainer = document.querySelector(".stalk-sheet-content");
       utils.scrollTo(msgContainer,msgContainer.scrollHeight, 400); 
