@@ -256,9 +256,13 @@
         return false;
       }
 
+        var logData = {A: _CONFIG.app, ENS: _STATUS.timestamp.enter, 
+        U: location.href, REF: utils.getReferrerSite(), CH: _CONFIG.channel};
+
       this.minAjax({
         url: _CONFIG.server + '/api/apps/operators/' + _CONFIG.id,
-        type: "GET",
+        type: "POST",
+        data: logData,
         success: _callback
       });
 
