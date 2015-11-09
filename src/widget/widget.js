@@ -240,8 +240,8 @@
         if (config.debugLog == true)
           console.log("GET fired at:" + config.url + "?" + sendString);
       }
-      if (config.type == "POST") {
-        xmlhttp.open("POST", config.url, config.method);
+      if (config.type == "POST" || config.type == "PUT" ) {
+        xmlhttp.open(config.type, config.url, config.method);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(sendString);
 
@@ -256,7 +256,7 @@
         return false;
       }
 
-        var logData = {A: _CONFIG.app, ENS: _STATUS.timestamp.enter, 
+        var logData = {A: _CONFIG.app, ENS: _STATUS.timestamp.enter, VID: _STATUS.shortid,
         U: location.href, REF: utils.getReferrerSite(), CH: _CONFIG.channel};
 
       this.minAjax({
@@ -462,13 +462,12 @@
       var data = {url: location.href};
       data.st = this.getUserStayTime();
       window.addEventListener('beforeunload',function(){
-        var logData = {A: _CONFIG.app, OP : _CONFIG.admin.uid, ENS: _STATUS.timestamp.enter, 
-        SMT:  _STATUS.timestamp.user, RMT: _STATUS.timestamp.admin, U: location.href, REF: utils.getReferrerSite(),
-        IP: utils.getClientIp() };
+        var logData = {OP : _CONFIG.admin.uid, VID: _STATUS.shortid, CH: _CONFIG.channel,
+        SMT:  _STATUS.timestamp.user, RMT: _STATUS.timestamp.admin, IP: utils.getClientIp()};
 
         self.minAjax({
           url: _CONFIG.server + '/api/activitys',
-          type: "POST",
+          type: "PUT",
           data: logData,
           success: function(){
 
@@ -580,6 +579,9 @@
       _STATUS.watchTime = setInterval(function(){
         dom.innerHTML = "Last Response: "+self.timeSince(timestamp) +" ago";
       }, 1000*60*1);
+    },
+    generateShortId : function(){
+      return ("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4)
     }
   };
 
@@ -592,6 +594,7 @@
 
       utils.requestAdminInfo(function (data) {
         data = JSON.parse(data);
+        utils.setClientIp(data.clientIp);
 
         if (data.operator) {
 
@@ -773,6 +776,8 @@
 
   if (!_CONFIG.channel) _CONFIG.channel = utils.getCookie("ST") == undefined ? utils.getUniqueKey() :utils.getCookie("ST"); //encodeURIComponent(/*location.hostname + */ location.pathname);
   STALK._unsendMessages = []; // send message before operator is connected!
+  _STATUS.timestamp.enter = new Date();
+  _STATUS.shortid = utils.generateShortId();
 
   STALK._callbackInit = function (data) {
 
@@ -782,13 +787,9 @@
       _CONFIG.isReady ||
       data.status != 'ok' || !data.result.server
     ) return false;
-    _STATUS.timestamp.enter = new Date();
     _STATUS._server = data;
 
     utils.setCookie("ST", _CONFIG.channel, 1);
-    utils.onLeaveSite();
-    utils.onChangeUrl();
-
     STALK._init();
   };
 
@@ -879,6 +880,8 @@
 
   STALK.init = function () {
     layout.initWin();
+    utils.onLeaveSite();
+    utils.onChangeUrl();  
   };
 
   STALK.init();
