@@ -7735,7 +7735,7 @@ function toArray(list, index) {
         return false;
       }
 
-        var logData = {A: _CONFIG.app, ENS: _STATUS.timestamp.enter, VID: _STATUS.shortid,
+        var logData = {A: _CONFIG.id, ENS: _STATUS.timestamp.enter, VID: _STATUS.shortid,
         U: location.href, REF: utils.getReferrerSite(), CH: _CONFIG.channel};
 
       this.minAjax({
@@ -7941,8 +7941,10 @@ function toArray(list, index) {
       var data = {url: location.href};
       data.st = this.getUserStayTime();
       window.addEventListener('beforeunload',function(){
-        var logData = {OP : _CONFIG.admin.uid, VID: _STATUS.shortid, CH: _CONFIG.channel,
-        SMT:  _STATUS.timestamp.user, RMT: _STATUS.timestamp.admin, IP: utils.getClientIp()};
+        var logData = {OP : _CONFIG.admin.uid, VID: _STATUS.shortid, CH: _CONFIG.channel, LTS: new Date(),
+        SMT:  _STATUS.timestamp.user, RMT: _STATUS.timestamp.admin, IP: utils.getClientIp(),
+         CT: _STATUS.city, CC: _STATUS.country
+      };
 
         self.minAjax({
           url: _CONFIG.server + '/api/activitys',
@@ -7959,6 +7961,18 @@ function toArray(list, index) {
         //LSTALK.sendClientInfo('leavePage', data);
       });
     },
+    getGeo : function(){
+      this.minAjax({
+        url: _CONFIG.server + '/api/auths/geo',
+        type: "POST",
+        data: {ip: '49.175.7.42' },
+        success: function(data){
+          _STATUS.country = data.country;
+          _STATUS.city = data.city;
+        }
+      });
+
+    },
     browserInfo : function(){
       var info = {};
       info.title = document.title;
@@ -7968,6 +7982,8 @@ function toArray(list, index) {
       info.os = utils.getOSName();
       info.refer = utils.getReferrerSite();
       info.ip = utils.getClientIp();
+      info.city = _STATUS.city;
+      info.country = _STATUS.country;
       return info;
     },
     setClientIp : function(ip){
@@ -8073,6 +8089,7 @@ function toArray(list, index) {
 
       utils.requestAdminInfo(function (data) {
         data = JSON.parse(data);
+        utils.setClientIp(data.clientIp);
 
         if (data.operator) {
 
@@ -8094,6 +8111,7 @@ function toArray(list, index) {
 
           _CONFIG.admin = data.operator;
           document.querySelector('.stalk-sheet-header-title').innerHTML = _CONFIG.admin.name;
+          utils.getGeo();
 
           // Add Event on elements
           self.initEventHandler();
