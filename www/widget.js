@@ -7735,7 +7735,7 @@ function toArray(list, index) {
         return false;
       }
 
-        var logData = {A: _CONFIG.id, ENS: _STATUS.timestamp.enter, VID: _STATUS.shortid,
+        var logData = {A: _CONFIG.id, ENS: _STATUS.timestamp.enter, VID: _STATUS.shortid,BR:utils.getBrowserName(),
         U: location.href, REF: utils.getReferrerSite(), CH: _CONFIG.channel};
 
       this.minAjax({
@@ -7787,7 +7787,6 @@ function toArray(list, index) {
     getBrowserName : function(){
         var BrowserKey = {ie: "msie", ie6: "msie 6", ie7 : "msie 7", ie8 : "msie 8", ie9 :"msie 9", ie10: "msie 10",chrome : "chrome", safari: "safari", safari3: "applewebkir/5", mac : "mac",  firefox: "firefox"
         }
-
         var ua = this.getUserAgent();
         var re = /\S*\/[\d.]*/g;
         var m;
@@ -7943,7 +7942,7 @@ function toArray(list, index) {
       window.addEventListener('beforeunload',function(){
         var logData = {OP : _CONFIG.admin.uid, VID: _STATUS.shortid, CH: _CONFIG.channel, LTS: new Date(),
         SMT:  _STATUS.timestamp.user, RMT: _STATUS.timestamp.admin, IP: utils.getClientIp(),
-         CT: _STATUS.city, CC: _STATUS.country
+         CT: _STATUS.city, CC: _STATUS.country, LAT: _STATUS.lat, LNG: _STATUS.lng
       };
 
         self.minAjax({
@@ -7967,8 +7966,11 @@ function toArray(list, index) {
         type: "POST",
         data: {ip: '49.175.7.42' },
         success: function(data){
+          console.log(data);
           _STATUS.country = data.country;
           _STATUS.city = data.city;
+          _STATUS.lat = data.latitude;
+          _STATUS.lng = data.longitude;
         }
       });
 
@@ -7984,6 +7986,8 @@ function toArray(list, index) {
       info.ip = utils.getClientIp();
       info.city = _STATUS.city;
       info.country = _STATUS.country;
+      info.lat = data.latitude;
+      info.lng = data.longitude;
       return info;
     },
     setClientIp : function(ip){
