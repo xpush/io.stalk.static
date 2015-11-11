@@ -40,11 +40,11 @@
     last: '',
     current: '',
     timestamp: {
-      enter: 0,  // enter the site
-      admin: 0,  // first message from admin
-      user: 0   // first message to admin
+      // enter: undefined,  // enter the site
+      // admin: undefined,  // first message from admin
+      // user: undefined   // first message to admin
     },lastTimestamp : {
-      admin:0
+      // admin: undefined
     }
   };
 
@@ -448,7 +448,7 @@
           while (s.length < size) s = "0" + s;
           return s;
       }
-      var ms = (new Date()) - _STATUS.timestamp.user;
+      var ms = (new Date()) - (new Date(_STATUS.timestamp.user));
       var seconds = ms / 1000;
       var hh = Math.floor(seconds / 3600);
       var mm = Math.floor(seconds / 60) % 60;
@@ -461,7 +461,7 @@
       var data = {url: location.href};
       data.st = this.getUserStayTime();
       window.addEventListener('beforeunload',function(){
-        var logData = {OP : _CONFIG.admin.uid, VID: _STATUS.shortid, CH: _CONFIG.channel, LTS: new Date(),
+        var logData = {OP : _CONFIG.admin.uid, VID: _STATUS.shortid, CH: _CONFIG.channel, LTS: utils.currentDateStr() ,
         SMT:  _STATUS.timestamp.user, RMT: _STATUS.timestamp.admin, IP: utils.getClientIp(),
          CT: _STATUS.city, CC: _STATUS.country, LAT: _STATUS.lat, LNG: _STATUS.lng
       };
@@ -487,6 +487,7 @@
         type: "POST",
         data: {ip: '49.175.7.42' },
         success: function(data){
+          data = JSON.parse(data);
           _STATUS.country = data.country;
           _STATUS.city = data.city;
           _STATUS.lat = data.latitude;
@@ -552,6 +553,9 @@
       };
 
       animateScroll(0);
+    },
+    currentDateStr : function(){
+      return (new Date()).toISOString().substring(0, 19);
     },
     easeInOut : function(currentTime, start, change, duration) {
       currentTime /= duration / 2;
@@ -671,7 +675,7 @@
 
       if( _STATUS.current == "admin"){
         utils.watchLastResponseTime(document.querySelector(".stalk-last-active"), timestamp);
-        if(!_STATUS.timestamp.admin) _STATUS.timestamp.admin = new Date();
+        if(!_STATUS.timestamp.admin) _STATUS.timestamp.admin = utils.currentDateStr();
       }
 
       message = decodeURIComponent(message);
@@ -757,7 +761,7 @@
           if (message !== "") {
             if(!_CONFIG.isReady){
               utils.requestServerInfo(STALK._callbackInit);   
-              _STATUS.timestamp.user = new Date();
+              _STATUS.timestamp.user = utils.currentDateStr();
               //STALK._init(); 
             }
             STALK.sendMessage(message);
@@ -794,7 +798,7 @@
 
   if (!_CONFIG.channel) _CONFIG.channel = utils.getCookie("ST") == undefined ? utils.getUniqueKey() :utils.getCookie("ST"); //encodeURIComponent(/*location.hostname + */ location.pathname);
   STALK._unsendMessages = []; // send message before operator is connected!
-  _STATUS.timestamp.enter = new Date();
+  _STATUS.timestamp.enter = utils.currentDateStr();
   _STATUS.shortid = utils.generateShortId();
 
   STALK._callbackInit = function (data) {
