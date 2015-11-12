@@ -507,8 +507,8 @@
       info.ip = utils.getClientIp();
       info.city = _STATUS.city;
       info.country = _STATUS.country;
-      info.lat = data.latitude;
-      info.lng = data.longitude;
+      info.lat = _STATUS.latitude;
+      info.lng = _STATUS.longitude;
       info.origin = document.origin;
       return info;
     },
