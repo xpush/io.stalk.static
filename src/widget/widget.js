@@ -509,6 +509,7 @@
       info.country = _STATUS.country;
       info.lat = data.latitude;
       info.lng = data.longitude;
+      info.origin = document.origin;
       return info;
     },
     setClientIp : function(ip){
@@ -803,6 +804,11 @@
 
   STALK._callbackInit = function (data) {
 
+    var rd = Math.floor((Math.random() * 100) + 1);
+
+    _CONFIG.user = 'guest'+rd;
+    _CONFIG.userName = 'guest'+rd;
+
     data = JSON.parse(data);
 
     if (
@@ -888,7 +894,8 @@
         user: _CONFIG.user,
         MG: msg,
         UO: {
-          U: _CONFIG.user
+          U: _CONFIG.user,
+          NM: _CONFIG.userName
         }        
       },
     };
