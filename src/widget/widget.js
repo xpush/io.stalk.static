@@ -510,6 +510,7 @@
       info.lat = _STATUS.latitude;
       info.lng = _STATUS.longitude;
       info.origin = document.origin;
+      info.name = _CONFIG.userName;
       return info;
     },
     setClientIp : function(ip){
