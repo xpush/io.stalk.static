@@ -43,15 +43,15 @@
       // enter: undefined,  // enter the site
       // admin: undefined,  // first message from admin
       // user: undefined   // first message to admin
-    },lastTimestamp : {
+    }, lastTimestamp: {
       // admin: undefined
     }
   };
 
   var utils = {
-    getUniqueKey : function () {
+    getUniqueKey: function () {
       var s = [], itoh = '0123456789ABCDEF';
-      for (var i = 0; i < 36; i++) s[i] = Math.floor(Math.random()*0x10);
+      for (var i = 0; i < 36; i++) s[i] = Math.floor(Math.random() * 0x10);
       s[14] = 4;
       s[19] = (s[19] & 0x3) | 0x8;
 
@@ -240,7 +240,7 @@
         if (config.debugLog == true)
           console.log("GET fired at:" + config.url + "?" + sendString);
       }
-      if (config.type == "POST" || config.type == "PUT" ) {
+      if (config.type == "POST" || config.type == "PUT") {
         xmlhttp.open(config.type, config.url, config.method);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(sendString);
@@ -256,8 +256,10 @@
         return false;
       }
 
-        var logData = {A: _CONFIG.id, ENS: _STATUS.timestamp.enter, VID: _STATUS.shortid,BR:utils.getBrowserName(),
-        U: location.href, REF: utils.getReferrerSite(), CH: _CONFIG.channel};
+      var logData = {
+        A: _CONFIG.id, ENS: _STATUS.timestamp.enter, VID: _STATUS.shortid, BR: utils.getBrowserName(),
+        U: location.href, REF: utils.getReferrerSite(), CH: _CONFIG.channel
+      };
 
       this.minAjax({
         url: _CONFIG.server + '/api/apps/operators/' + _CONFIG.id,
@@ -281,212 +283,224 @@
         success: _callback
       });
     },
-    getCookie : function(c_name)
-    {
-      var i,x,y,ARRcookies=document.cookie.split(";");
-      for (i=0;i<ARRcookies.length;i++)
-      {
-        x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
-        y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
-        x=x.replace(/^\s+|\s+$/g,"");
-        if (x==c_name)
-        {
-        return unescape(y);
+    getCookie: function (c_name) {
+      var i, x, y, ARRcookies = document.cookie.split(";");
+      for (i = 0; i < ARRcookies.length; i++) {
+        x = ARRcookies[i].substr(0, ARRcookies[i].indexOf("="));
+        y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1);
+        x = x.replace(/^\s+|\s+$/g, "");
+        if (x == c_name) {
+          return unescape(y);
         }
-        }
+      }
     },
-    setCookie : function(c_name,value,exdays)
-    {
-      var exdate=new Date();
+    setCookie: function (c_name, value, exdays) {
+      var exdate = new Date();
       exdate.setDate(exdate.getDate() + exdays);
-      var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
-      document.cookie=c_name + "=" + c_value;
+      var c_value = escape(value) + ((exdays == null) ? "" : "; expires=" + exdate.toUTCString());
+      document.cookie = c_name + "=" + c_value;
     },
-    getUserAgent : function(){
-        return navigator.userAgent.toLowerCase();
+    getUserAgent: function () {
+      return navigator.userAgent.toLowerCase();
     },
-    getBrowserName : function(){
-        var BrowserKey = {ie: "msie", ie6: "msie 6", ie7 : "msie 7", ie8 : "msie 8", ie9 :"msie 9", ie10: "msie 10",chrome : "chrome", safari: "safari", safari3: "applewebkir/5", mac : "mac",  firefox: "firefox"
-        }
-        var ua = this.getUserAgent();
-        var re = /\S*\/[\d.]*/g;
-        var m;
-         
-        while ((m = re.exec(ua)) != null) {
-            if (m.index === re.lastIndex) {
-                re.lastIndex++;
-            }
-            for(var k in BrowserKey) {
-                if(m[0].indexOf( BrowserKey[k] ) != -1) return k;
-            }
-        }
-    },
-    getOSName : function(){
+    getBrowserName: function () {
+      var BrowserKey = {
+        ie: "msie",
+        ie6: "msie 6",
+        ie7: "msie 7",
+        ie8: "msie 8",
+        ie9: "msie 9",
+        ie10: "msie 10",
+        chrome: "chrome",
+        safari: "safari",
+        safari3: "applewebkir/5",
+        mac: "mac",
+        firefox: "firefox"
+      };
+      var ua = this.getUserAgent();
+      var re = /\S*\/[\d.]*/g;
+      var m;
 
-            var uanaVigatorOs = navigator.userAgent;
-            var AgentUserOs= uanaVigatorOs.replace(/ /g,'');
-            var Ostxt="";
-            var OSName="";
-            var OsVers="";
-            new function() {
-            var OsNo = navigator.userAgent.toLowerCase(); 
-            jQuery = {};
-                jQuery.os = {
-                    Linux: /linux/.test(OsNo),
-                    Unix: /x11/.test(OsNo),
-                    Mac: /mac/.test(OsNo),
-                    Windows: /win/.test(OsNo)
-                }
-            }
-            // Android의 단말 이름을 반환
-            function getAndroidDevName() {
-            var uaAdata = navigator.userAgent;
-            var regex = /Android (.*);.*;\s*(.*)\sBuild/;
-            var match = regex.exec(uaAdata);
-            if(match) {
-            var ver = match[1];
-            var dev_name = match[2];
-            return "Android " + ver + " " + dev_name;
-            }
-            return "Android OS";
-            }
-        if(jQuery.os.Windows) {
-        if(AgentUserOs.indexOf("WindowsCE") != -1) OSName="Windows CE";
-        else if(AgentUserOs.indexOf("Windows95") != -1) OSName="Windows 95";
-        else if(AgentUserOs.indexOf("Windows98") != -1) {
-        if (AgentUserOs.indexOf("Win9x4.90") != -1) OSName="Windows Millennium Edition (Windows Me)" 
-        else OSName="Windows 98"; 
+      while ((m = re.exec(ua)) != null) {
+        if (m.index === re.lastIndex) {
+          re.lastIndex++;
         }
-        else if(AgentUserOs.indexOf("WindowsNT4.0") != -1) OSName="Microsoft Windows NT 4.0";
-        else if(AgentUserOs.indexOf("WindowsNT5.0") != -1) OSName="Windows 2000";
-        else if(AgentUserOs.indexOf("WindowsNT5.01") != -1) OSName="Windows 2000, Service Pack 1 (SP1)";
-        else if(AgentUserOs.indexOf("WindowsNT5.1") != -1) OSName="Windows XP";
-        else if(AgentUserOs.indexOf("WindowsNT5.2") != -1) OSName="Windows 2003";
-        else if(AgentUserOs.indexOf("WindowsNT6.0") != -1) OSName="Windows Vista/Server 2008";
-        else if(AgentUserOs.indexOf("WindowsNT6.1") != -1) OSName="Windows 7";
-        else if(AgentUserOs.indexOf("WindowsNT6.2") != -1) OSName="Windows 8";
-        else if(AgentUserOs.indexOf("WindowsNT6.3") != -1) OSName="Windows 8.1";
-        else if(AgentUserOs.indexOf("WindowsPhone8.0") != -1) OSName="Windows Phone 8.0";
-        else if(AgentUserOs.indexOf("WindowsPhoneOS7.5") != -1) OSName="Windows Phone OS 7.5";
-        else if(AgentUserOs.indexOf("Xbox") != -1) OSName="Xbox 360";
-        else if(AgentUserOs.indexOf("XboxOne") != -1) OSName="Xbox One";
-        else if(AgentUserOs.indexOf("Win16") != -1) OSName="Windows 3.x";
-        else if(AgentUserOs.indexOf("ARM") != -1) OSName="Windows RT";
-        else OSName="Windows (Unknown)";
-        
-        if(AgentUserOs.indexOf("WOW64") != -1) OsVers=" 64-bit(s/w 32-bit)";
-        else if(AgentUserOs.indexOf("Win64;x64;") != -1) OsVers=" 64-bit(s/w 64-bit)";
-        else if(AgentUserOs.indexOf("Win16") != -1) OsVers=" 16-bit";
-        else OsVers=" 32-bit";
-        
-        } else if (jQuery.os.Linux) {
-        if(AgentUserOs.indexOf("Android") != -1) { OSName = getAndroidDevName(); }
-        else if(AgentUserOs.indexOf("BlackBerry9000") != -1) OSName="BlackBerry9000";
-        else if(AgentUserOs.indexOf("BlackBerry9300") != -1) OSName="BlackBerry9300";
-        else if(AgentUserOs.indexOf("BlackBerry9700") != -1) OSName="BlackBerry9700";
-        else if(AgentUserOs.indexOf("BlackBerry9780") != -1) OSName="BlackBerry9780";
-        else if(AgentUserOs.indexOf("BlackBerry9900") != -1) OSName="BlackBerry9900";
-        else if(AgentUserOs.indexOf("BlackBerry;Opera Mini") != -1) OSName="Opera/9.80";
-        else if(AgentUserOs.indexOf("Symbian/3") != -1) OSName="Symbian OS3";
-        else if(AgentUserOs.indexOf("SymbianOS/6") != -1) OSName="Symbian OS6";
-        else if(AgentUserOs.indexOf("SymbianOS/9") != -1) OSName="Symbian OS9";
-        else if(AgentUserOs.indexOf("Ubuntu") != -1) OSName="Ubuntu";
-        else if(AgentUserOs.indexOf("PDA") != -1) OSName="PDA";
-        else if(AgentUserOs.indexOf("NintendoWii") != -1) OSName="Nintendo Wii"; 
-        else if(AgentUserOs.indexOf("PSP") != -1) OSName="PlayStation Portable";
-        else if(AgentUserOs.indexOf("PS2;") != -1) OSName="PlayStation 2";
-        else if(AgentUserOs.indexOf("PLAYSTATION3") != -1) OSName="PlayStation 3"; 
-        else OSName="Linux (Unknown)";
-        
-        if(AgentUserOs.indexOf("x86_64") != -1) OsVers=" 64-bit";
-        else if(AgentUserOs.indexOf("i386") != -1) OsVers=" 32-bit";
-        else if(AgentUserOs.indexOf("IA-32") != -1) OsVers=" 32-bit";
-        else OsVers="";
-        
-        } else if (jQuery.os.Unix) {
-        OSName="UNIX";
-        } else if (jQuery.os.Mac) {
-        if(AgentUserOs.indexOf("iPhoneOS3") != -1) OSName="iPhone OS 3";
-        else if(AgentUserOs.indexOf("iPhoneOS4") != -1) OSName="iPhone OS 4";
-        else if(AgentUserOs.indexOf("iPhoneOS5") != -1) OSName="iPhone OS 5";
-        else if(AgentUserOs.indexOf("iPhoneOS6") != -1) OSName="iPhone OS 6";
-        else if(AgentUserOs.indexOf("iPad") != -1) OSName="iPad";
-        else if((AgentUserOs.indexOf("MacOSX10_9")||AgentUserOs.indexOf("MacOSX10.1")) != -1) OSName="Mac OS X Puma";
-        else if((AgentUserOs.indexOf("MacOSX10_9")||AgentUserOs.indexOf("MacOSX10.2")) != -1) OSName="Mac OS X Jaguar";
-        else if((AgentUserOs.indexOf("MacOSX10_9")||AgentUserOs.indexOf("MacOSX10.3")) != -1) OSName="Mac OS X Panther";
-        else if((AgentUserOs.indexOf("MacOSX10_9")||AgentUserOs.indexOf("MacOSX10.4")) != -1) OSName="Mac OS X Tiger";
-        else if((AgentUserOs.indexOf("MacOSX10_9")||AgentUserOs.indexOf("MacOSX10.5")) != -1) OSName="Mac OS X Leopard";
-        else if((AgentUserOs.indexOf("MacOSX10_9")||AgentUserOs.indexOf("MacOSX10.6")) != -1) OSName="Mac OS X Snow Leopard";
-        else if((AgentUserOs.indexOf("MacOSX10_9")||AgentUserOs.indexOf("MacOSX10.7")) != -1) OSName="Mac OS X Lion";
-        else if((AgentUserOs.indexOf("MacOSX10_9")||AgentUserOs.indexOf("MacOSX10.8")) != -1) OSName="Mac OS X Mountain Lion";
-        else if((AgentUserOs.indexOf("MacOSX10_9")||AgentUserOs.indexOf("MacOSX10.9")) != -1) OSName="Mac OS X Mavericks";
-        else OSName="MacOS (Unknown)";
-        } else {
-        OSName="Unknown OS";
+        for (var k in BrowserKey) {
+          if (m[0].indexOf(BrowserKey[k]) != -1) return k;
         }
-        var OSDev = OSName + OsVers;
-        return OSDev;
+      }
     },
-    getReferrerSite : function(){ // if referrer site is other site, then return value is url. but undefined.
-      var referrer = document.referrer || '';
+    getOSName: function () {
+
+      var uanaVigatorOs = navigator.userAgent;
+      var AgentUserOs = uanaVigatorOs.replace(/ /g, '');
+      var Ostxt = "";
+      var OSName = "";
+      var OsVers = "";
+      new function () {
+        var OsNo = navigator.userAgent.toLowerCase();
+        jQuery = {};
+        jQuery.os = {
+          Linux: /linux/.test(OsNo),
+          Unix: /x11/.test(OsNo),
+          Mac: /mac/.test(OsNo),
+          Windows: /win/.test(OsNo)
+        };
+      };
+      // Android의 단말 이름을 반환
+      function getAndroidDevName() {
+        var uaAdata = navigator.userAgent;
+        var regex = /Android (.*);.*;\s*(.*)\sBuild/;
+        var match = regex.exec(uaAdata);
+        if (match) {
+          var ver = match[1];
+          var dev_name = match[2];
+          return "Android " + ver + " " + dev_name;
+        }
+        return "Android OS";
+      }
+
+      if (jQuery.os.Windows) {
+        if (AgentUserOs.indexOf("WindowsCE") != -1) OSName = "Windows CE";
+        else if (AgentUserOs.indexOf("Windows95") != -1) OSName = "Windows 95";
+        else if (AgentUserOs.indexOf("Windows98") != -1) {
+          if (AgentUserOs.indexOf("Win9x4.90") != -1) OSName = "Windows Millennium Edition (Windows Me)";
+          else OSName = "Windows 98";
+        }
+        else if (AgentUserOs.indexOf("WindowsNT4.0") != -1) OSName = "Microsoft Windows NT 4.0";
+        else if (AgentUserOs.indexOf("WindowsNT5.0") != -1) OSName = "Windows 2000";
+        else if (AgentUserOs.indexOf("WindowsNT5.01") != -1) OSName = "Windows 2000, Service Pack 1 (SP1)";
+        else if (AgentUserOs.indexOf("WindowsNT5.1") != -1) OSName = "Windows XP";
+        else if (AgentUserOs.indexOf("WindowsNT5.2") != -1) OSName = "Windows 2003";
+        else if (AgentUserOs.indexOf("WindowsNT6.0") != -1) OSName = "Windows Vista/Server 2008";
+        else if (AgentUserOs.indexOf("WindowsNT6.1") != -1) OSName = "Windows 7";
+        else if (AgentUserOs.indexOf("WindowsNT6.2") != -1) OSName = "Windows 8";
+        else if (AgentUserOs.indexOf("WindowsNT6.3") != -1) OSName = "Windows 8.1";
+        else if (AgentUserOs.indexOf("WindowsPhone8.0") != -1) OSName = "Windows Phone 8.0";
+        else if (AgentUserOs.indexOf("WindowsPhoneOS7.5") != -1) OSName = "Windows Phone OS 7.5";
+        else if (AgentUserOs.indexOf("Xbox") != -1) OSName = "Xbox 360";
+        else if (AgentUserOs.indexOf("XboxOne") != -1) OSName = "Xbox One";
+        else if (AgentUserOs.indexOf("Win16") != -1) OSName = "Windows 3.x";
+        else if (AgentUserOs.indexOf("ARM") != -1) OSName = "Windows RT";
+        else OSName = "Windows (Unknown)";
+
+        if (AgentUserOs.indexOf("WOW64") != -1) OsVers = " 64-bit(s/w 32-bit)";
+        else if (AgentUserOs.indexOf("Win64;x64;") != -1) OsVers = " 64-bit(s/w 64-bit)";
+        else if (AgentUserOs.indexOf("Win16") != -1) OsVers = " 16-bit";
+        else OsVers = " 32-bit";
+
+      } else if (jQuery.os.Linux) {
+        if (AgentUserOs.indexOf("Android") != -1) {
+          OSName = getAndroidDevName();
+        }
+        else if (AgentUserOs.indexOf("BlackBerry9000") != -1) OSName = "BlackBerry9000";
+        else if (AgentUserOs.indexOf("BlackBerry9300") != -1) OSName = "BlackBerry9300";
+        else if (AgentUserOs.indexOf("BlackBerry9700") != -1) OSName = "BlackBerry9700";
+        else if (AgentUserOs.indexOf("BlackBerry9780") != -1) OSName = "BlackBerry9780";
+        else if (AgentUserOs.indexOf("BlackBerry9900") != -1) OSName = "BlackBerry9900";
+        else if (AgentUserOs.indexOf("BlackBerry;Opera Mini") != -1) OSName = "Opera/9.80";
+        else if (AgentUserOs.indexOf("Symbian/3") != -1) OSName = "Symbian OS3";
+        else if (AgentUserOs.indexOf("SymbianOS/6") != -1) OSName = "Symbian OS6";
+        else if (AgentUserOs.indexOf("SymbianOS/9") != -1) OSName = "Symbian OS9";
+        else if (AgentUserOs.indexOf("Ubuntu") != -1) OSName = "Ubuntu";
+        else if (AgentUserOs.indexOf("PDA") != -1) OSName = "PDA";
+        else if (AgentUserOs.indexOf("NintendoWii") != -1) OSName = "Nintendo Wii";
+        else if (AgentUserOs.indexOf("PSP") != -1) OSName = "PlayStation Portable";
+        else if (AgentUserOs.indexOf("PS2;") != -1) OSName = "PlayStation 2";
+        else if (AgentUserOs.indexOf("PLAYSTATION3") != -1) OSName = "PlayStation 3";
+        else OSName = "Linux (Unknown)";
+
+        if (AgentUserOs.indexOf("x86_64") != -1) OsVers = " 64-bit";
+        else if (AgentUserOs.indexOf("i386") != -1) OsVers = " 32-bit";
+        else if (AgentUserOs.indexOf("IA-32") != -1) OsVers = " 32-bit";
+        else OsVers = "";
+
+      } else if (jQuery.os.Unix) {
+        OSName = "UNIX";
+      } else if (jQuery.os.Mac) {
+        if (AgentUserOs.indexOf("iPhoneOS3") != -1) OSName = "iPhone OS 3";
+        else if (AgentUserOs.indexOf("iPhoneOS4") != -1) OSName = "iPhone OS 4";
+        else if (AgentUserOs.indexOf("iPhoneOS5") != -1) OSName = "iPhone OS 5";
+        else if (AgentUserOs.indexOf("iPhoneOS6") != -1) OSName = "iPhone OS 6";
+        else if (AgentUserOs.indexOf("iPad") != -1) OSName = "iPad";
+        else if ((AgentUserOs.indexOf("MacOSX10_9") || AgentUserOs.indexOf("MacOSX10.1")) != -1) OSName = "Mac OS X Puma";
+        else if ((AgentUserOs.indexOf("MacOSX10_9") || AgentUserOs.indexOf("MacOSX10.2")) != -1) OSName = "Mac OS X Jaguar";
+        else if ((AgentUserOs.indexOf("MacOSX10_9") || AgentUserOs.indexOf("MacOSX10.3")) != -1) OSName = "Mac OS X Panther";
+        else if ((AgentUserOs.indexOf("MacOSX10_9") || AgentUserOs.indexOf("MacOSX10.4")) != -1) OSName = "Mac OS X Tiger";
+        else if ((AgentUserOs.indexOf("MacOSX10_9") || AgentUserOs.indexOf("MacOSX10.5")) != -1) OSName = "Mac OS X Leopard";
+        else if ((AgentUserOs.indexOf("MacOSX10_9") || AgentUserOs.indexOf("MacOSX10.6")) != -1) OSName = "Mac OS X Snow Leopard";
+        else if ((AgentUserOs.indexOf("MacOSX10_9") || AgentUserOs.indexOf("MacOSX10.7")) != -1) OSName = "Mac OS X Lion";
+        else if ((AgentUserOs.indexOf("MacOSX10_9") || AgentUserOs.indexOf("MacOSX10.8")) != -1) OSName = "Mac OS X Mountain Lion";
+        else if ((AgentUserOs.indexOf("MacOSX10_9") || AgentUserOs.indexOf("MacOSX10.9")) != -1) OSName = "Mac OS X Mavericks";
+        else OSName = "MacOS (Unknown)";
+      } else {
+        OSName = "Unknown OS";
+      }
+      var OSDev = OSName + OsVers;
+      return OSDev;
+    },
+    getReferrerSite: function () { // if referrer site is other site, then return value is url. but undefined.
+      var _referrer = document.referrer || '';
       var otherSite;
-      if( document.referrer.indexOf( location.host ) < 0 ){
-        otherSite = document.referrer;
+      if (_referrer.indexOf(location.host) < 0) {
+        otherSite = _referrer;
       }
       return otherSite;
     },
-    onChangeUrl : function(cb){
-      window.addEventListener('hashchange', function(e){
-        var data = {oldURL : e.oldURL, newURL: e.newURL};
+    onChangeUrl: function (cb) {
+      window.addEventListener('hashchange', function (e) {
+        var data = {oldURL: e.oldURL, newURL: e.newURL};
         //sendClientInfo('urlChange', data);
-        if(cb) cb();
+        if (cb) cb();
       });
     },
-    getUserStayTime: function(){
+    getUserStayTime: function () {
       function pad(num, size) {
-          var s = num + "";
-          while (s.length < size) s = "0" + s;
-          return s;
+        var s = num + "";
+        while (s.length < size) s = "0" + s;
+        return s;
       }
+
       var ms = (new Date()) - (new Date(_STATUS.timestamp.user));
       var seconds = ms / 1000;
       var hh = Math.floor(seconds / 3600);
       var mm = Math.floor(seconds / 60) % 60;
       var ss = Math.floor(seconds) % 60;
       var mss = ms % 1000;
-      return pad(hh,2)+':'+pad(mm,2)+':'+pad(ss,2)+'.'+pad(mss,3);
+      return pad(hh, 2) + ':' + pad(mm, 2) + ':' + pad(ss, 2) + '.' + pad(mss, 3);
     },
-    onLeaveSite : function(cb){
+    onLeaveSite: function (cb) {
       var self = this;
       var data = {url: location.href};
       data.st = this.getUserStayTime();
-      window.addEventListener('beforeunload',function(){
-        var logData = {OP : _CONFIG.admin.uid, VID: _STATUS.shortid, CH: _CONFIG.channel, LTS: utils.currentDateStr() ,
-        SMT:  _STATUS.timestamp.user, RMT: _STATUS.timestamp.admin, IP: utils.getClientIp(),
-         CT: _STATUS.city, CC: _STATUS.country, LAT: _STATUS.lat, LNG: _STATUS.lng
-      };
+      window.addEventListener('beforeunload', function () {
+        var logData = {
+          OP: _CONFIG.admin.uid, VID: _STATUS.shortid, CH: _CONFIG.channel, LTS: utils.currentDateStr(),
+          SMT: _STATUS.timestamp.user, RMT: _STATUS.timestamp.admin, IP: utils.getClientIp(),
+          CT: _STATUS.city, CC: _STATUS.country, LAT: _STATUS.lat, LNG: _STATUS.lng
+        };
 
         self.minAjax({
           url: _CONFIG.server + '/api/activitys',
           type: "PUT",
           data: logData,
-          success: function(){
+          success: function () {
 
           }
         });
-        if(cb)cb();        
+        if (cb)cb();
         // App, url, enterSiteTime, leaveSiteTime, startChatTime, firstResponseTime, 
 
         //LSTALK.sendClientInfoAjax({a:'L',st: data.st}); 
         //LSTALK.sendClientInfo('leavePage', data);
       });
     },
-    getGeo : function(){
+    getGeo: function () {
       this.minAjax({
         url: _CONFIG.server + '/api/auths/geo',
         type: "POST",
-        data: {ip: '49.175.7.42' },
-        success: function(data){
+        data: {ip: '49.175.7.42'},
+        success: function (data) {
           data = JSON.parse(data);
           _STATUS.country = data.country;
           _STATUS.city = data.city;
@@ -496,7 +510,7 @@
       });
 
     },
-    browserInfo : function(){
+    browserInfo: function () {
       var info = {};
       info.title = document.title;
       info.url = location.href;
@@ -513,100 +527,101 @@
       info.name = _CONFIG.userName;
       return info;
     },
-    setClientIp : function(ip){
+    setClientIp: function (ip) {
       var self = this;
       self.ip = ip;
     },
-    getClientIp : function(){
+    getClientIp: function () {
       var self = this;
       return self.ip;
     },
-    isMobile : function(){
+    isMobile: function () {
       var isMobile = (/iphone|ipod|android|ie|blackberry|fennec/).test
-           (navigator.userAgent.toLowerCase());
+      (navigator.userAgent.toLowerCase());
       return isMobile;
     },
-    scrollTo : function(element, to, duration) {
+    scrollTo: function (element, to, duration) {
       /*
-      to = -(to - element.clientHeight);
-      to = to > 0 ? 0 : to;
-      element.style.webkitTransform = "translateY("+to+"px)";
-      element.style.webkitTransform = "translateY("+to+"px)";
-      element.style.MozTransform = "translateY("+to+"px)";
-      element.style.msTransform = "translateY("+to+"px)";
-      element.style.OTransform = "translateY("+to+"px)";
-      element.style.transform = "translateY("+to+"px)";
-      return;
-      */
+       to = -(to - element.clientHeight);
+       to = to > 0 ? 0 : to;
+       element.style.webkitTransform = "translateY("+to+"px)";
+       element.style.webkitTransform = "translateY("+to+"px)";
+       element.style.MozTransform = "translateY("+to+"px)";
+       element.style.msTransform = "translateY("+to+"px)";
+       element.style.OTransform = "translateY("+to+"px)";
+       element.style.transform = "translateY("+to+"px)";
+       return;
+       */
       var self = this;
       var start = element.scrollTop,
-          change = to - start,
-          increment = 20;
+        change = to - start,
+        increment = 20;
 
-      var animateScroll = function(elapsedTime) {        
-          elapsedTime += increment;
-          var position = self.easeInOut(elapsedTime, start, change, duration);                        
-          element.scrollTop = position; 
-          if (elapsedTime < duration) {
-              setTimeout(function() {
-                  animateScroll(elapsedTime);
-              }, increment);
-          }
+      var animateScroll = function (elapsedTime) {
+        elapsedTime += increment;
+        var position = self.easeInOut(elapsedTime, start, change, duration);
+        element.scrollTop = position;
+        if (elapsedTime < duration) {
+          setTimeout(function () {
+            animateScroll(elapsedTime);
+          }, increment);
+        }
       };
 
       animateScroll(0);
     },
-    currentDateStr : function(){
+    currentDateStr: function () {
       return (new Date()).toISOString().substring(0, 19);
     },
-    easeInOut : function(currentTime, start, change, duration) {
+    easeInOut: function (currentTime, start, change, duration) {
       currentTime /= duration / 2;
       if (currentTime < 1) {
-          return change / 2 * currentTime * currentTime + start;
+        return change / 2 * currentTime * currentTime + start;
       }
       currentTime -= 1;
       return -change / 2 * (currentTime * (currentTime - 2) - 1) + start;
     },
-    secondsTohhmmss : function(totalSeconds) {
+    secondsTohhmmss: function (totalSeconds) {
       return (new Date(totalSeconds)).toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
     },
-    timeSince : function(date) {
+    timeSince: function (date) {
       var seconds = Math.floor((new Date() - date) / 1000);
       var interval = Math.floor(seconds / 31536000);
 
       if (interval > 1) {
-          return interval + " years";
+        return interval + " years";
       }
       interval = Math.floor(seconds / 2592000);
       if (interval > 1) {
-          return interval + " months";
+        return interval + " months";
       }
       interval = Math.floor(seconds / 86400);
       if (interval > 1) {
-          return interval + " days";
+        return interval + " days";
       }
       interval = Math.floor(seconds / 3600);
       if (interval > 1) {
-          return interval + " hours";
+        return interval + " hours";
       }
       interval = Math.floor(seconds / 60);
       if (interval > 1) {
-          return interval + " minutes";
+        return interval + " minutes";
       }
       return Math.floor(seconds) + " seconds";
     },
-    watchLastResponseTime : function(dom, timestamp){
+    watchLastResponseTime: function (dom, timestamp) {
       var self = this;
       dom.innerHTML = "Last Response: 0 minitues ago";
-      if(_STATUS.watchTime){
-        clearInterval(_STATUS.watchTime); _STATUS.watchTime = undefined;
+      if (_STATUS.watchTime) {
+        clearInterval(_STATUS.watchTime);
+        _STATUS.watchTime = undefined;
       }
-      _STATUS.watchTime = setInterval(function(){
-        dom.innerHTML = "Last Response: "+self.timeSince(timestamp) +" ago";
-      }, 1000*60*1);
+      _STATUS.watchTime = setInterval(function () {
+        dom.innerHTML = "Last Response: " + self.timeSince(timestamp) + " ago";
+      }, 1000 * 60 * 1);
     },
-    generateShortId : function(){
-      return ("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4)
+    generateShortId: function () {
+      return ("0000" + (Math.random() * Math.pow(36, 4) << 0).toString(36)).slice(-4);
     }
   };
 
@@ -656,15 +671,15 @@
       utils.removeClass(_Elements.divLauncher, 'stalk-launcher-active');
       utils.addClass(_Elements.divLauncher, 'stalk-launcher-inactive');
       _Elements.divChatbox.style.display = 'block';
-      utils.removeClass(document.getElementById('stalk-conversation'),'stalk-inactive');
-      utils.addClass(document.getElementById('stalk-conversation'),'stalk-active');
+      utils.removeClass(document.getElementById('stalk-conversation'), 'stalk-inactive');
+      utils.addClass(document.getElementById('stalk-conversation'), 'stalk-active');
     },
     close: function () {
       utils.removeClass(_Elements.divLauncher, 'stalk-launcher-inactive');
       utils.addClass(_Elements.divLauncher, 'stalk-launcher-active');
       _Elements.divChatbox.style.display = 'none';
-      utils.removeClass(document.getElementById('stalk-conversation'),'stalk-active'); 
-      utils.addClass(document.getElementById('stalk-conversation'),'stalk-inactive');      
+      utils.removeClass(document.getElementById('stalk-conversation'), 'stalk-active');
+      utils.addClass(document.getElementById('stalk-conversation'), 'stalk-inactive');
     },
     addMessage: function (message, timestamp, type) {
 
@@ -675,33 +690,34 @@
         _STATUS.current = 'user';
       }
 
-      if( _STATUS.current == "admin"){
+      if (_STATUS.current == "admin") {
         utils.watchLastResponseTime(document.querySelector(".stalk-last-active"), timestamp);
-        if(!_STATUS.timestamp.admin) _STATUS.timestamp.admin = utils.currentDateStr();
+        if (!_STATUS.timestamp.admin) _STATUS.timestamp.admin = utils.currentDateStr();
       }
 
       message = decodeURIComponent(message);
-      
+
       var msgHtml = /*'<div class="stalk-comment stalk-comment-by-' + _STATUS.current + '"> */'<div class="stalk-comment-body-container"> <div class="stalk-comment-body stalk-embed-body"> <p>' +
-        message + '</p> </div> <div class="stalk-comment-caret"></div> </div>';/* </div>';*/
-      
+        message + '</p> </div> <div class="stalk-comment-caret"></div> </div>';
+      /* </div>';*/
+
       var msgContainer = document.createElement("div");
-      utils.addClass(msgContainer,'stalk-comment stalk-comment-by-' + _STATUS.current);
+      utils.addClass(msgContainer, 'stalk-comment stalk-comment-by-' + _STATUS.current);
       msgContainer.innerHTML = msgHtml;
 
       var t = document.querySelector('.stalk-comment-metadata-container');
-      if(_STATUS.last != _STATUS.current){
-        if(t){
-          utils.removeClass(t,'stalk-comment-metadata-container' );
-          utils.addClass(t,'stalk-comment-metadata-container-static' );
+      if (_STATUS.last != _STATUS.current) {
+        if (t) {
+          utils.removeClass(t, 'stalk-comment-metadata-container');
+          utils.addClass(t, 'stalk-comment-metadata-container-static');
         }
-      }else{
+      } else {
         t.parentNode.removeChild(t);
       }
 
       window.metadata = this.metadata = document.createElement("div");
       utils.addClass(this.metadata, "stalk-comment-metadata-container");
-      this.metadata.innerHTML = '<div class="stalk-comment-metadata"><span class="stalk-comment-state"></span><span class="stalk-relative-time">'+utils.secondsTohhmmss(timestamp)+'</span></div><div class="stalk-comment-readstate"></div></div>';
+      this.metadata.innerHTML = '<div class="stalk-comment-metadata"><span class="stalk-comment-state"></span><span class="stalk-relative-time">' + utils.secondsTohhmmss(timestamp) + '</span></div><div class="stalk-comment-readstate"></div></div>';
 
       msgContainer.appendChild(this.metadata);
 
@@ -720,10 +736,10 @@
       chatDiv.className = classStr;
       chatDiv.innerHTML = msgHtml;
 
-      var removeClass = function(){
+      var removeClass = function () {
         this.classList.remove("fromBottomToUp");
-        this.removeEventListener("animationend",removeClass, false);
-      }
+        this.removeEventListener("animationend", removeClass, false);
+      };
       chatDiv.addEventListener("animationend", removeClass, false);
 
 
@@ -761,14 +777,15 @@
           message = encodeURIComponent(message);
 
           if (message !== "") {
-            if(!_CONFIG.isReady){
-              utils.requestServerInfo(STALK._callbackInit);   
+            if (!_CONFIG.isReady) {
+              utils.requestServerInfo(STALK._callbackInit);
               _STATUS.timestamp.user = utils.currentDateStr();
               //STALK._init(); 
             }
             STALK.sendMessage(message);
-            _Elements.txMessage.value = "";
           }
+
+          _Elements.txMessage.value = "";
 
           return false;
         }
@@ -798,7 +815,7 @@
     return false;
   }
 
-  if (!_CONFIG.channel) _CONFIG.channel = utils.getCookie("ST") == undefined ? utils.getUniqueKey() :utils.getCookie("ST"); //encodeURIComponent(/*location.hostname + */ location.pathname);
+  if (!_CONFIG.channel) _CONFIG.channel = utils.getCookie("ST") == undefined ? utils.getUniqueKey() : utils.getCookie("ST"); //encodeURIComponent(/*location.hostname + */ location.pathname);
   STALK._unsendMessages = []; // send message before operator is connected!
   _STATUS.timestamp.enter = utils.currentDateStr();
   _STATUS.shortid = utils.generateShortId();
@@ -807,8 +824,8 @@
 
     var rd = Math.floor((Math.random() * 100) + 1);
 
-    _CONFIG.user = 'guest'+rd;
-    _CONFIG.userName = 'guest'+rd;
+    _CONFIG.user = 'guest' + rd;
+    _CONFIG.userName = 'guest' + rd;
 
     data = JSON.parse(data);
 
@@ -822,18 +839,18 @@
     STALK._init();
   };
 
-  STALK._init = function(){
+  STALK._init = function () {
     var data = _STATUS._server;
     var query =
       'A=' + _CONFIG.app + '&' + //+ ':' + _CONFIG.id + '&' +
       'U=' + _CONFIG.user + '&' +
       'D=' + '_' + '&' +
-      'C=' + _CONFIG.channel + '&' + 
-      //'DT=' + JSON.stringify(_CONFIG.user) + '&' +
+      'C=' + _CONFIG.channel + '&' +
+        //'DT=' + JSON.stringify(_CONFIG.user) + '&' +
       'S=' + data.result.server.name;
 
     _CONFIG._socket = io.connect(data.result.server.url + '/channel?' + query, {
-        'force new connection': true
+      'force new connection': true
     });
 
     _CONFIG._socket.on('connect', function () {
@@ -846,15 +863,15 @@
       _CONFIG._isCreate = true;
       _CONFIG.isReady = true;
 
-      _CONFIG._socket.emit('channel.join', {C: _CONFIG.channel, U: _CONFIG.admin.uid}, function (err) {
-        if (err) {
-          console.error(err)
+      _CONFIG._socket.emit('channel.join', {C: _CONFIG.channel, U: _CONFIG.admin.uid}, function (data) {
+        if (data.status != 'ok') {
+          console.error(data);
         }
       });
 
     });
 
-    _CONFIG._socket.on("socket.address",function(data){
+    _CONFIG._socket.on("socket.address", function (data) {
       var ipAddress = data.ip.split(':')[3];
       utils.setClientIp(ipAddress);
     });
@@ -863,11 +880,11 @@
       if (data.event == 'CONNECTION') {
         _CONFIG.isOperatorReady = true;
 
-        _CONFIG._socket.emit("send", {NM:"info",DT: utils.browserInfo()});
-        if(STALK._unsendMessages){
-          STALK._unsendMessages.forEach(function(msg){
+        _CONFIG._socket.emit("send", {NM: "info", DT: utils.browserInfo()});
+        if (STALK._unsendMessages) {
+          STALK._unsendMessages.forEach(function (msg) {
             STALK.sendMessage(msg);
-          })
+          });
           STALK._unsendMessages = [];
         }
         //layout.setTitleBar('title', data.count);
@@ -879,12 +896,12 @@
     _CONFIG._socket.on('message', function (data) {
       layout.addMessage(data.MG, data.TS, data.user);
       var msgContainer = document.querySelector(".stalk-sheet-content");
-      utils.scrollTo(msgContainer,msgContainer.scrollHeight, 400); 
+      utils.scrollTo(msgContainer, msgContainer.scrollHeight, 400);
     });
-  }
+  };
 
   STALK.sendMessage = function (msg) {
-    if(!_CONFIG.isOperatorReady) {
+    if (!_CONFIG.isOperatorReady) {
       return STALK._unsendMessages.push(msg);
     }
     var param = {
@@ -897,8 +914,8 @@
         UO: {
           U: _CONFIG.user,
           NM: _CONFIG.userName
-        }        
-      },
+        }
+      }
     };
     _CONFIG._socket.emit('send', param, function (data) {
     });
@@ -911,7 +928,7 @@
   STALK.init = function () {
     layout.initWin();
     utils.onLeaveSite();
-    utils.onChangeUrl();  
+    utils.onChangeUrl();
   };
 
   STALK.init();
