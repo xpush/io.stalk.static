@@ -940,7 +940,7 @@
     max-height: 200px;
     width: 100%;
     height: 100%;
-    padding: 10px 70px 5px 14px;
+    padding: 10px 70px 5px 29px;
     border-radius: 4px;
 }
 
@@ -1206,3 +1206,23 @@
   transition: all 1s ease-in-out;    
 }
 
+#stalk-container .stalk-composer-upload-button {
+  background-image: url(http://static.stalk.io/images/ic_attachment.png);
+  background-size: 18px 18px;
+  background-repeat: no-repeat;
+}
+
+#stalk-container .stalk-composer-action-button {
+  z-index: 2147483001;
+  opacity: .4;
+  background-position: center;
+  display: none;
+  height: 18px;
+  width: 18px;
+  position: absolute;
+  float: left;
+  cursor: pointer;
+  top: 11px;
+  margin: 0 2px 0 5px;
+  padding: 5px;
+}
