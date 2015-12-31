@@ -7486,7 +7486,8 @@ function toArray(list, index) {
     }
   };
 
-  var TEMPLATE = '<div id="stalk-container" class="stalk-container stalk-reset stalk-acquire"> <div id="stalk-launcher" class="stalk-launcher stalk-launcher-enabled stalk-launcher-active"> <div id="stalk-launcher-button" class="stalk-launcher-button"></div></div><div id="stalk-chatbox" class="stalk-chatbox" style="display: none;"> <div id="stalk-conversation" class="stalk-conversation stalk-sheet stalk-sheet-active"> <div class="stalk-sheet-header"> <div class="stalk-sheet-header-title-container"> <b class="stalk-sheet-header-title stalk-sheet-header-with-presence"></b> <div class="stalk-last-active" style="display: block;"><span class="relative-time-in-text"></span> </div></div><div class="stalk-sheet-header-generic-title"></div><a id="btnClose" class="stalk-sheet-header-button stalk-sheet-header-close-button" href="#"> <div class="stalk-sheet-header-button-icon"></div></a> </div><div class="stalk-sheet-body"></div><div class="stalk-sheet-content" style="bottom: 74px;"> <div class="stalk-sheet-content-container"> <div class="stalk-conversation-parts-container"> <div id="stalk-message" class="stalk-conversation-parts"> </div></div></div></div><div class="stalk-composer-container"> <div id="stalk-composer" class="stalk-composer" style="transform: translate(0px, 0px);"> <div class="stalk-composer-textarea-container"> <div class="stalk-composer-textarea stalk-composer-focused"><strong class="stalk-composer-action-button stalk-composer-upload-button" title="Send attachment" style="display: inline;"></strong> <pre><span></span><br></pre> <textarea id="txMessage" placeholder="Write a reply…"></textarea> </div></div></div></div></div></div></div>';
+  var TEMPLATE = '<div id="stalk-container" class="stalk-container stalk-reset stalk-acquire"> <div id="stalk-launcher" class="stalk-launcher stalk-launcher-enabled stalk-launcher-active"> <div id="stalk-launcher-button" class="stalk-launcher-button"></div></div><div id="stalk-chatbox" class="stalk-chatbox" style="display: none;"> <div id="stalk-conversation" class="stalk-conversation stalk-sheet stalk-sheet-active"> <div class="stalk-sheet-header"> <div class="stalk-sheet-header-title-container"> <b class="stalk-sheet-header-title stalk-sheet-header-with-presence"></b> <div class="stalk-last-active" style="display: block;"><span class="relative-time-in-text"></span> </div></div><div class="stalk-sheet-header-generic-title"></div><a id="btnClose" class="stalk-sheet-header-button stalk-sheet-header-close-button" href="#"> <div class="stalk-sheet-header-button-icon"></div></a> </div><div class="stalk-sheet-body"></div><div class="stalk-sheet-content" style="bottom: 74px;"> <div class="stalk-sheet-content-container"> <div class="stalk-conversation-parts-container"> <div id="stalk-message" class="stalk-conversation-parts"> </div></div></div></div><div class="stalk-composer-container"> <div id="stalk-composer" class="stalk-composer" style="transform: translate(0px, 0px);"> <div class="stalk-composer-textarea-container"> <div class="stalk-composer-textarea stalk-composer-focused"><strong class="stalk-composer-action-button stalk-composer-upload-button" title="Send attachment" id="attachment" style="display: inline;"></strong> <pre><span></span><br></pre> <textarea id="txMessage" placeholder="Write a reply…"></textarea> </div></div></div></div></div></div></div><input type="file" id="file" style="display:none"/>';
+
 
   var root = global;
 
@@ -8234,8 +8235,50 @@ function toArray(list, index) {
         layout.open();
       };
 
+      document.getElementById('attachment').onclick = function(e){
+        document.getElementById('file').click();
+      };
+
+      document.getElementById('file').onchange = function(e){
+        console.log( document.getElementById('file').value );
+        fncFileUpload();
+      };
+
       document.getElementById('btnClose').onclick = function (e) {
         layout.close();
+      };
+
+      var fncFileUpload = function(){
+        console.log( 'fileUpload' );
+        var fileInput = document.getElementById( "file" );
+        var file = fileInput.files[0];
+        console.log( file );
+
+        var formData = new FormData();
+        formData.append("file", file);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open( "POST", _CONFIG.api_server+"/upload", true );
+        xhr.onreadystatechange = function(){
+          if( xhr.readyState == 4 && xhr.status == 200 ){
+            console.log( 'file upload success' );
+          } else {
+            console.log("FailureResponse --> State:" + xhr.readyState + "Status:" + xhr.status);
+          }
+        }
+        xhr.onprogress = function( evt ){
+          console.log( "file upload progress % : " + (evt.loaded / evt.total ) + "%" );
+        }
+          
+        xhr.setRequestHeader("XP-A", _CONFIG.app );
+        xhr.setRequestHeader("XP-C", _CONFIG.channel );
+        xhr.setRequestHeader("XP-U", _CONFIG.user );
+        xhr.setRequestHeader("XP-FU-org",  file.name);
+        xhr.setRequestHeader("XP-FU-nm", file.name.substring(0, file.name.lastIndexOf(".") ) );
+        xhr.setRequestHeader("XP-FU-tp", "image");
+
+        xhr.send(formData);
+        return false;
       };
 
       _Elements.txMessage.onkeydown = function (e) {
