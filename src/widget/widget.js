@@ -682,12 +682,12 @@
       utils.removeClass(document.getElementById('stalk-conversation'), 'stalk-active');
       utils.addClass(document.getElementById('stalk-conversation'), 'stalk-inactive');
     },
-    addMessage: function (message, timestamp, type) {
+    addMessage: function (message, timestamp, user, type) {
 
       var div_message = document.getElementById('stalk-message');
 
       _STATUS.current = 'admin';
-      if (type == _CONFIG.user) {
+      if (user == _CONFIG.user) {
         _STATUS.current = 'user';
       }
 
@@ -698,9 +698,14 @@
 
       message = decodeURIComponent(message);
 
-      var msgHtml = /*'<div class="stalk-comment stalk-comment-by-' + _STATUS.current + '"> */'<div class="stalk-comment-body-container"> <div class="stalk-comment-body stalk-embed-body"> <p>' +
-        message + '</p> </div> <div class="stalk-comment-caret"></div> </div>';
-      /* </div>';*/
+      var msgClass = "stalk-embed-body";
+      if( type && type =="IM" ){
+        msgClass = "stalk-upload-body;"
+        message = '<img src="'+ message +'"/>';
+      }
+
+      var msgHtml = '<div class="stalk-comment-body-container"><div class="stalk-comment-body '+msgClass+'"><p>';
+      msgHtml = msgHtml + message + '</p></div><div class="stalk-comment-caret"></div></div>';
 
       var msgContainer = document.createElement("div");
       utils.addClass(msgContainer, 'stalk-comment stalk-comment-by-' + _STATUS.current);
@@ -773,7 +778,6 @@
         console.log( 'fileUpload' );
         var fileInput = document.getElementById( "file" );
         var file = fileInput.files[0];
-        console.log( file );
 
         var formData = new FormData();
         formData.append("file", file);
@@ -783,8 +787,15 @@
         xhr.onreadystatechange = function(){
           if( xhr.readyState == 4 && xhr.status == 200 ){
             console.log( 'file upload success' );
-          } else {
-            console.log("FailureResponse --> State:" + xhr.readyState + "Status:" + xhr.status);
+            var resData = JSON.parse(xhr.responseText);
+            if( resData.status == 'ok' ){
+              fileInput.value = "";
+              if (!_CONFIG.isReady) {
+                utils.requestServerInfo(STALK._callbackInit);
+                _STATUS.timestamp.user = utils.currentDateStr();
+              }
+              STALK.sendMessage(resData.result.url, 'IM');
+            }
           }
         }
         xhr.onprogress = function( evt ){
@@ -926,7 +937,13 @@
         _CONFIG._socket.emit("send", {NM: "info", DT: utils.browserInfo()});
         if (STALK._unsendMessages) {
           STALK._unsendMessages.forEach(function (msg) {
-            STALK.sendMessage(msg);
+            var type;
+            if( msg.indexOf( "#!@!#" ) > -1 ){ 
+              var tmpArr = msg.split( "#!@!#" );
+              msg = tmpArr[0];
+              type = tmpArr[1];
+            }
+            STALK.sendMessage(msg, type);
           });
           STALK._unsendMessages = [];
         }
@@ -937,15 +954,15 @@
     });
 
     _CONFIG._socket.on('message', function (data) {
-      layout.addMessage(data.MG, data.TS, data.user);
+      layout.addMessage(data.MG, data.TS, data.user, data.TP);
       var msgContainer = document.querySelector(".stalk-sheet-content");
       utils.scrollTo(msgContainer, msgContainer.scrollHeight, 400);
     });
   };
 
-  STALK.sendMessage = function (msg) {
+  STALK.sendMessage = function (msg, type) {
     if (!_CONFIG.isOperatorReady) {
-      return STALK._unsendMessages.push(msg);
+      return STALK._unsendMessages.push(msg+(type?"!@!"+type:""));
     }
     var param = {
       A: _CONFIG.app,// + ':' + _CONFIG.id,
@@ -960,6 +977,9 @@
         }
       }
     };
+    if( type ){
+      param.DT.TP = type;
+    }
     _CONFIG._socket.emit('send', param, function (data) {
     });
   };
