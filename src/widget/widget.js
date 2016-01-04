@@ -698,17 +698,23 @@
 
       message = decodeURIComponent(message);
 
-      var msgClass = "stalk-embed-body";
-      if( type && type =="IM" ){
-        msgClass = "stalk-upload-body;"
+      var msgClass = 'stalk-embed-body';
+      var divClass = '';
+      var divCaret = '';
+      if( type && type =='IM' ){
+        msgClass = 'stalk-upload-body';
+        divClass = 'stalk-upload-comment stalk-upload-image';
         message = '<img src="'+ message +'"/>';
+      } else {
+        message = '<p>'+message+'</p>';
+        divCaret = '<div class="stalk-comment-caret"></div>';
       }
 
-      var msgHtml = '<div class="stalk-comment-body-container"><div class="stalk-comment-body '+msgClass+'"><p>';
-      msgHtml = msgHtml + message + '</p></div><div class="stalk-comment-caret"></div></div>';
+      var msgHtml = '<div class="stalk-comment-body-container"><div class="stalk-comment-body '+msgClass+'">';
+      msgHtml = msgHtml + message + '</div>'+divCaret+'</div>';
 
       var msgContainer = document.createElement("div");
-      utils.addClass(msgContainer, 'stalk-comment stalk-comment-by-' + _STATUS.current);
+      utils.addClass(msgContainer, 'stalk-comment stalk-comment-by-' + _STATUS.current+" "+divClass);
       msgContainer.innerHTML = msgHtml;
 
       var t = document.querySelector('.stalk-comment-metadata-container');

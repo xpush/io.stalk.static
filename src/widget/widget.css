@@ -1200,29 +1200,55 @@
 }
 
 .stalk-sheet-content{
-  -webkit-transition: all 1s ease-in-out;
-  -moz-transition: all 1s ease-in-out;
-  -o-transition: all 1s ease-in-out;
-  transition: all 1s ease-in-out;    
+    -webkit-transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;    
 }
 
 #stalk-container .stalk-composer-upload-button {
-  background-image: url(http://static.stalk.io/images/ic_attachment.png);
-  background-size: 18px 18px;
-  background-repeat: no-repeat;
+    background-image: url(http://static.stalk.io/images/ic_attachment.png);
+    background-size: 18px 18px;
+    background-repeat: no-repeat;
 }
 
 #stalk-container .stalk-composer-action-button {
-  z-index: 2147483001;
-  opacity: .4;
-  background-position: center;
-  display: none;
-  height: 18px;
-  width: 18px;
-  position: absolute;
-  float: left;
-  cursor: pointer;
-  top: 11px;
-  margin: 0 2px 0 5px;
-  padding: 5px;
+    z-index: 2147483001;
+    opacity: .4;
+    background-position: center;
+    display: none;
+    height: 18px;
+    width: 18px;
+    position: absolute;
+    float: left;
+    cursor: pointer;
+    top: 11px;
+    margin: 0 2px 0 5px;
+    padding: 5px;
 }
+
+#stalk-container .stalk-comment-body-container img {
+    display: block;
+    max-width: 100%;
+    margin: 10px 0;
+}
+
+#stalk-container .stalk-upload-comment.stalk-upload-image {
+    max-width: 266px;
+}
+
+
+#stalk-container .stalk-upload-comment.stalk-upload-image .stalk-upload-body img {
+    margin: 0;
+    border-radius: 4px;
+}
+
+#stalk-container .stalk-image-viewable {
+    cursor: -webkit-zoom-in;
+    cursor: zoom-in;
+}
+
+#stalk-container .stalk-upload-comment.stalk-upload-image .stalk-comment-body-container {
+    background-color: transparent;
+}
+
