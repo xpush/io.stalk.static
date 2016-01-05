@@ -760,6 +760,42 @@
 
       _STATUS.last = _STATUS.current;
     },
+    addTempImage: function (message, tempId ) {
+      var div_message = document.getElementById('stalk-message');
+
+      var msgClass = 'stalk-upload-body';
+      var divClass = '';
+      var divCaret = '';
+
+      divClass = 'stalk-upload-comment stalk-upload-image';
+      message = '<img id="'+tempId+'" src="'+ message +'" style="opacity:0.8;"/>';
+
+      var msgHtml = '<div class="stalk-comment-body-container"><div class="stalk-comment-body '+msgClass+'">';
+      msgHtml = msgHtml + message + '</div><div class="stalk-attachment-progress-bar"><div class="stalk-attachment-progress-percentage" style="width:0%;"></div></div></div>';
+
+      var msgContainer = document.createElement("div");
+      utils.addClass(msgContainer, 'stalk-comment stalk-comment-by-user '+divClass);
+      msgContainer.innerHTML = msgHtml;
+
+      msgHtml = msgContainer.outerHTML;
+
+      var classStr = 'stalk-conversation-part stalk-conversation-part-grouped';
+      if (_STATUS.last != _STATUS.current) {
+        if (_STATUS.current == 'admin') { // add avatar image (on the first admin message)
+          msgHtml = '<img src="' + _CONFIG.admin.image + '" class="stalk-comment-avatar">' + msgHtml;
+        }
+        classStr = classStr + '-first';
+      }
+      //classStr += " fromBottomToUp";
+      var chatDiv = document.createElement("div");
+      chatDiv.className = classStr;
+      chatDiv.innerHTML = msgHtml;
+
+      div_message.appendChild(chatDiv);
+      div_message.scrollTop = div_message.scrollHeight;
+
+      _STATUS.last = _STATUS.current;
+    },
     initEventHandler: function () {
 
       // element event handlers
@@ -772,40 +808,52 @@
       };
 
       document.getElementById('file').onchange = function(e){
-        console.log( document.getElementById('file').value );
-        fncFileUpload();
+        var fileInput = document.getElementById( "file" );
+        var file = fileInput.files[0];
+
+        var fileReader = new FileReader();
+        fileReader.onload = function(e) {
+          console.log( e.target.result );
+          //el("img").src = e.target.result;
+          layout.addTempImage(e.target.result);
+          //fncFileUpload(fileInput);
+        };
+        fileReader.readAsDataURL( file );
       };
 
       document.getElementById('btnClose').onclick = function (e) {
         layout.close();
       };
 
-      var fncFileUpload = function(){
-        console.log( 'fileUpload' );
-        var fileInput = document.getElementById( "file" );
-        var file = fileInput.files[0];
+      var fncFileUpload = function(fileInput){
 
         var formData = new FormData();
-        formData.append("file", file);
+        formData.append("file", fileInput.files[0] );
 
         var xhr = new XMLHttpRequest();
         xhr.open( "POST", _CONFIG.api_server+"/upload", true );
         xhr.onreadystatechange = function(){
           if( xhr.readyState == 4 && xhr.status == 200 ){
+            fileInput.value = "";
             console.log( 'file upload success' );
             var resData = JSON.parse(xhr.responseText);
             if( resData.status == 'ok' ){
-              fileInput.value = "";
               if (!_CONFIG.isReady) {
                 utils.requestServerInfo(STALK._callbackInit);
                 _STATUS.timestamp.user = utils.currentDateStr();
               }
               STALK.sendMessage(resData.result.url, 'IM');
             }
+          } else if( xhr.readyState == 4 && xhr.status != 200 ){
+            fileInput.value = ""; 
           }
         }
-        xhr.onprogress = function( evt ){
-          console.log( "file upload progress % : " + (evt.loaded / evt.total ) + "%" );
+
+        xhr.upload.onprogress = function(e){
+          var done = e.position || e.loaded, total = e.totalSize || e.total
+          var present = Math.floor(done/total*100)
+          console.log( present );
+          document.getElementById('status').innerHTML = present + '%'
         }
           
         xhr.setRequestHeader("XP-A", _CONFIG.app );
@@ -968,7 +1016,7 @@
 
   STALK.sendMessage = function (msg, type) {
     if (!_CONFIG.isOperatorReady) {
-      return STALK._unsendMessages.push(msg+(type?"!@!"+type:""));
+      return STALK._unsendMessages.push(msg+(type?"#!@!#"+type:""));
     }
     var param = {
       A: _CONFIG.app,// + ':' + _CONFIG.id,

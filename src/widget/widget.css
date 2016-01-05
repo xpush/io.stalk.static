@@ -1252,3 +1252,25 @@
     background-color: transparent;
 }
 
+#stalk-container .stalk-upload-comment .stalk-attachment-progress-bar {
+    border-radius: 4px;
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 6px;
+    border: 1px solid #ccc;
+    vertical-align: middle;
+    background-color: #fff;
+    margin: 0 5px
+}
+
+#stalk-container .stalk-upload-comment .stalk-attachment-progress-percentage {
+    transition: width .4s;
+    width: 0;
+    border-radius: 3px;
+    background-color: #0074b0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0
+}
