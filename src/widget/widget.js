@@ -760,7 +760,7 @@
 
       _STATUS.last = _STATUS.current;
     },
-    addTempImage: function (message, tempId ) {
+    addTempImage: function (message, fileInput, tempId ) {
       var div_message = document.getElementById('stalk-message');
 
       var msgClass = 'stalk-upload-body';
@@ -768,10 +768,10 @@
       var divCaret = '';
 
       divClass = 'stalk-upload-comment stalk-upload-image';
-      message = '<img id="'+tempId+'" src="'+ message +'" style="opacity:0.8;"/>';
+      message = '<img id="img'+tempId+'" src="'+ message +'" style="opacity:0.8;"/>';
 
       var msgHtml = '<div class="stalk-comment-body-container"><div class="stalk-comment-body '+msgClass+'">';
-      msgHtml = msgHtml + message + '</div><div class="stalk-attachment-progress-bar"><div class="stalk-attachment-progress-percentage" style="width:0%;"></div></div></div>';
+      msgHtml = msgHtml + message + '</div><div class="stalk-attachment-progress-bar"><div id="progress'+tempId+'" class="stalk-attachment-progress-percentage" style="width:0%;"></div></div></div>';
 
       var msgContainer = document.createElement("div");
       utils.addClass(msgContainer, 'stalk-comment stalk-comment-by-user '+divClass);
@@ -788,6 +788,7 @@
       }
       //classStr += " fromBottomToUp";
       var chatDiv = document.createElement("div");
+      chatDiv.id = tempId;
       chatDiv.className = classStr;
       chatDiv.innerHTML = msgHtml;
 
@@ -795,7 +796,50 @@
       div_message.scrollTop = div_message.scrollHeight;
 
       _STATUS.last = _STATUS.current;
+
+      this.fileUpload( fileInput, tempId );
     },
+    fileUpload : function(fileInput, tempId){
+
+      var formData = new FormData();
+      formData.append("file", fileInput.files[0] );
+
+      var xhr = new XMLHttpRequest();
+      xhr.open( "POST", _CONFIG.api_server+"/upload", true );
+      xhr.onreadystatechange = function(){
+        if( xhr.readyState == 4 && xhr.status == 200 ){
+          fileInput.value = "";
+          var resData = JSON.parse(xhr.responseText);
+          if( resData.status == 'ok' ){
+            if (!_CONFIG.isReady) {
+              utils.requestServerInfo(STALK._callbackInit);
+              _STATUS.timestamp.user = utils.currentDateStr();
+            }
+            var t = document.getElementById( 'img'+tempId ); 
+            console.log( t );
+            STALK.sendMessage(resData.result.url, 'IM');
+          }
+        } else if( xhr.readyState == 4 && xhr.status != 200 ){
+          fileInput.value = "";
+        }
+      }
+
+      xhr.upload.onprogress = function(e){
+        var done = e.position || e.loaded, total = e.totalSize || e.total
+        var present = Math.floor(done/total*100)
+        document.getElementById('progress'+tempId).style.width = present + '%'
+      }
+
+      xhr.setRequestHeader("XP-A", _CONFIG.app );
+      xhr.setRequestHeader("XP-C", _CONFIG.channel );
+      xhr.setRequestHeader("XP-U", _CONFIG.user );
+      xhr.setRequestHeader("XP-FU-org",  file.name);
+      xhr.setRequestHeader("XP-FU-nm", file.name.substring(0, file.name.lastIndexOf(".") ) );
+      xhr.setRequestHeader("XP-FU-tp", "image");
+
+      xhr.send(formData);
+      return false;
+    },    
     initEventHandler: function () {
 
       // element event handlers
@@ -813,58 +857,15 @@
 
         var fileReader = new FileReader();
         fileReader.onload = function(e) {
-          console.log( e.target.result );
           //el("img").src = e.target.result;
-          layout.addTempImage(e.target.result);
-          //fncFileUpload(fileInput);
+          var tempId = file.name+ "_" + file.lastModified;
+          layout.addTempImage(e.target.result, fileInput, tempId);
         };
         fileReader.readAsDataURL( file );
       };
 
       document.getElementById('btnClose').onclick = function (e) {
         layout.close();
-      };
-
-      var fncFileUpload = function(fileInput){
-
-        var formData = new FormData();
-        formData.append("file", fileInput.files[0] );
-
-        var xhr = new XMLHttpRequest();
-        xhr.open( "POST", _CONFIG.api_server+"/upload", true );
-        xhr.onreadystatechange = function(){
-          if( xhr.readyState == 4 && xhr.status == 200 ){
-            fileInput.value = "";
-            console.log( 'file upload success' );
-            var resData = JSON.parse(xhr.responseText);
-            if( resData.status == 'ok' ){
-              if (!_CONFIG.isReady) {
-                utils.requestServerInfo(STALK._callbackInit);
-                _STATUS.timestamp.user = utils.currentDateStr();
-              }
-              STALK.sendMessage(resData.result.url, 'IM');
-            }
-          } else if( xhr.readyState == 4 && xhr.status != 200 ){
-            fileInput.value = ""; 
-          }
-        }
-
-        xhr.upload.onprogress = function(e){
-          var done = e.position || e.loaded, total = e.totalSize || e.total
-          var present = Math.floor(done/total*100)
-          console.log( present );
-          document.getElementById('status').innerHTML = present + '%'
-        }
-          
-        xhr.setRequestHeader("XP-A", _CONFIG.app );
-        xhr.setRequestHeader("XP-C", _CONFIG.channel );
-        xhr.setRequestHeader("XP-U", _CONFIG.user );
-        xhr.setRequestHeader("XP-FU-org",  file.name);
-        xhr.setRequestHeader("XP-FU-nm", file.name.substring(0, file.name.lastIndexOf(".") ) );
-        xhr.setRequestHeader("XP-FU-tp", "image");
-
-        xhr.send(formData);
-        return false;
       };
 
       _Elements.txMessage.onkeydown = function (e) {
