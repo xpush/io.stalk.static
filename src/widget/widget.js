@@ -627,6 +627,7 @@
   };
 
   var _Elements = {};
+  var _TempImages = {};
 
   var layout = {
     initWin: function () {
@@ -743,7 +744,6 @@
         classStr = classStr + '-first';
       }
       classStr += " fromBottomToUp";
-      //'<div class="stalk-comment-metadata-container"><div class="stalk-comment-metadata"><span class="stalk-comment-state"></span><span class="stalk-relative-time">'++'</span></div><div class="stalk-comment-readstate"></div></div>'
       var chatDiv = document.createElement("div");
       chatDiv.className = classStr;
       chatDiv.innerHTML = msgHtml;
@@ -768,12 +768,13 @@
       var divCaret = '';
 
       divClass = 'stalk-upload-comment stalk-upload-image';
-      message = '<img id="img'+tempId+'" src="'+ message +'" style="opacity:0.8;"/>';
+      message = '<img id="img_'+tempId+'" src="'+ message +'" style="opacity:0.8;"/>';
 
       var msgHtml = '<div class="stalk-comment-body-container"><div class="stalk-comment-body '+msgClass+'">';
-      msgHtml = msgHtml + message + '</div><div class="stalk-attachment-progress-bar"><div id="progress'+tempId+'" class="stalk-attachment-progress-percentage" style="width:0%;"></div></div></div>';
+      msgHtml = msgHtml + message + '</div><div id="bar_'+tempId+'" class="stalk-attachment-progress-bar"><div id="progress_'+tempId+'" class="stalk-attachment-progress-percentage" style="width:0%;"></div></div></div>';
 
       var msgContainer = document.createElement("div");
+      msgContainer.id = tempId;
       utils.addClass(msgContainer, 'stalk-comment stalk-comment-by-user '+divClass);
       msgContainer.innerHTML = msgHtml;
 
@@ -788,7 +789,6 @@
       }
       //classStr += " fromBottomToUp";
       var chatDiv = document.createElement("div");
-      chatDiv.id = tempId;
       chatDiv.className = classStr;
       chatDiv.innerHTML = msgHtml;
 
@@ -796,6 +796,9 @@
       div_message.scrollTop = div_message.scrollHeight;
 
       _STATUS.last = _STATUS.current;
+
+      var msgContainer = document.querySelector(".stalk-sheet-content");
+      utils.scrollTo(msgContainer, msgContainer.scrollHeight, 200); 
 
       this.fileUpload( fileInput, tempId );
     },
@@ -815,9 +818,11 @@
               utils.requestServerInfo(STALK._callbackInit);
               _STATUS.timestamp.user = utils.currentDateStr();
             }
-            var t = document.getElementById( 'img'+tempId ); 
-            console.log( t );
-            STALK.sendMessage(resData.result.url, 'IM');
+            var t = document.getElementById( 'img_'+tempId ); 
+            t.src = resData.result.url;
+            var key = encodeURIComponent( resData.result.url );
+            _TempImages[key]=tempId;
+            STALK.sendMessage(key, 'IM');
           }
         } else if( xhr.readyState == 4 && xhr.status != 200 ){
           fileInput.value = "";
@@ -827,7 +832,7 @@
       xhr.upload.onprogress = function(e){
         var done = e.position || e.loaded, total = e.totalSize || e.total
         var present = Math.floor(done/total*100)
-        document.getElementById('progress'+tempId).style.width = present + '%'
+        document.getElementById('progress_'+tempId).style.width = present + '%'
       }
 
       xhr.setRequestHeader("XP-A", _CONFIG.app );
@@ -858,7 +863,7 @@
         var fileReader = new FileReader();
         fileReader.onload = function(e) {
           //el("img").src = e.target.result;
-          var tempId = file.name+ "_" + file.lastModified;
+          var tempId = file.name+ "_" + Date.now();
           layout.addTempImage(e.target.result, fileInput, tempId);
         };
         fileReader.readAsDataURL( file );
@@ -1009,6 +1014,29 @@
     });
 
     _CONFIG._socket.on('message', function (data) {
+      if( data.TP && data.TP == 'IM'){
+
+        if( _TempImages[data.MG] ){
+          var tid = _TempImages[data.MG];
+          var timg = document.getElementById('img_'+tid);
+          var tbar =  document.getElementById('bar_'+tid);
+          timg.style.opacity = '1.0';
+          tbar.parentNode.removeChild(tbar);
+          _TempImages[data.MG] = undefined;
+
+          var metadata = document.createElement("div");
+          utils.addClass(metadata, "stalk-comment-metadata-container");
+          metadata.innerHTML = '<div class="stalk-comment-metadata"><span class="stalk-comment-state"></span><span class="stalk-relative-time">' + utils.secondsTohhmmss(data.TS) + '</span></div><div class="stalk-comment-readstate"></div></div>';
+
+          var msgContainer = document.getElementById(tid);
+          msgContainer.appendChild(metadata);
+
+          var msgContainer = document.querySelector(".stalk-sheet-content");
+          utils.scrollTo(msgContainer, msgContainer.scrollHeight, 200);        
+          return;
+        }
+      }
+
       layout.addMessage(data.MG, data.TS, data.user, data.TP);
       var msgContainer = document.querySelector(".stalk-sheet-content");
       utils.scrollTo(msgContainer, msgContainer.scrollHeight, 400);
