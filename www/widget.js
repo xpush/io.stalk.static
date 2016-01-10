@@ -8016,7 +8016,6 @@ module.exports = yeast;
       this.minAjax({
         url: _CONFIG.api_server + '/node/' + encodeURIComponent(_CONFIG.id) + '/' + encodeURIComponent(_CONFIG.channel),
         type: "GET",
-        //method: "true", debugLog: "true",
         success: _callback
       });
     },
