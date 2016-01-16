@@ -846,6 +846,8 @@
     },    
     initEventHandler: function () {
 
+      var constImageExtList = ['png','jpg','jpeg','gif','bmp'];
+
       // element event handlers
       document.getElementById('stalk-launcher-button').onclick = function (e) {
         layout.open();
@@ -863,7 +865,19 @@
         fileReader.onload = function(e) {
           //el("img").src = e.target.result;
           var tempId = file.name+ "_" + Date.now();
-          layout.addTempImage(e.target.result, fileInput, tempId);
+          var isImageType = false;
+          var ext = file.name.substring(0, file.name.lastIndexOf("."));
+          if( constImageExtList.indexOf( ext.toLowerCase() ) > -1 ){
+            isImageType = true;
+          }
+
+          if( isImageType ){
+            layout.addTempImage(e.target.result, fileInput, tempId);
+          } else {
+            alert( 'You can upload image file only' );
+            fileInput.value = "";
+            return;
+          }
         };
         fileReader.readAsDataURL( file );
       };
