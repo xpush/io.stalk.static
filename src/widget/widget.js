@@ -8,7 +8,7 @@
   };
 
   var TEMPLATE = '<div id="stalk-container" class="stalk-container stalk-reset stalk-acquire"> <div id="stalk-launcher" class="stalk-launcher stalk-launcher-enabled stalk-launcher-active"> <div id="stalk-launcher-button" class="stalk-launcher-button"></div></div><div id="stalk-chatbox" class="stalk-chatbox" style="display: none;"> <div id="stalk-conversation" class="stalk-conversation stalk-sheet stalk-sheet-active"> <div class="stalk-sheet-header"> <div class="stalk-sheet-header-title-container"> <b class="stalk-sheet-header-title stalk-sheet-header-with-presence"></b> <div class="stalk-last-active" style="display: block;"><span class="relative-time-in-text"></span> </div></div><div class="stalk-sheet-header-generic-title"></div><a id="btnClose" class="stalk-sheet-header-button stalk-sheet-header-close-button" href="#"> <div class="stalk-sheet-header-button-icon"></div></a> </div><div class="stalk-sheet-body"></div><div class="stalk-sheet-content" style="bottom: 74px;"> <div class="stalk-sheet-content-container"> <div class="stalk-conversation-parts-container"> <div id="stalk-message" class="stalk-conversation-parts"> </div></div></div></div><div class="stalk-composer-container"> <div id="stalk-composer" class="stalk-composer" style="transform: translate(0px, 0px);"> <div class="stalk-composer-textarea-container"> <div class="stalk-composer-textarea stalk-composer-focused"><strong class="stalk-composer-action-button stalk-composer-upload-button" title="Send attachment" id="attachment" style="display: inline;"></strong> <pre><span></span><br></pre> <textarea id="txMessage" placeholder="Write a reply…"></textarea> </div></div></div></div></div></div></div><input type="file" id="file" style="display:none"/>';
-
+  var MAIL_TEMPLATE = '<div id="stalk-container" class="stalk-container stalk-reset stalk-acquire"><div id="stalk-launcher" class="stalk-launcher stalk-launcher-enabled stalk-launcher-active"><div id="stalk-launcher-button" class="stalk-launcher-button"></div></div><div id="stalk-chatbox" class="stalk-chatbox" style="display: none;"><div id="stalk-conversation" class="stalk-conversation stalk-sheet unready stalk-sheet-active"><div class="stalk-sheet-header"><div class="stalk-sheet-header-title-container"><b class="stalk-sheet-header-title stalk-sheet-header-with-presence"></b> <div class="stalk-last-active" style="display: block;"><span class="relative-time-in-text"></span> </div></div><div class="stalk-sheet-header-generic-title"></div><a id="btnClose" class="stalk-sheet-header-button stalk-sheet-header-close-button" href="#"><div class="stalk-sheet-header-button-icon"></div></a></div><div class="stalk-sheet-body"></div><div class="stalk-sheet-content unready" ><div class="stalk-sheet-content-container"><div class="formWrapper"><input type="txName" placeholder="Input your name" /></div><input type="txMail" placeholder="Input your mail" /><textarea id="txMessage" placeholder="Input message"></textarea></div></div></div></div></div>';
 
   var root = global;
 
@@ -637,16 +637,15 @@
         data = JSON.parse(data);
         utils.setClientIp(data.clientIp);
 
+        utils.loadCss(_CONFIG.css_url);
+
+        var div_root = document.createElement('div');
+        div_root.id = 'stalk';
+
         if (data.operator) {
-
-          utils.loadCss(_CONFIG.css_url);
-
+          div_root.innerHTML = TEMPLATE;
           if (data.server) _CONFIG.api_server = data.server;
           if (data.app) _CONFIG.app = data.app;
-
-          var div_root = document.createElement('div');
-          div_root.id = 'stalk';
-          div_root.innerHTML = TEMPLATE;
 
           var _root = document.getElementsByTagName('body')[0];
           _root.appendChild(div_root);
@@ -664,6 +663,20 @@
 
           //utils.requestServerInfo(STALK._callbackInit);
 
+        } else {
+
+          /** TODO : change image
+          div_root.innerHTML = MAIL_TEMPLATE;
+
+          var _root = document.getElementsByTagName('body')[0];
+          _root.appendChild(div_root);
+
+          _Elements['divLauncher'] = document.getElementById('stalk-launcher');
+          _Elements['divChatbox'] = document.getElementById('stalk-chatbox');
+          _Elements['txMessage'] = document.getElementById('txMessage');
+
+          self.initEventHandler();
+          */      
         }
       });
 
@@ -853,40 +866,45 @@
         layout.open();
       };
 
-      document.getElementById('attachment').onclick = function(e){
-        document.getElementById('file').click();
-      };
-
-      document.getElementById('file').onchange = function(e){
-        var fileInput = document.getElementById( "file" );
-        var file = fileInput.files[0];
-
-        var fileReader = new FileReader();
-        fileReader.onload = function(e) {
-          //el("img").src = e.target.result;
-          var tempId = file.name+ "_" + Date.now();
-          var isImageType = false;
-          var ext = file.name.substring(0, file.name.lastIndexOf("."));
-          if( constImageExtList.indexOf( ext.toLowerCase() ) > -1 ){
-            isImageType = true;
-          }
-
-          if( isImageType ){
-            layout.addTempImage(e.target.result, fileInput, tempId);
-          } else {
-            alert( 'You can upload image file only' );
-            fileInput.value = "";
-            return;
-          }
+      if( document.getElementById('attachment') != undefined ){
+        document.getElementById('attachment').onclick = function(e){
+          document.getElementById('file').click();
         };
-        fileReader.readAsDataURL( file );
-      };
+      }
+
+      if( document.getElementById('file') != undefined ){
+        document.getElementById('file').onchange = function(e){
+          var fileInput = document.getElementById( "file" );
+          var file = fileInput.files[0];
+
+          var fileReader = new FileReader();
+          fileReader.onload = function(e) {
+            //el("img").src = e.target.result;
+            var tempId = file.name+ "_" + Date.now();
+            var isImageType = false;
+            var ext = file.name.substring(file.name.lastIndexOf(".")+1);
+
+            if( constImageExtList.indexOf( ext.toLowerCase() ) > -1 ){
+              isImageType = true;
+            }
+
+            if( isImageType ){
+              layout.addTempImage(e.target.result, fileInput, tempId);
+            } else {
+              alert( 'You can upload image file only' );
+              fileInput.value = "";
+              return;
+            }
+          };
+          fileReader.readAsDataURL( file );
+        };
+      }
 
       document.getElementById('btnClose').onclick = function (e) {
         layout.close();
       };
 
-      _Elements.txMessage.onkeydown = function (e) {
+      var fncTxMessageKeydown = function (e) {
 
         e = root.event || e;
         var keyCode = (e.which) ? e.which : e.keyCode;
@@ -917,6 +935,10 @@
           return false;
         }
       };
+
+      if( _Elements.txMessage != undefined ){
+        _Elements.txMessage.onkeydown = fncTxMessageKeydown;
+      }
 
     }
   };
