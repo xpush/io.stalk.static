@@ -7743,7 +7743,7 @@ module.exports = yeast;
     }
   };
 
-  var TEMPLATE = '<div id="stalk-container" class="stalk-container stalk-reset stalk-acquire"> <div id="stalk-launcher" class="stalk-launcher stalk-launcher-enabled stalk-launcher-active"> <div id="stalk-launcher-button" class="stalk-launcher-button"></div></div><div id="stalk-chatbox" class="stalk-chatbox" style="display: none;"> <div id="stalk-conversation" class="stalk-conversation stalk-sheet stalk-sheet-active"> <div class="stalk-sheet-header"> <div class="stalk-sheet-header-title-container"> <b class="stalk-sheet-header-title stalk-sheet-header-with-presence"></b> <div class="stalk-last-active" style="display: block;"><span class="relative-time-in-text"></span> </div></div><div class="stalk-sheet-header-generic-title"></div><a id="btnClose" class="stalk-sheet-header-button stalk-sheet-header-close-button" href="#"> <div class="stalk-sheet-header-button-icon"></div></a> </div><div class="stalk-sheet-body"></div><div class="stalk-sheet-content" style="bottom: 74px;"> <div class="stalk-sheet-content-container"> <div class="stalk-conversation-parts-container"> <div id="stalk-message" class="stalk-conversation-parts"> </div></div></div></div><div class="stalk-composer-container"> <div id="stalk-composer" class="stalk-composer" style="transform: translate(0px, 0px);"> <div class="stalk-composer-textarea-container"> <div class="stalk-composer-textarea stalk-composer-focused"><strong class="stalk-composer-action-button stalk-composer-upload-button" title="Send attachment" id="attachment" style="display: inline;"></strong> <pre><span></span><br></pre> <textarea id="txMessage" placeholder="Write a reply…"></textarea> </div></div></div></div></div></div></div><input type="file" id="file" style="display:none"/>';
+  var TEMPLATE = '<div id="stalk-container" class="stalk-container stalk-reset stalk-acquire"> <div id="stalk-launcher" class="stalk-launcher stalk-launcher-enabled stalk-launcher-active"> <div id="stalk-launcher-button" class="stalk-launcher-button"></div></div><div id="stalk-chatbox" class="stalk-chatbox" style="display: none;"> <div id="stalk-conversation" class="stalk-conversation stalk-sheet stalk-sheet-active"> <div class="stalk-sheet-header"> <div class="stalk-sheet-header-title-container"> <b class="stalk-sheet-header-title stalk-sheet-header-with-presence"></b> <div class="stalk-last-active" style="display: block;"><span class="relative-time-in-text"></span> </div></div><div class="stalk-sheet-header-generic-title"></div><a id="btnClose" class="stalk-sheet-header-button stalk-sheet-header-close-button" href="#"> <div class="stalk-sheet-header-button-icon"></div></a> </div><div class="stalk-sheet-body"></div><div class="stalk-sheet-content" style="bottom: 74px;"> <div class="stalk-sheet-content-container"> <div class="stalk-conversation-parts-container"> <div id="stalk-message" class="stalk-conversation-parts"> </div></div></div></div><div class="stalk-composer-container"> <div id="stalk-composer" class="stalk-composer" style="transform: translate(0px, 0px);"> <div class="stalk-composer-textarea-container"> <div class="stalk-composer-textarea stalk-composer-focused"><strong class="stalk-composer-action-button stalk-composer-upload-button" title="Send attachment" id="attachment" style="display: inline;"></strong> <pre><span></span><br></pre> <textarea id="txMessage" placeholder="Write a reply…"></textarea> </div></div></div></div></div></div><div id="stalk-image-viewer" class="stalk-image-viewer" style="display:none;"><div class="stalk-image-viewer-overlay" style="opacity: 0.8;"></div><img id="stalk-zoomed-image" class="stalk-zoomed-image" style="transform: translate(0px, 0px) scale(1, 1); top: 20px; left: 285.844px; width: 529.312px; height: 941px;"></div></div><input type="file" id="file" style="display:none"/>';
   var MAIL_TEMPLATE = '<div id="stalk-container" class="stalk-container stalk-reset stalk-acquire"><div id="stalk-launcher" class="stalk-launcher stalk-launcher-enabled stalk-launcher-inactive"><div id="stalk-launcher-button" class="stalk-launcher-button"></div></div><div id="stalk-chatbox" class="stalk-chatbox" style="display: block;"><div id="stalk-conversation" class="stalk-conversation stalk-sheet unready stalk-sheet-active"><div class="stalk-sheet-header"><div class="stalk-sheet-header-title-container"><b class="stalk-sheet-header-title stalk-sheet-header-with-presence"></b> <div class="stalk-last-active" style="display: block;"><span class="relative-time-in-text"></span> </div></div><div class="stalk-sheet-header-generic-title"></div><a id="btnClose" class="stalk-sheet-header-button stalk-sheet-header-close-button" href="#"><div class="stalk-sheet-header-button-icon"></div></a></div><div class="stalk-sheet-body"></div><div class="stalk-sheet-content" ><div class="stalk-sheet-content-container-unready"><span id="unready_message_span">We can\'t response currently, please leave a message.</span><div class="formWrapper"><input type="txName" placeholder="Input your name" /></div><div class="formWrapper"><input type="txMail" placeholder="Input your mail" /></div><div class="formWrapper"><textarea id="txMessage" placeholder="Input message"></textarea></div></div></div></div></div></div>';
   var root = global;
 
@@ -7759,7 +7759,7 @@ module.exports = yeast;
     div: undefined,
     server: 'http://admin.stalk.io:8000',
     api_server: undefined,
-    css_url: 'http://static.stalk.io/widget.css',
+    css_url: 'http://stalk.stalk.io/widget.css',
     height: '200px',
     width: '300px',
     fontFamily: undefined,
@@ -8515,7 +8515,7 @@ module.exports = yeast;
       var divCaret = '';
 
       divClass = 'stalk-upload-comment stalk-upload-image';
-      message = '<img id="img_'+tempId+'" src="'+ message +'" style="opacity:0.8;"/>';
+      message = '<img id="img_'+tempId+'" src="'+ message +'" style="opacity:0.8;" class="stalk-image-viewable"/>';
 
       var msgHtml = '<div class="stalk-comment-body-container"><div class="stalk-comment-body '+msgClass+'">';
       msgHtml = msgHtml + message + '</div><div id="bar_'+tempId+'" class="stalk-attachment-progress-bar"><div id="progress_'+tempId+'" class="stalk-attachment-progress-percentage" style="width:0%;"></div></div></div>';
@@ -8538,6 +8538,17 @@ module.exports = yeast;
       var chatDiv = document.createElement("div");
       chatDiv.className = classStr;
       chatDiv.innerHTML = msgHtml;
+
+      chatDiv.onclick = function (e) {
+        if( e.target && e.target.src ){
+
+          document.getElementById( "stalk-zoomed-image" ).src = e.target.src;
+
+          if( document.getElementById( "stalk-image-viewer" ) ){
+            document.getElementById( "stalk-image-viewer" ).style.display = "block";
+          }
+        }
+      }
 
       div_message.appendChild(chatDiv);
       div_message.scrollTop = div_message.scrollHeight;
@@ -8634,6 +8645,12 @@ module.exports = yeast;
           fileReader.readAsDataURL( file );
         };
       }
+
+      document.getElementById('stalk-image-viewer').onclick = function(e){
+        if( this.style.display != "none" ){
+          this.style.display = 'none';
+        }
+      };
 
       document.getElementById('btnClose').onclick = function (e) {
         layout.close();

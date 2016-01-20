@@ -1327,3 +1327,37 @@
     display: block;
     padding-bottom: 10px;
 }
+
+#stalk-container .stalk-viewer-overlay {
+    z-index: 2147483003;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #000;
+    cursor: -webkit-zoom-out;
+    cursor: zoom-out;
+    opacity: 0;
+}
+
+#stalk-container .stalk-zoomed-image {
+    z-index: 2147483004;
+    position: fixed;
+    cursor: -webkit-zoom-out;
+    cursor: zoom-out;
+    transition: all .3s ease;
+}
+
+#stalk-container .stalk-image-viewer-overlay {
+    z-index: 2147483003;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #000;
+    cursor: -webkit-zoom-out;
+    cursor: zoom-out;
+    opacity: 0;
+}
