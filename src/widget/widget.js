@@ -716,7 +716,7 @@
       if( type && type =='IM' ){
         msgClass = 'stalk-upload-body';
         divClass = 'stalk-upload-comment stalk-upload-image';
-        message = '<img src="'+ message +'"/>';
+        message = '<img src="'+ message +'" onclick="javascript:STALK.viewImage(this);" class="stalk-image-viewable"/>';
       } else {
         message = '<p>'+message+'</p>';
         divCaret = '<div class="stalk-comment-caret"></div>';
@@ -779,7 +779,7 @@
       var divCaret = '';
 
       divClass = 'stalk-upload-comment stalk-upload-image';
-      message = '<img id="img_'+tempId+'" src="'+ message +'" style="opacity:0.8;" class="stalk-image-viewable"/>';
+      message = '<img id="img_'+tempId+'" src="'+ message +'" style="opacity:0.8;" class="stalk-image-viewable" onclick="javascript:STALK.viewImage(this);"/>';
 
       var msgHtml = '<div class="stalk-comment-body-container"><div class="stalk-comment-body '+msgClass+'">';
       msgHtml = msgHtml + message + '</div><div id="bar_'+tempId+'" class="stalk-attachment-progress-bar"><div id="progress_'+tempId+'" class="stalk-attachment-progress-percentage" style="width:0%;"></div></div></div>';
@@ -794,7 +794,7 @@
       var classStr = 'stalk-conversation-part stalk-conversation-part-grouped';
       if (_STATUS.last != _STATUS.current) {
         if (_STATUS.current == 'admin') { // add avatar image (on the first admin message)
-          msgHtml = '<img src="' + _CONFIG.admin.image + '" class="stalk-comment-avatar">' + msgHtml;
+          msgHtml = '<img src="' + _CONFIG.admin.image + '" class="stalk-comment-avatar" >' + msgHtml;
         }
         classStr = classStr + '-first';
       }
@@ -802,38 +802,6 @@
       var chatDiv = document.createElement("div");
       chatDiv.className = classStr;
       chatDiv.innerHTML = msgHtml;
-
-      chatDiv.onclick = function (e) {
-        if( e.target && e.target.src ){
-
-          var zoomImg = document.getElementById( "stalk-zoomed-image" );
-          var maxWidth = window.innerWidth - 80;
-          var w;
-          var h;
-
-          if( maxWidth > e.target.naturalWidth ) {
-            w =  e.target.naturalWidth;
-          } else {
-            w = maxWidth;
-          }
-          var maxHeight = window.innerHeight - 80;
-          if( maxHeight  > e.target.naturalHeight ){ 
-            h = e.target.naturalHeight;
-          } else {
-            h = maxHeight;
-          }
-          zoomImg.style.width = w+"px";
-          zoomImg.style.height = h+"px";
-          zoomImg.style.left = ( window.innerWidth - w ) / 2+"px";
-          zoomImg.style.top = ( window.innerHeight - h ) / 2+"px";
-          zoomImg.src = e.target.src;
-          zoomImg.onload = function(){
-            if( document.getElementById( "stalk-image-viewer" ) ){
-              document.getElementById( "stalk-image-viewer" ).style.display = "block";
-            }
-          };
-        }
-      }
 
       div_message.appendChild(chatDiv);
       div_message.scrollTop = div_message.scrollHeight;
@@ -1141,6 +1109,38 @@
 
   STALK.getVersion = function () {
     return version;
+  };
+
+  STALK.viewImage = function(obj){
+    if( obj.src ){
+
+      var zoomImg = document.getElementById( "stalk-zoomed-image" );
+      var maxWidth = window.innerWidth - 80;
+      var w;
+      var h;
+
+      if( maxWidth > obj.naturalWidth ) {
+        w =  obj.naturalWidth;
+      } else {
+        w = maxWidth;
+      }
+      var maxHeight = window.innerHeight - 80;
+      if( maxHeight  > obj.naturalHeight ){ 
+        h = obj.naturalHeight;
+      } else {
+        h = maxHeight;
+      }
+      zoomImg.style.width = w+"px";
+      zoomImg.style.height = h+"px";
+      zoomImg.style.left = ( window.innerWidth - w ) / 2+"px";
+      zoomImg.style.top = ( window.innerHeight - h ) / 2+"px";
+      zoomImg.src = obj.src;
+      zoomImg.onload = function(){
+        if( document.getElementById( "stalk-image-viewer" ) ){
+          document.getElementById( "stalk-image-viewer" ).style.display = "block";
+        }
+      };
+    }
   };
 
   STALK.init = function () {

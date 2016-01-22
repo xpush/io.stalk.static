@@ -806,6 +806,14 @@
     padding: 4px 8px;
 }
 
+#stalk-container .stalk-comment-body .stalk-upload-body{
+    padding: 2px;
+}
+
+#stalk-container .stalk-comment-body.stalk-upload-body{
+    padding: 2px;
+}
+
 #stalk-container .stalk-comment-body p {
     margin: 1em 0 0;
 }
@@ -1248,7 +1256,7 @@
 
 #stalk-container .stalk-image-viewable {
     cursor: -webkit-zoom-in;
-    cursor: zoom-in;
+    cursor: zoom-in;    
 }
 
 #stalk-container .stalk-upload-comment.stalk-upload-image .stalk-comment-body-container {
