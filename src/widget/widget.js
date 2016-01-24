@@ -21,7 +21,6 @@
     user: 'guest',
     admin: undefined,
     div: undefined,
-    server: 'http://admin.stalk.io:8000',
     api_server: undefined,
     css_url: 'http://static.stalk.io/widget.css',
     height: '200px',
@@ -1118,17 +1117,36 @@
       var maxWidth = window.innerWidth - 80;
       var w;
       var h;
+      var ratio = ( obj.naturalWidth / obj.naturalHeight) ;
 
+      var isMaxWidth = false;
       if( maxWidth > obj.naturalWidth ) {
         w =  obj.naturalWidth;
       } else {
+        isMaxWidth = true;
         w = maxWidth;
       }
+
+      var isMaxHeight = false;
       var maxHeight = window.innerHeight - 80;
-      if( maxHeight  > obj.naturalHeight ){ 
+      if( maxHeight  > obj.naturalHeight ){
         h = obj.naturalHeight;
       } else {
+        isMaxHeight = true;
         h = maxHeight;
+      }
+
+      if( isMaxWidth && isMaxHeight ){
+        if( w > h ){
+          w = h * ratio;
+        } else {
+          
+          h = w / ratio;
+        }
+      } else if( isMaxWidth ){
+        h = w / ratio;
+      } else if ( isMaxHeight ){
+        w = h * ratio;
       }
       zoomImg.style.width = w+"px";
       zoomImg.style.height = h+"px";
