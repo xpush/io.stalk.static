@@ -1369,3 +1369,172 @@
     cursor: zoom-out;
     opacity: 0;
 }
+
+#stalk-offline-container{
+    border: none; z-index: 999998;
+    transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    opacity: 1;
+    position: fixed; bottom: 0px;
+    width: 374px;
+    right: 0px;
+    background: transparent;
+    font-size: 12px;
+}
+
+#stalk-offline-container .ScrollContainer {
+    border-radius: .66667rem;
+    box-sizing: border-box;
+}
+
+#stalk-offline-container .ScrollContainer-header {
+    background: #f8f8f8;
+    border-bottom: .09167rem solid #ddd;
+    padding-top: 1.08333rem!important;
+}
+#stalk-offline-container .u-paddingHL {
+    padding-left: 1.66667rem!important;
+    padding-right: 1.66667rem!important;
+}
+
+#stalk-offline-container .u-textXHeight {
+    line-height: .9;
+}
+#stalk-offline-container .u-textBold {
+    font-weight: 700;
+}
+#stalk-offline-container h2.u-textSizeMed.u-textBold.u-extSizeMed.u-textCenter.u-textXHeight {
+    font-size: 1.16667rem!important;
+}
+#stalk-offline-container .u-textCenter {
+    text-align: center!important;
+}
+
+#stalk-offline-container .ScrollContainer-content {
+    overflow-y: hidden;
+    overflow-x: hidden;
+    max-height: 24.41667rem;
+    box-sizing: border-box;
+}
+
+#stalk-offline-container .Form-fieldContainer {
+    margin-bottom: 1.66667rem;
+}
+
+#stalk-offline-container .u-isSelectable {
+    cursor: text;
+}
+#stalk-offline-container .u-block {
+    display: block!important;
+}
+
+#stalk-offline-container .Form-field {
+    background: #fff;
+    border: .09167rem solid #dadada;
+    border-radius: .33333rem;
+    padding: .75rem .83333rem .83333rem;
+    color: #939393;
+}
+
+#stalk-offline-container .Form-field input, #stalk-offline-container .Form-field select, #stalk-offline-container .Form-field textarea {
+    border: none;
+    background: none;
+    resize: none;
+    color: #555;
+    font-size: 1.08333rem;
+    width: 100%;
+    padding: 0;
+    outline:none;
+}
+
+#stalk-offline-container .Form-fieldLabel {
+    margin-bottom: .58333rem;
+    font-weight: 700;
+    display: block;
+    color: #999;
+}
+#stalk-offline-container .u-textXHeight {
+    line-height: .9;
+}
+
+#stalk-offline-container .u-paddingTM {
+    padding-top: 1.25rem!important;
+}
+#stalk-offline-container .u-paddingRS {
+    padding-right: 1.66667rem!important;
+}
+#stalk-offline-container .u-paddingLL {
+    padding-left: 1.66667rem;
+}
+
+#stalk-offline-container .u-nbfc {
+    overflow: hidden!important;
+}
+
+#stalk-offline-container .Form-fieldLabel {
+    margin-bottom: .58333rem;
+    font-weight: 700;
+    display: block;
+    color: #999;
+}
+#stalk-offline-container .u-textXHeight {
+    line-height: .9;
+}
+
+#stalk-offline-container .u-paddingVM {
+    padding-top: 1.25rem!important;
+    padding-bottom: 1.25rem!important;
+}
+#stalk-offline-container .u-posRelative {
+    position: relative!important;
+}
+#stalk-offline-container .u-textRight {
+    text-align: right!important;
+}
+#stalk-offline-container .c-btn {
+    font-size: 12px;
+    font-size: .85714rem;
+    line-height: 1;
+    border-radius: 4px;
+    border-color: #ddd;
+    background-color: #fff;
+    color: #555;
+    font-weight: 600;
+    -webkit-font-smoothing: antialiased;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+}
+
+#stalk-offline-container .btn, #stalk-offline-container .c-btn {
+    display: inline-block;
+    vertical-align: middle;
+    font: inherit;
+    text-align: center;
+    margin: 0;
+    cursor: pointer;
+    overflow: visible;
+    padding: 11px 23px;
+    background-color: #4a8ec2;
+    border: 1px solid #4a8ec2;
+}
+#stalk-offline-container .u-borderTransparent {
+    border: .08333rem solid transparent!important;
+}
+#stalk-offline-container .c-btn--secondary {
+    font-size: 1.08333rem;
+    border-radius: .33333rem;
+    padding: .91667rem 2rem;
+}
+#stalk-offline-container .c-btn--medium {
+    font-size: 13px;
+    font-size: .92857rem;
+    line-height: 1;
+    padding-top: 17px;
+    padding-bottom: 17px;
+}
+#stalk-offline-container .c-btn--secondary {
+    background-color: #fff;
+    color: rgba(51,51,51,.8);
+}
