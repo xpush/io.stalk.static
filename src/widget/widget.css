@@ -1381,61 +1381,81 @@
     font-size: 12px;
 }
 
-#stalk-offline-container .ScrollContainer {
+#stalk-offline-container .stalk-form-container {
     border-radius: .66667rem;
     box-sizing: border-box;
+    overflow: hidden!important;
 }
 
-#stalk-offline-container .ScrollContainer-header {
+#stalk-offline-container .stalk-form-container-header {
     background: #f8f8f8;
     border-bottom: .09167rem solid #ddd;
-    padding-top: 1.08333rem!important;
-}
-#stalk-offline-container .u-paddingHL {
-    padding-left: 1.66667rem!important;
-    padding-right: 1.66667rem!important;
+    padding-top: 0.6667rem!important;
 }
 
-#stalk-offline-container .u-textXHeight {
-    line-height: .9;
+#stalk-offline-container .stalk-form-container-header-close-button {
+    float: right;
+    margin-left: 15px;
+    z-index: 2147483001;
+    position: absolute;
+    top: 35px;
+    right: 35px;
 }
-#stalk-offline-container .u-textBold {
-    font-weight: 700;
+
+#stalk-offline-container .stalk-form-container-header-close-button .button-icon {
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAq0lEQVR42o2RMQoCMRBFcwQ776C11upOekHEnaC47sQbWomIlWfRSm+wZiBFIAzfgYEw/PeKfLdYdyNiuSz5OHV/TLM9TTSvnPMsVx/ikPadBQh8aZ6C3Fyz62bp8SkFEOT4XQWZ670SaBCCeWwBBm0Bcb+xQSwYEFgLOO5L2LdyAEj9ObpGC7gOavuz0QLu0WoBgqhGCEJBOtwBWAly/qG1jInlWYJIoHnlfhcTzX2HEVUjAAAAAElFTkSuQmCC") /* embed */;
+    background-size: 13px 13px;
+    background-repeat: no-repeat;
+    width: 16px;
+    height: 16px;
+    opacity: 0.4;
 }
-#stalk-offline-container h2.u-textSizeMed.u-textBold.u-extSizeMed.u-textCenter.u-textXHeight {
+
+#stalk-offline-container h2 {
     font-size: 1.16667rem!important;
-}
-#stalk-offline-container .u-textCenter {
     text-align: center!important;
 }
 
-#stalk-offline-container .ScrollContainer-content {
+#stalk-offline-container .stalk-form-container-content {
     overflow-y: hidden;
     overflow-x: hidden;
     max-height: 24.41667rem;
     box-sizing: border-box;
 }
 
-#stalk-offline-container .Form-fieldContainer {
+#stalk-offline-container .stalk-label-container {
     margin-bottom: 1.66667rem;
-}
-
-#stalk-offline-container .u-isSelectable {
-    cursor: text;
-}
-#stalk-offline-container .u-block {
     display: block!important;
 }
 
-#stalk-offline-container .Form-field {
+#stalk-offline-container .stalk-form-field-arrows {
+    position:absolute;
+    right:1.16667rem;
+    top:1.08333rem;
+    pointer-events:none;
+    left:1.16667rem;
+    right:initial
+}
+
+#stalk-offline-container .stalk-form-field-container{
+    margin-bottom: .6rem;
+    font-weight: 800;
+    display: block;
+    color: #AAA;
+    line-height: 0.9;
+}
+
+#stalk-offline-container .stalk-form-field {
     background: #fff;
     border: .09167rem solid #dadada;
     border-radius: .33333rem;
     padding: .75rem .83333rem .83333rem;
     color: #939393;
+    cursor: text;
+    position: relative!important;
 }
 
-#stalk-offline-container .Form-field input, #stalk-offline-container .Form-field select, #stalk-offline-container .Form-field textarea {
+#stalk-offline-container .stalk-form-field input, #stalk-offline-container .stalk-form-field select, #stalk-offline-container .stalk-form-field textarea {
     border: none;
     background: none;
     resize: none;
@@ -1446,68 +1466,38 @@
     outline:none;
 }
 
-#stalk-offline-container .Form-fieldLabel {
-    margin-bottom: .58333rem;
-    font-weight: 700;
-    display: block;
-    color: #999;
-}
-#stalk-offline-container .u-textXHeight {
-    line-height: .9;
-}
-
-#stalk-offline-container .u-paddingTM {
-    padding-top: 1.25rem!important;
-}
-#stalk-offline-container .u-paddingRS {
+#stalk-offline-container .ui-paddingHL {
+    padding-left: 1.66667rem!important;
     padding-right: 1.66667rem!important;
 }
-#stalk-offline-container .u-paddingLL {
+
+#stalk-offline-container .ui-paddingTM {
+    padding-top: 1.25rem!important;
+}
+#stalk-offline-container .ui-paddingRS {
+    padding-right: 1.66667rem!important;
+}
+#stalk-offline-container .ui-paddingLL {
     padding-left: 1.66667rem;
 }
 
-#stalk-offline-container .u-nbfc {
-    overflow: hidden!important;
-}
-
-#stalk-offline-container .Form-fieldLabel {
-    margin-bottom: .58333rem;
-    font-weight: 700;
-    display: block;
-    color: #999;
-}
-#stalk-offline-container .u-textXHeight {
-    line-height: .9;
-}
-
-#stalk-offline-container .u-paddingVM {
-    padding-top: 1.25rem!important;
+#stalk-offline-container .ui-paddingVM {
     padding-bottom: 1.25rem!important;
 }
-#stalk-offline-container .u-posRelative {
-    position: relative!important;
-}
-#stalk-offline-container .u-textRight {
-    text-align: right!important;
-}
-#stalk-offline-container .c-btn {
-    font-size: 12px;
-    font-size: .85714rem;
+
+#stalk-offline-container .btn {
+    font-size: 14px;
     line-height: 1;
     border-radius: 4px;
     border-color: #ddd;
     background-color: #fff;
     color: #555;
-    font-weight: 600;
-    -webkit-font-smoothing: antialiased;
+    font-weight: 900;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
     -webkit-touch-callout: none;
-}
-
-#stalk-offline-container .btn, #stalk-offline-container .c-btn {
     display: inline-block;
     vertical-align: middle;
     font: inherit;
@@ -1515,26 +1505,24 @@
     margin: 0;
     cursor: pointer;
     overflow: visible;
-    padding: 11px 23px;
+    padding: 11px 21px;
     background-color: #4a8ec2;
     border: 1px solid #4a8ec2;
 }
-#stalk-offline-container .u-borderTransparent {
-    border: .08333rem solid transparent!important;
+
+#stalk-offline-container .ui-borderTransparent {
+    border: 1px solid transparent!important;
 }
-#stalk-offline-container .c-btn--secondary {
-    font-size: 1.08333rem;
-    border-radius: .33333rem;
-    padding: .91667rem 2rem;
+
+#stalk-offline-container .stalk-button-group {
+    text-align: right;
 }
-#stalk-offline-container .c-btn--medium {
-    font-size: 13px;
-    font-size: .92857rem;
-    line-height: 1;
-    padding-top: 17px;
-    padding-bottom: 17px;
-}
-#stalk-offline-container .c-btn--secondary {
+
+#stalk-offline-container .btn-secondary {
     background-color: #fff;
     color: rgba(51,51,51,.8);
+}
+
+#stalk-offline-container .btn-primary {
+    color: #fff;
 }
