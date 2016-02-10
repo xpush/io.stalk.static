@@ -348,7 +348,7 @@
     visibility: hidden;
 }
 
-#stalk-container .stalk-launcher-button {
+#stalk-container .stalk-launcher-button, #stalk-offline-container .stalk-launcher-button {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAQAAABuvaSwAAAAzElEQVR4AY3Kr0qDcRSA4bNgmUkZSyr2YVkWwTtYEZNFxLQ0wajZZrJ4AcIQ1O4fLHoFpkXTTDIXNoQ9RtEf+p3nrW9EaLk28p+RKy0R2sYyxtrhTtZtmMiahNKbvgtDhXLumxdC3WX1vKTh2aOGBZ9V86kHsCl8VM1wb1fNBpl51Zxtw9y8Yg1y845efkZ+XrdFKcyU9hwqzcJA1iB0ZXVDzbGpKlNHaiGEpo6ed8CrA/s/6mgKEb47By+WRdnv+QxPFkVmPnGjLv7uC9s8WoTqo+lHAAAAAElFTkSuQmCC") /* embed */;
     background-size: 22px 22px;
     background-repeat: no-repeat;
@@ -1381,6 +1381,11 @@
     font-size: 12px;
 }
 
+#stalk-offline-container div, #stalk-offline-container input, #stalk-offline-container textarea {
+    font-size: 12px;
+}
+
+
 #stalk-offline-container .stalk-form-container {
     border-radius: .66667rem;
     box-sizing: border-box;
@@ -1390,12 +1395,11 @@
 #stalk-offline-container .stalk-form-container-header {
     background: #f8f8f8;
     border-bottom: .09167rem solid #ddd;
-    padding-top: 0.6667rem!important;
+    padding-top: 0.5rem!important;
 }
 
 #stalk-offline-container .stalk-form-container-header-close-button {
     float: right;
-    margin-left: 15px;
     z-index: 2147483001;
     position: absolute;
     top: 35px;
@@ -1412,7 +1416,7 @@
 }
 
 #stalk-offline-container h2 {
-    font-size: 1.16667rem!important;
+    font-size: 14px;
     text-align: center!important;
 }
 
@@ -1424,7 +1428,7 @@
 }
 
 #stalk-offline-container .stalk-label-container {
-    margin-bottom: 1.66667rem;
+    margin-bottom: 1.0rem;
     display: block!important;
 }
 
@@ -1449,7 +1453,7 @@
     background: #fff;
     border: .09167rem solid #dadada;
     border-radius: .33333rem;
-    padding: .75rem .83333rem .83333rem;
+    padding: 10px 12px;
     color: #939393;
     cursor: text;
     position: relative!important;
@@ -1460,10 +1464,10 @@
     background: none;
     resize: none;
     color: #555;
-    font-size: 1.08333rem;
     width: 100%;
     padding: 0;
     outline:none;
+    font-size:13px;
 }
 
 #stalk-offline-container .ui-paddingHL {
