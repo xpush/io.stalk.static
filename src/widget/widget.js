@@ -8,7 +8,7 @@
   };
 
   var TEMPLATE = '<div id="stalk-container" class="stalk-container stalk-reset stalk-acquire"> <div id="stalk-launcher" class="stalk-launcher stalk-launcher-enabled stalk-launcher-active"> <div id="stalk-launcher-button" class="stalk-launcher-button"></div></div><div id="stalk-chatbox" class="stalk-chatbox" style="display: none;"> <div id="stalk-conversation" class="stalk-conversation stalk-sheet stalk-sheet-active"> <div class="stalk-sheet-header"> <div class="stalk-sheet-header-title-container"> <b class="stalk-sheet-header-title stalk-sheet-header-with-presence"></b> <div class="stalk-last-active" style="display: block;"><span class="relative-time-in-text"></span> </div></div><div class="stalk-sheet-header-generic-title"></div><a id="btnClose" class="stalk-sheet-header-button stalk-sheet-header-close-button" href="#"> <div class="stalk-sheet-header-button-icon"></div></a> </div><div class="stalk-sheet-body"></div><div class="stalk-sheet-content" style="bottom: 74px;"> <div class="stalk-sheet-content-container"> <div class="stalk-conversation-parts-container"> <div id="stalk-message" class="stalk-conversation-parts"> </div></div></div></div><div class="stalk-composer-container"> <div id="stalk-composer" class="stalk-composer" style="transform: translate(0px, 0px);"> <div class="stalk-composer-textarea-container"> <div class="stalk-composer-textarea stalk-composer-focused"><strong class="stalk-composer-action-button stalk-composer-upload-button" title="Send attachment" id="attachment" style="display: inline;"></strong> <pre><span></span><br></pre> <textarea id="txMessage" placeholder="Write a reply…"></textarea> </div></div></div></div></div></div><div id="stalk-image-viewer" class="stalk-image-viewer" style="display:none;"><div class="stalk-image-viewer-overlay" style="opacity: 0.8;"></div><img id="stalk-zoomed-image" class="stalk-zoomed-image" style="transform: translate(0px, 0px) scale(1, 1);top:0px;"></div></div><input type="file" id="file" style="display:none"/>';
-  var MAIL_TEMPLATE = '<div id="stalk-container" class="stalk-container"><div id="stalk-launcher" class="stalk-launcher stalk-launcher-enabled stalk-launcher-active"><div id="stalk-launcher-button" class="stalk-launcher-button"></div></div><div id="stalk-offline-container" style="display:none;"><div class="stalk-form-container" style="width:342px;margin:15px; border:1px solid #ddd;"><div class="stalk-form-container-header ui-paddingHL"><header><h2>Leave us a message</h2></header><a id="btnClose" class="stalk-form-container-header-close-button" href="#"><div class="button-icon"></div></a></div><div class="stalk-form-container-content ui-paddingLL ui-marginRS ui-paddingRS ui-paddingTM is-expanded" ><div ><label class="stalk-label-container" ><div class="stalk-form-field-container " ><span >Your name</span><span ></span></div><div class="stalk-form-field " ><input value="" name="name" type=""></div></label><label class="stalk-label-container" ><div class="stalk-form-field-container " ><span >Your Email address</span><span >*</span></div><div class="stalk-form-field " ><input value="" name="email" type="email"></div></label><label class="stalk-label-container" ><div class="stalk-form-field-container " ><span >How can we help you?</span><span >*</span></div><div class="stalk-form-field " ><textarea rows="5" name="description"></textarea></div></label><p class="Error ui-marginTL ui-isHidden" ></p></div></div><footer class="stalk-form-container-footer ui-paddingHL ui-paddingVM" ><div class="stalk-button-group" ><div id="btnCancel" class="btn btn-secondary " >Cancel</div><input id="btnMailSend" type="submit" value="Send" class="btn btn-primary ui-textNoWrap ui-borderTransparent ui-userBackgroundColor" ></div></footer></div></div></div>';
+  var MAIL_TEMPLATE = '<div id="stalk-container" class="stalk-container"><div id="stalk-launcher" class="stalk-launcher stalk-launcher-enabled stalk-launcher-active"><div id="stalk-launcher-button" class="stalk-launcher-button"></div></div><div id="stalk-offline-container" style="display:none;"><div class="stalk-form-container" style="width:342px;margin:15px; border:1px solid #ddd;"><div class="stalk-form-container-header ui-paddingHL"><header><h2>Leave a message</h2></header><a id="btnClose" class="stalk-form-container-header-close-button" href="#"><div class="button-icon"></div></a></div><div class="stalk-form-container-content ui-paddingLL ui-marginRS ui-paddingRS ui-paddingTM is-expanded" ><div ><label class="stalk-label-container" ><div class="stalk-form-field-container " ><span >Your name</span><span ></span></div><div class="stalk-form-field " ><input value="" name="name" id="name"></div></label><label class="stalk-label-container" ><div class="stalk-form-field-container " ><span >Your Email address</span><span >*</span></div><div class="stalk-form-field " ><input value="" name="email" type="email" id="email"></div></label><label class="stalk-label-container" ><div class="stalk-form-field-container " ><span >How can we help you?</span><span >*</span></div><div class="stalk-form-field " ><textarea rows="5" name="message" id="message"></textarea></div></label><p class="Error ui-marginTL ui-isHidden" ></p></div></div><footer class="stalk-form-container-footer ui-paddingHL ui-paddingVM" ><div class="stalk-button-group" ><div id="btnCancel" class="btn btn-secondary " >Cancel</div><input id="btnMailSend" type="submit" value="Send" class="btn btn-primary ui-textNoWrap ui-borderTransparent ui-userBackgroundColor" ></div></footer></div></div></div>';
   var root = global;
 
   // 1. private variable (using this scope)
@@ -658,12 +658,8 @@
 
           // Add Event on elements
           self.initEventHandler();
-
-          //utils.requestServerInfo(STALK._callbackInit);
-
         } else {
 
-          /**
           div_root.innerHTML = MAIL_TEMPLATE;
 
           var _root = document.getElementsByTagName('body')[0];
@@ -674,7 +670,6 @@
           _Elements['txMessage'] = document.getElementById('txMessage');
   
           self.initEventHandler();
-          */
         }
       });
 
@@ -919,6 +914,37 @@
       if( document.getElementById('btnCancel') != undefined ){
         document.getElementById('btnCancel').onclick = function (e) {
           layout.close();
+        };
+      }
+
+      if( document.getElementById('btnMailSend') !=undefined ) {
+        document.getElementById('btnMailSend').onclick = function (e) {
+
+          var message = document.getElementById('message').value;
+          var email = document.getElementById('email').value;
+          var name = document.getElementById('name').value;
+          var url = location.href;
+
+          var sendData = {
+            appkey: _CONFIG.id, 'message':message, 'email':email, 'name':name, url:url
+          };
+
+          var _callback = function( result ){
+            if( result ){
+              var result = JSON.parse( result );
+              if( result.ts ){
+                alert( 'Message sent' );
+              }
+            }
+          };
+
+          utils.minAjax({
+            url: _CONFIG.server + '/api/messages/save',
+            type: "POST",
+            data: sendData,
+            success: _callback
+          });
+
         };
       }
 
