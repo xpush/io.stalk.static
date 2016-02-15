@@ -1461,7 +1461,8 @@
 }
 
 #stalk-offline-container .stalk-result{
-    padding-bottom: 10px;
+    padding-top: 15px;
+    padding-bottom: 5px;
     height: 60px;
 }
 
@@ -1555,4 +1556,10 @@
 
 #stalk-offline-container .btn-primary {
     color: #fff;
+}
+
+#stalk-offline-container .btn-success {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
 }
