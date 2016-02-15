@@ -1379,6 +1379,7 @@
     right: 0px;
     background: transparent;
     font-size: 12px;
+    font-family: 'Lato', sans-serif;
 }
 
 #stalk-offline-container div, #stalk-offline-container input, #stalk-offline-container textarea {
@@ -1387,15 +1388,18 @@
 
 
 #stalk-offline-container .stalk-form-container {
+    width:342px;margin:15px; border:1px solid #ddd;
     border-radius: .66667rem;
     box-sizing: border-box;
     overflow: hidden!important;
+    background: #fff;
+
 }
 
 #stalk-offline-container .stalk-form-container-header {
     background: #f8f8f8;
-    border-bottom: .09167rem solid #ddd;
-    padding-top: 0.5rem!important;
+    border-bottom: 1px solid #ddd;
+    padding-top: 8px!important;
 }
 
 #stalk-offline-container .stalk-form-container-header-close-button {
@@ -1418,12 +1422,14 @@
 #stalk-offline-container h2 {
     font-size: 14px;
     text-align: center!important;
+    font-weight: 800!important;
+    line-height: 16px;
+    margin-top: 8px;
 }
 
 #stalk-offline-container .stalk-form-container-content {
     overflow-y: hidden;
     overflow-x: hidden;
-    max-height: 24.41667rem;
     box-sizing: border-box;
 }
 
@@ -1439,6 +1445,24 @@
     pointer-events:none;
     left:1.16667rem;
     right:initial
+}
+
+
+#stalk-offline-container .stalk-result-image{
+    width:60px;height:60px;float:left;
+}
+
+#stalk-offline-container .stalk-result-message{
+    font-size: 14px;
+    font-weight: bold;
+    float:left;
+    margin-top:20px;
+    margin-left:10px;
+}
+
+#stalk-offline-container .stalk-result{
+    padding-bottom: 10px;
+    height: 60px;
 }
 
 #stalk-offline-container .stalk-form-field-container{
@@ -1468,6 +1492,8 @@
     padding: 0;
     outline:none;
     font-size:13px;
+    min-height: 12px;
+    margin: 0px;
 }
 
 #stalk-offline-container .ui-paddingHL {
