@@ -495,15 +495,14 @@
     },
     getGeo: function () {
       this.minAjax({
-        url: _CONFIG.server + '/api/auths/geo',
-        type: "POST",
-        data: {ip: '49.175.7.42'},
+        url: _CONFIG.server + '/api/auths/geo/'+utils.getClientIp(),
+        type: "GET",
         success: function (data) {
           data = JSON.parse(data);
           _STATUS.country = data.country;
           _STATUS.city = data.city;
-          _STATUS.lat = data.latitude;
-          _STATUS.lng = data.longitude;
+          _STATUS.lat = data.lat;
+          _STATUS.lng = data.lon;
         }
       });
 
@@ -519,8 +518,8 @@
       info.ip = utils.getClientIp();
       info.city = _STATUS.city;
       info.country = _STATUS.country;
-      info.lat = _STATUS.latitude;
-      info.lng = _STATUS.longitude;
+      info.lat = _STATUS.lat;
+      info.lng = _STATUS.lon;
       info.origin = document.origin;
       info.name = _CONFIG.userName;
       return info;
