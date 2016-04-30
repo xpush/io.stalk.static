@@ -48,6 +48,11 @@
   };
 
   var utils = {
+    lpad: function(s, padLength, padString){
+      while(s.length < padLength)
+        s = padString + s;
+      return s;
+    },
     getUniqueKey: function () {
       var s = [], itoh = '0123456789ABCDEF';
       for (var i = 0; i < 36; i++) s[i] = Math.floor(Math.random() * 0x10);
@@ -59,7 +64,10 @@
 
       return s.join('');
     },
-
+    getTempUser: function(){
+      var rd = Math.floor((Math.random() * 1000) + 1);
+      return 'guest'+this.lpad( new String(rd), 4, 0);
+    },
     getEscapeHtml: function (html) {
       return String(html)
         .replace(/&/g, '&amp;')
@@ -1048,11 +1056,10 @@
   _STATUS.shortid = utils.generateShortId();
 
   STALK._callbackInit = function (data) {
+    var tempUser = utils.getCookie("TU") == undefined ? utils.getTempUser() : utils.getCookie("TU");
 
-    var rd = Math.floor((Math.random() * 100) + 1);
-
-    _CONFIG.user = 'guest' + rd;
-    _CONFIG.userName = 'guest' + rd;
+    _CONFIG.user = tempUser;
+    _CONFIG.userName = tempUser;
 
     data = JSON.parse(data);
 
@@ -1063,6 +1070,7 @@
     _STATUS._server = data;
 
     utils.setCookie("ST", _CONFIG.channel, 1);
+    utils.setCookie("TU", tempUser, 1);
     STALK._init();
   };
 
