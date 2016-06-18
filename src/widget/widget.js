@@ -955,7 +955,7 @@ if (data.operator) {
       }
 
       if( document.getElementById('nickname') != undefined ){
-        document.getElementById('nickname').onblur = function(){
+        document.getElementById('nickname').onchange = function(){
           var nickname =  document.getElementById('nickname').value;
           _CONFIG.userName = nickname;  
         }
