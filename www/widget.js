@@ -8017,15 +8017,15 @@ module.exports = yeast;
         success: _callback
       });
     },
-    requestServerInfo: function(_callback) {
+    requestServerInfo: function(channel, _callback) {
 
-      if (!_CONFIG.api_server || !_CONFIG.id || !_CONFIG.channel) {
+      if (!_CONFIG.api_server || !_CONFIG.id || !channel) {
         console.error('error on initiation.'); // @ TODO console logging !
         return false;
       }
 
       this.minAjax({
-        url: _CONFIG.api_server + '/node/' + encodeURIComponent(_CONFIG.id) + '/' + encodeURIComponent(_CONFIG.channel),
+        url: _CONFIG.api_server + '/node/' + encodeURIComponent(_CONFIG.id) + '/' + encodeURIComponent(channel),
         type: "GET",
         success: _callback
       });
@@ -8420,6 +8420,8 @@ module.exports = yeast;
           utils.getGeo();
 
           // Add Event on elements
+          // BroadSocket init
+          utils.requestServerInfo(_CONFIG.id, STALK._callbackInitBroad);
           self.initEventHandler();
         } else {
 
@@ -8432,10 +8434,11 @@ module.exports = yeast;
           _Elements['divChatbox'] = document.getElementById('stalk-offline-container');
           _Elements['txMessage'] = document.getElementById('txMessage');
 
+          // BroadSocket init
+          utils.requestServerInfo(_CONFIG.id, STALK._callbackInitBroad);
           self.initEventHandler();
         }
       });
-
     },
     open: function() {
       utils.removeClass(_Elements.divLauncher, 'stalk-launcher-active');
@@ -8592,7 +8595,7 @@ module.exports = yeast;
           var resData = JSON.parse(xhr.responseText);
           if (resData.status == 'ok') {
             if (!_CONFIG.isReady) {
-              utils.requestServerInfo(STALK._callbackInit);
+              utils.requestServerInfo(_CONFIG.channel, STALK._callbackInit);
               _STATUS.timestamp.user = utils.currentDateStr();
             }
             var t = document.getElementById('img_' + tempId);
@@ -8814,7 +8817,7 @@ module.exports = yeast;
 
           if (message !== "") {
             if (!_CONFIG.isReady) {
-              utils.requestServerInfo(STALK._callbackInit);
+              utils.requestServerInfo(_CONFIG.channel, STALK._callbackInit);
               _STATUS.timestamp.user = utils.currentDateStr();
               //STALK._init(); 
             }
@@ -8860,13 +8863,13 @@ module.exports = yeast;
   _STATUS.timestamp.enter = utils.currentDateStr();
   _STATUS.shortid = utils.generateShortId();
 
-  STALK._callbackInit = function (data) {
+  STALK._callbackInit = function (response) {
     var tempUser = utils.getCookie("TU") == undefined ? utils.getTempUser() : utils.getCookie("TU");
 
     _CONFIG.user = tempUser;
     _CONFIG.userName = tempUser;
 
-    data = JSON.parse(data);
+    var data = JSON.parse(response);
 
     if (
       _CONFIG.isReady ||
@@ -8877,6 +8880,31 @@ module.exports = yeast;
     utils.setCookie("ST", _CONFIG.channel, 1);
     utils.setCookie("TU", tempUser, 1);
     STALK._init();
+  };
+
+  STALK._callbackInitBroad = function(response){
+
+    var data = JSON.parse(response);
+
+    var tQuery =
+      'A=' + _CONFIG.app + '&' + //+ ':' + _CONFIG.id + '&' +
+      'U=' + _CONFIG.user + '&' +
+      'D=' + '_' + '&' +
+      'C=' + _CONFIG.id + '&' +
+        //'DT=' + JSON.stringify(_CONFIG.user) + '&' +
+      'S=' + data.result.server.name;
+
+    _CONFIG._broadSocket = io.connect(data.result.server.url + '/channel?' + tQuery, {
+      'force new connection': true
+    });
+
+    _CONFIG._broadSocket.on('connect', function () {
+      console.log( '_broadSocket connected' );
+
+      _CONFIG._broadSocket.on('message', function (data) {
+        console.log( 'broadSocket received : ' + JSON.stringify(data) );
+      });
+    });
   };
 
   STALK._init = function () {
