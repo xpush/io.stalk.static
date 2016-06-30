@@ -8434,8 +8434,6 @@ module.exports = yeast;
           _Elements['divChatbox'] = document.getElementById('stalk-offline-container');
           _Elements['txMessage'] = document.getElementById('txMessage');
 
-          // BroadSocket init
-          utils.requestServerInfo(_CONFIG.id, STALK._callbackInitBroad);
           self.initEventHandler();
         }
       });
@@ -8460,7 +8458,7 @@ module.exports = yeast;
     },
 
 
-    addMessage: function(message, timestamp, user, type) {
+    addMessage: function(message, timestamp, user, type, isNotice) {
 
       var div_message = document.getElementById('stalk-message');
 
@@ -8479,19 +8477,21 @@ module.exports = yeast;
       var msgClass = 'stalk-embed-body';
       var divClass = '';
       var divCaret = '';
+      var isNoticeClass = isNotice ? "notice":"";
+
       if (type && type == 'IM') {
         msgClass = 'stalk-upload-body';
         divClass = 'stalk-upload-comment stalk-upload-image';
         message = '<img src="' + message + '" onclick="javascript:STALK.viewImage(this);" class="stalk-image-viewable"/>';
       } else if (type && type == 'LN') {
         message = '<p><a href="' + message + '" target="_blank">' + message + '</p>';
-        divCaret = '<div class="stalk-comment-caret"></div>';
+        divCaret = '<div class="stalk-comment-caret '+isNoticeClass+'"></div>';
       } else {
         message = '<p>' + message + '</p>';
-        divCaret = '<div class="stalk-comment-caret"></div>';
+        divCaret = '<div class="stalk-comment-caret '+isNoticeClass+'"></div>';
       }
 
-      var msgHtml = '<div class="stalk-comment-body-container"><div class="stalk-comment-body ' + msgClass + '">';
+      var msgHtml = '<div class="stalk-comment-body-container '+isNoticeClass+'"><div class="stalk-comment-body ' + msgClass + '">';
       msgHtml = msgHtml + message + '</div>' + divCaret + '</div>';
 
       var msgContainer = document.createElement("div");
@@ -8902,7 +8902,7 @@ module.exports = yeast;
       console.log( '_broadSocket connected' );
 
       _CONFIG._broadSocket.on('message', function (data) {
-        console.log( 'broadSocket received : ' + JSON.stringify(data) );
+        STALK.handelMessage( data, true );
       });
     });
   };
@@ -8968,33 +8968,37 @@ module.exports = yeast;
     });
 
     _CONFIG._socket.on('message', function (data) {
-      if( data.TP && data.TP == 'IM'){
-
-        if( _TempImages[data.MG] ){
-          var tid = _TempImages[data.MG];
-          var timg = document.getElementById('img_'+tid);
-          var tbar =  document.getElementById('bar_'+tid);
-          timg.style.opacity = '1.0';
-          tbar.parentNode.removeChild(tbar);
-          _TempImages[data.MG] = undefined;
-
-          var metadata = document.createElement("div");
-          utils.addClass(metadata, "stalk-comment-metadata-container");
-          metadata.innerHTML = '<div class="stalk-comment-metadata"><span class="stalk-comment-state"></span><span class="stalk-relative-time">' + utils.secondsTohhmmss(data.TS) + '</span></div><div class="stalk-comment-readstate"></div></div>';
-
-          var msgContainer = document.getElementById(tid);
-          msgContainer.appendChild(metadata);
-
-          var msgContainer = document.querySelector(".stalk-sheet-content");
-          utils.scrollTo(msgContainer, msgContainer.scrollHeight, 200);        
-          return;
-        }
-      }
-
-      layout.addMessage(data.MG, data.TS, data.user, data.TP);
-      var msgContainer = document.querySelector(".stalk-sheet-content");
-      utils.scrollTo(msgContainer, msgContainer.scrollHeight, 400);
+      STALK.handelMessage( data );
     });
+  };
+
+  STALK.handelMessage = function( data, isNotice ){
+    if( data.TP && data.TP == 'IM'){
+
+      if( _TempImages[data.MG] ){
+        var tid = _TempImages[data.MG];
+        var timg = document.getElementById('img_'+tid);
+        var tbar =  document.getElementById('bar_'+tid);
+        timg.style.opacity = '1.0';
+        tbar.parentNode.removeChild(tbar);
+        _TempImages[data.MG] = undefined;
+
+        var metadata = document.createElement("div");
+        utils.addClass(metadata, "stalk-comment-metadata-container");
+        metadata.innerHTML = '<div class="stalk-comment-metadata"><span class="stalk-comment-state"></span><span class="stalk-relative-time">' + utils.secondsTohhmmss(data.TS) + '</span></div><div class="stalk-comment-readstate"></div></div>';
+
+        var msgContainer = document.getElementById(tid);
+        msgContainer.appendChild(metadata);
+
+        var msgContainer = document.querySelector(".stalk-sheet-content");
+        utils.scrollTo(msgContainer, msgContainer.scrollHeight, 200);        
+        return;
+      }
+    }
+
+    layout.addMessage(data.MG, data.TS, data.user, data.TP, isNotice);
+    var msgContainer = document.querySelector(".stalk-sheet-content");
+    utils.scrollTo(msgContainer, msgContainer.scrollHeight, 400);
   };
 
   STALK.sendMessage = function (msg, type) {

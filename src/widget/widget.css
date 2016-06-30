@@ -934,6 +934,10 @@
     border-color: #dadee2;
 }
 
+#stalk-container .stalk-comment-by-admin .stalk-comment-body-container.notice{
+    border-color: #df4d32;
+}
+
 #stalk-container .stalk-comment-by-admin .stalk-comment-caret:after, #stalk-container .stalk-comment-by-admin .stalk-comment-caret:before {
     right: 100%;
 }
@@ -945,6 +949,11 @@
 #stalk-container .stalk-comment-by-admin .stalk-comment-caret:before {
     border-right-color: #dadee2;
 }
+
+#stalk-container .stalk-comment-by-admin .stalk-comment-caret.notice:before {
+    border-right-color: #df4d32;
+}
+
 
 #stalk-container .stalk-composer {
     z-index: 2147483001;
