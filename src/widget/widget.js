@@ -546,6 +546,7 @@
       info.lng = _STATUS.lon;
       info.origin = document.origin;
       info.name = _CONFIG.userName;
+      info.siteId = _CONFIG.id;
       return info;
     },
     setClientIp: function(ip) {
