@@ -8222,21 +8222,46 @@ module.exports = yeast;
       var data = {
         url: location.href
       };
-      data.st = this.getUserStayTime();
-      window.addEventListener('beforeunload', function() {
+
+      window.onbeforeunload = function(e) {    
+
+        //data.st = self.getUserStayTime();
+
+        var clt = 0;
+        if( _STATUS.timestamp.admin && _STATUS.timestamp.user ){
+          clt = _STATUS.timestamp.admin - _STATUS.timestamp.user;
+        }
+        var smt;
+        if( _STATUS.timestamp.user ){
+          smt = ( new Date( _STATUS.timestamp.user ) ).toISOString().substring(0, 19);
+        }
+        var rmt;
+        if( _STATUS.timestamp.admin ){
+          rmt = ( new Date( _STATUS.timestamp.admin ) ).toISOString().substring(0, 19);
+        }
+
+        console.log( '1111' );
+        console.log( clt );
+        console.log( smt );
+        console.log( rmt );
+
         var logData = {
           OP: _CONFIG.admin.uid,
           VID: _STATUS.shortid,
           CH: _CONFIG.channel,
           LTS: utils.currentDateStr(),
-          SMT: _STATUS.timestamp.user,
-          RMT: _STATUS.timestamp.admin,
+          SMT: smt,
+          RMT: rmt,
           IP: utils.getClientIp(),
           CT: _STATUS.city,
           CC: _STATUS.country,
           LAT: _STATUS.lat,
-          LNG: _STATUS.lng
+          LNG: _STATUS.lng,
+          ST: data.st,
+          CLT: clt
         };
+
+        console.log( logData );
 
         self.minAjax({
           url: _CONFIG.server + '/api/activitys',
@@ -8246,12 +8271,12 @@ module.exports = yeast;
 
           }
         });
-        if (cb) cb();
-        // App, url, enterSiteTime, leaveSiteTime, startChatTime, firstResponseTime, 
 
-        //LSTALK.sendClientInfoAjax({a:'L',st: data.st}); 
-        //LSTALK.sendClientInfo('leavePage', data);
-      });
+        var dialogText = '';
+        e.returnValue = dialogText;
+        return dialogText;    
+
+      };
     },
     getGeo: function() {
       this.minAjax({
@@ -8329,6 +8354,9 @@ module.exports = yeast;
     },
     currentDateStr: function() {
       return (new Date()).toISOString().substring(0, 19);
+    },
+    currentTimestamp: function() {
+      return Date.now();
     },
     easeInOut: function(currentTime, start, change, duration) {
       currentTime /= duration / 2;
@@ -8474,7 +8502,7 @@ module.exports = yeast;
 
       if (_STATUS.current == "admin") {
         utils.watchLastResponseTime(document.querySelector(".stalk-last-active"), timestamp);
-        if (!_STATUS.timestamp.admin) _STATUS.timestamp.admin = utils.currentDateStr();
+        if (!_STATUS.timestamp.admin) _STATUS.timestamp.admin = utils.currentTimestamp();
       }
 
       message = decodeURIComponent(message);
@@ -8601,7 +8629,7 @@ module.exports = yeast;
           if (resData.status == 'ok') {
             if (!_CONFIG.isReady) {
               utils.requestServerInfo(_CONFIG.channel, STALK._callbackInit);
-              _STATUS.timestamp.user = utils.currentDateStr();
+              _STATUS.timestamp.user = utils.currentTimestamp();
             }
             var t = document.getElementById('img_' + tempId);
             t.src = resData.result.url;
@@ -8823,7 +8851,7 @@ module.exports = yeast;
           if (message !== "") {
             if (!_CONFIG.isReady) {
               utils.requestServerInfo(_CONFIG.channel, STALK._callbackInit);
-              _STATUS.timestamp.user = utils.currentDateStr();
+              _STATUS.timestamp.user = utils.currentTimestamp();
               //STALK._init(); 
             }
             STALK.sendMessage(message);
