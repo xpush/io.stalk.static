@@ -7,7 +7,7 @@
   var _CONFIG = {
     div: undefined,
     app_id: 'stalk:public',
-    server_url: 'http://chat.stalk.io:8000',
+    server_url: 'http://54.178.160.166:8000',
     css_url: 'http://stalk.io/stalk.css',
     height: '200px',
     width: '300px',
@@ -431,17 +431,19 @@
     STALK = root.STALK = {};
   }
 
-  if (root.stalkConfig) {
-    _CONFIG = utils.mergeConfig(_CONFIG, root.stalkConfig);
-  }
-
-  if (!_CONFIG.channel) _CONFIG.channel = encodeURIComponent(location.hostname + location.pathname);
-
-  utils.loadCss(_CONFIG.css_url);
-  utils.loadJson(_CONFIG.server_url + '/node/' + encodeURIComponent(_CONFIG.app_id) + '/' + encodeURIComponent(_CONFIG.channel) + '?1=1', 'STALK._callbackInit');
-
   STALK.getVersion = function () {
     return version;
+  };
+
+  STALK.init = function(){
+    if (root.stalkConfig) {
+      _CONFIG = utils.mergeConfig(_CONFIG, root.stalkConfig);
+    } 
+
+    if (!_CONFIG.channel) _CONFIG.channel = encodeURIComponent(location.hostname + location.pathname);
+
+    utils.loadCss(_CONFIG.css_url);
+    utils.loadJson(_CONFIG.server_url + '/node/' + encodeURIComponent(_CONFIG.app_id) + '/' + encodeURIComponent(_CONFIG.channel) + '?1=1', 'STALK._callbackInit');
   };
 
   STALK._callbackInit = function (data) {
@@ -465,14 +467,14 @@
       'U=' + _CONFIG.user.id + '&' +
       'D=' + '_' + '&' +
       'C=' + _CONFIG.channel + '&' +
-        //'DT=' + JSON.stringify(_CONFIG.user) + '&' +
+        //'DT=' + JSON.stringify(_CONFIG.user) + '&' +        
       'S=' + data.result.server.name;
+
+    console.log( data.result.server.url );
 
     _CONFIG._socket = io.connect(data.result.server.url + '/channel?' + query);
 
     _CONFIG._socket.on('connect', function () {
-
-      console.log('asdfasdf');
 
       if (!_CONFIG._isCreate) {
 
@@ -547,5 +549,6 @@
     return _CONFIG.server_url + '/auth/' + targetName + '/check?app=' + _CONFIG.app_id + '&channel=' + _CONFIG.channel + '&socketId=' + _CONFIG._socket.io.engine.id;
   }
 
+  STALK.init();
 
 }(this));
