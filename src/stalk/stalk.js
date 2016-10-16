@@ -470,8 +470,6 @@
         //'DT=' + JSON.stringify(_CONFIG.user) + '&' +        
       'S=' + data.result.server.name;
 
-    console.log( data.result.server.url );
-
     _CONFIG._socket = io.connect(data.result.server.url + '/channel?' + query);
 
     _CONFIG._socket.on('connect', function () {
@@ -479,6 +477,13 @@
       if (!_CONFIG._isCreate) {
 
         layout.initWin();
+
+        // 로그인 로직을 제거함
+        _CONFIG.user = {
+          name: 'Guest',
+          image: 'https://raw.githubusercontent.com/xpush/io.stalk.admin/master/client/assets/images/face.png'
+        };
+        layout.setTitleBar('login');
 
         var initMessage = _CONFIG.message.welcome;
         if (!_CONFIG.user.name) {
