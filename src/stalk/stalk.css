@@ -703,3 +703,9 @@ div.stalk_panel_height {
     width: 24px;
     display: none;
 }
+
+#stalk_window .stalk_upload_button {
+    background-image: url(http://static.stalk.io/images/ic_attachment.png);
+    background-size: 18px 18px;
+    background-repeat: no-repeat;
+}

@@ -8,7 +8,7 @@
     div: undefined,
     app_id: 'stalk:public',
     server_url: 'http://54.178.160.166:8000',
-    css_url: 'http://stalk.io/stalk.css',
+    css_url: 'http://stalk.io/stalk.css', 
     height: '200px',
     width: '300px',
     fontFamily: undefined,
@@ -155,6 +155,8 @@
 
     initWin: function () {
 
+      var self = this;
+
       var isEmbeded = _CONFIG.div ? true : false;
 
       var _height = isEmbeded ? (document.getElementById(_CONFIG.div).clientHeight - 106) + 'px!important' : _CONFIG.height || '!important';
@@ -182,10 +184,10 @@
         '        <div id="stalk_body"> ' +
         '' +
         '          <div id="stalk_conversation" class="stalk_conversation stalk_panel_bg" style="height: ' + _height + '; display: block;"></div>' +
-
         '          <form id="stalk_chatform" action="#" method="GET" autocomplete="off" style="display: none;"> ' +
         '            <div id="stalk_input" class="stalk_input "> ' +
-        '              <textarea id="stalk_input_textarea" name="stalk_input_textarea" size="undefined" class="stalk_input_textarea_pre stalk_input_textarea_normal" placeholder="Type here and hit &lt;enter&gt; to chat" style="line-height: 21px; height: 21px; display: block;"></textarea> ' +
+        '          <strong class="stalk_upload_button" id="attachment" style="display: inline;"></strong>'+
+        '              <textarea id="stalk_input_textarea" name="stalk_input_textarea" class="stalk_input_textarea_pre stalk_input_textarea_normal" placeholder="Type here and hit &lt;enter&gt; to chat" style="line-height: 21px; height: 21px; display: block;"></textarea> ' +
         '            </div> ' +
         '          </form> ' +
 
@@ -207,6 +209,7 @@
         '' +
         '    </div> ' +
         '    <div style="display: none;"></div> ' +
+        '    <input type="file" id="file" style="display:none"/>'+
         '  </div> ';
 
       var _root = isEmbeded ? document.getElementById(_CONFIG.div) : document.getElementsByTagName('body')[0];
@@ -284,6 +287,7 @@
         }
       };
 
+      self.initEventHandler();
     },
 
     addMessage: function (message, from) {
@@ -327,7 +331,59 @@
       }
 
     },
+    fileUpload: function(fileInput, tempId) {
 
+      var formData = new FormData();
+      formData.append("file", fileInput.files[0]);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", _CONFIG.api_server + "/upload", true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          fileInput.value = "";
+          var resData = JSON.parse(xhr.responseText);
+          if (resData.status == 'ok') {
+            if (!_CONFIG.isReady) {
+              utils.requestServerInfo(_CONFIG.channel, STALK._callbackInit);
+              _STATUS.timestamp.user = utils.currentTimestamp();
+            }
+            var t = document.getElementById('img_' + tempId);
+            t.src = resData.result.url;
+            var key = encodeURIComponent(resData.result.url);
+            _TempImages[key] = tempId;
+            STALK.sendMessage(key, 'IM');
+          }
+        } else if (xhr.readyState == 4 && xhr.status != 200) {
+          fileInput.value = "";
+        }
+      }
+
+      xhr.upload.onprogress = function(e) {
+        var done = e.position || e.loaded,
+          total = e.totalSize || e.total
+        var present = Math.floor(done / total * 100)
+        document.getElementById('progress_' + tempId).style.width = present + '%'
+      }
+
+      xhr.setRequestHeader("XP-A", _CONFIG.app);
+      xhr.setRequestHeader("XP-C", _CONFIG.channel);
+      xhr.setRequestHeader("XP-U", _CONFIG.user);
+      xhr.setRequestHeader("XP-FU-org", file.name);
+      xhr.setRequestHeader("XP-FU-nm", file.name.substring(0, file.name.lastIndexOf(".")));
+      xhr.setRequestHeader("XP-FU-tp", "image");
+
+      xhr.send(formData);
+      return false;
+    },
+    initEventHandler: function() {
+      var constImageExtList = ['png', 'jpg', 'jpeg', 'gif', 'bmp'];
+
+      if (document.getElementById('attachment') != undefined) {
+        document.getElementById('attachment').onclick = function(e) {
+          document.getElementById('file').click();
+        };
+      }
+    },
     addNotification: function (message) {
       _CONFIG._last_id = '';
       var chatDiv = document.createElement("p");
