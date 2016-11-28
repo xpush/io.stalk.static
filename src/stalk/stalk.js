@@ -32,6 +32,15 @@
       s[8] = s[13] = s[18] = s[23] = '-';
       return s.join('');
     },
+    lpad: function(s, padLength, padString) {
+      while (s.length < padLength)
+        s = padString + s;
+      return s;
+    },
+    getTempUser: function() {
+      var rd = Math.floor((Math.random() * 1000) + 1);
+      return 'Guest' + this.lpad(new String(rd), 4, 0);
+    },
     getEscapeHtml: function (html) {
       return String(html)
         .replace(/&/g, '&amp;')
@@ -175,7 +184,7 @@
         '     <div id="stalk_title" style="display: block;"> ' +
         '        <div id="stalk_topbar" class="stalk_panel_title_fg stalk_panel_title_bg" style="text-align: center; ' + (_titleColor ? 'background-color: ' + _titleColor + '!important;' : '') + ' "> ' +
         '          <a id="stalk_sizebutton" class="stalk_button">^</a> ' +
-        '          <a id="stalk_logoutbutton" class="stalk_button" style="display: none">X</a> ' +
+        '           <a id="stalk_logoutbutton" class="stalk_button">X</a>'+
         '          <a id="stalk_oplink" class="stalk_panel_title_fg" > . . . . </a> ' +
         '        </div> ' +
         '      </div> ' +
@@ -219,23 +228,12 @@
       var div_titlebar = document.getElementById('stalk_title');
       var div_contents = document.getElementById('stalk_contents');
       var el_textarea = document.getElementById('stalk_input_textarea');
-      var div_logout = document.getElementById('stalk_logoutbutton');
+      var logout_button = document.getElementById('stalk_logoutbutton');
+      
 
       if (_CONFIG.user.name) {
         self.setTitleBar('login');
       }
-
-      div_logout.onclick = function (event) {
-
-        utils.delUserInfo();
-        self.setTitleBar('logout');
-
-        _CONFIG.user = {};
-
-        event.preventDefault();
-        event.stopPropagation();
-
-      };
 
       if (!isEmbeded) {
 
@@ -257,6 +255,14 @@
             div_message.scrollTop = div_message.scrollHeight;
 
           }
+        };
+
+        logout_button.onclick = function (e) {
+          div_contents.style.display = 'none';
+          document.getElementById('stalk').className = 'stalk_status_compressed';
+
+          e.preventDefault();
+          e.stopPropagation();
         };
       }
 
@@ -299,6 +305,7 @@
       var messageId = _CONFIG._last_id + '-' + _CONFIG._last_count;
 
       var msg = '';
+
       if (_CONFIG.user && _CONFIG.user.id != from.id) {
 
         msg = msg + '<span class="stalk_message_from stalk_message_fg ">' +
@@ -447,7 +454,6 @@
     setTitleBar: function (_event, data) {
 
       if (_event == 'login') {
-        document.getElementById('stalk_logoutbutton').style.display = 'block';
         document.getElementById('stalk_chatform').style.display = 'block';
         document.getElementById('stalk_loginform').style.display = 'none';
         document.getElementById('stalk_myimage').style.display = 'block';
@@ -458,7 +464,6 @@
         this.focusTextarea();
 
       } else if (_event == 'logout') {
-        document.getElementById('stalk_logoutbutton').style.display = 'none';
         document.getElementById('stalk_chatform').style.display = 'none';
         document.getElementById('stalk_loginform').style.display = 'block';
         document.getElementById('stalk_myimage').style.display = 'none';
@@ -534,12 +539,11 @@
 
         layout.initWin();
 
-        // 로그인 로직을 제거함
-        _CONFIG.user = {
-          name: 'Guest',
-          image: 'https://raw.githubusercontent.com/xpush/io.stalk.admin/master/client/assets/images/face.png'
-        };
+        _CONFIG.user.name = utils.getTempUser();
+        _CONFIG.user.image = 'https://raw.githubusercontent.com/xpush/io.stalk.admin/master/client/assets/images/face.png'
         layout.setTitleBar('login');
+
+        utils.setUserInfo(_CONFIG.user);
 
         var initMessage = _CONFIG.message.welcome;
         if (!_CONFIG.user.name) {
@@ -547,6 +551,7 @@
         }
         layout.addSysMessage(initMessage);
       }
+      _CONFIG.isReady = true;
       _CONFIG._isCreate = true;
 
     });
@@ -609,7 +614,5 @@
   STALK.getOAuthUrl = function (targetName) {
     return _CONFIG.server_url + '/auth/' + targetName + '/check?app=' + _CONFIG.app_id + '&channel=' + _CONFIG.channel + '&socketId=' + _CONFIG._socket.io.engine.id;
   }
-
-  STALK.init();
 
 }(this));
